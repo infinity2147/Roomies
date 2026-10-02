@@ -1,0 +1,4 @@
+fastapi   nodes ref=4263 mine=5147 recall=1.000 precision=0.828 | edges ref=2417 mine=2744 recall=0.731 precision=0.644
+requests  nodes ref=759 mine=759 recall=0.787 precision=0.787 | edges ref=1884 mine=1788 recall=0.695 precision=0.733
+rich      nodes ref=2015 mine=2017 recall=1.000 precision=0.999 | edges ref=5757 mine=5568 recall=0.919 precision=0.950
+httpx     nodes ref=740 mine=840 recall=1.000 precision=0.881 | edges ref=1618 mine=1574 recall=0.758 precision=0.779
