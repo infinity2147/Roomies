@@ -1,0 +1,7 @@
+folds: ['fastapi', 'rich', 'requests', 'httpx']
+seeds: 3
+lgb_params: {"objective": "lambdarank", "metric": "ndcg", "ndcg_eval_at": [5, 10], "learning_rate": 0.05, "num_leaves": 15, "min_data_in_leaf": 20, "feature_fraction": 0.8, "bagging_fraction": 0.8, "bagging_freq": 1, "lambdarank_truncation_level": 20, "verbose": -1}
+n_rounds: 300
+alphas: [0.0, 0.1, 0.2, 0.35, 0.5, 0.75]
+candidates: all non-test graph nodes
+features: ['bm25', 'bm25_norm', 'bm25_rank', 'bm25_name_norm', 'emb_cos', 'emb_rank', 'emb_max_anchor', 'anc_short_idf', 'anc_backtick', 'anc_dotted', 'anc_trace', 'anc_in_module', 'anc_parent', 'anc_child', 'n_anchor_children', 'dist_anchor', 'n_anchor_nbrs', 'dist_bm25top', 'log_in_deg', 'log_out_deg', 'kind', 'is_private', 'is_dunder', 'depth', 'in_repo_pkg', 'log_text_len', 'name_q_frac', 'name_q_jacc', 'module_bm25_max']

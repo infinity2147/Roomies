@@ -1,0 +1,4790 @@
+[
+ {
+  "instance_id": "fastapi_15661",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1025,
+  "patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 216,
+   "lines_removed": 0,
+   "paths": [
+    "scripts/prepare_release.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 307,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_prepare_release.py"
+   ]
+  },
+  "nodes": 4263,
+  "edges": 2430,
+  "edge_types": {
+   "calls": 2430
+  }
+ },
+ {
+  "instance_id": "fastapi_15588",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1891,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 18,
+   "lines_removed": 5,
+   "paths": [
+    "fastapi/sse.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 9,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_sse.py"
+   ]
+  },
+  "nodes": 4256,
+  "edges": 2422,
+  "edge_types": {
+   "calls": 2422
+  }
+ },
+ {
+  "instance_id": "fastapi_15589",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1247,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 4,
+   "lines_removed": 0,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 35,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_query_cookie_header_model_extra_params.py"
+   ]
+  },
+  "nodes": 4259,
+  "edges": 2428,
+  "edge_types": {
+   "calls": 2428
+  }
+ },
+ {
+  "instance_id": "fastapi_15030",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 148,
+  "patch": {
+   "files": 9,
+   "added_files": 6,
+   "hunks": 17,
+   "lines_added": 525,
+   "lines_removed": 35,
+   "paths": [
+    "docs_src/server_sent_events/tutorial001_py310.py",
+    "docs_src/server_sent_events/tutorial002_py310.py",
+    "docs_src/server_sent_events/tutorial003_py310.py",
+    "docs_src/server_sent_events/tutorial004_py310.py",
+    "docs_src/server_sent_events/tutorial005_py310.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/responses.py",
+    "fastapi/routing.py",
+    "fastapi/sse.py"
+   ]
+  },
+  "test_patch": {
+   "files": 6,
+   "added_files": 6,
+   "hunks": 6,
+   "lines_added": 970,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_sse.py",
+    "tests/test_tutorial/test_server_sent_events/test_tutorial001.py",
+    "tests/test_tutorial/test_server_sent_events/test_tutorial002.py",
+    "tests/test_tutorial/test_server_sent_events/test_tutorial003.py",
+    "tests/test_tutorial/test_server_sent_events/test_tutorial004.py",
+    "tests/test_tutorial/test_server_sent_events/test_tutorial005.py"
+   ]
+  },
+  "nodes": 4194,
+  "edges": 2392,
+  "edge_types": {
+   "calls": 2392
+  }
+ },
+ {
+  "instance_id": "fastapi_14962",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14962.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 210,
+  "patch": {
+   "files": 3,
+   "added_files": 0,
+   "hunks": 6,
+   "lines_added": 49,
+   "lines_removed": 6,
+   "paths": [
+    "docs_src/custom_response/tutorial010_py310.py",
+    "fastapi/_compat/v2.py",
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 3,
+   "added_files": 2,
+   "hunks": 3,
+   "lines_added": 101,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_dump_json_fast_path.py",
+    "tests/test_tutorial/test_custom_response/test_tutorial001.py",
+    "tests/test_tutorial/test_custom_response/test_tutorial010.py"
+   ]
+  },
+  "nodes": 4106,
+  "edges": 2326,
+  "edge_types": {
+   "calls": 2326
+  }
+ },
+ {
+  "instance_id": "fastapi_15280",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 64,
+  "patch": {
+   "files": 2,
+   "added_files": 1,
+   "hunks": 3,
+   "lines_added": 71,
+   "lines_removed": 1,
+   "paths": [
+    "docs_src/vibe/tutorial001_py310.py",
+    "fastapi/applications.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 17,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_vibe.py"
+   ]
+  },
+  "nodes": 4248,
+  "edges": 2416,
+  "edge_types": {
+   "calls": 2416
+  }
+ },
+ {
+  "instance_id": "fastapi_14964",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14964.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 370,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 44,
+   "lines_removed": 8,
+   "paths": [
+    "fastapi/responses.py"
+   ]
+  },
+  "test_patch": {
+   "files": 4,
+   "added_files": 1,
+   "hunks": 5,
+   "lines_added": 94,
+   "lines_removed": 4,
+   "paths": [
+    "tests/test_deprecated_responses.py",
+    "tests/test_orjson_response_class.py",
+    "tests/test_tutorial/test_custom_response/test_tutorial001.py",
+    "tests/test_tutorial/test_custom_response/test_tutorial001b.py"
+   ]
+  },
+  "nodes": 4115,
+  "edges": 2332,
+  "edge_types": {
+   "calls": 2332
+  }
+ },
+ {
+  "instance_id": "fastapi_15023",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 112,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 18,
+   "lines_removed": 8,
+   "paths": [
+    "docs_src/stream_data/tutorial002_py310.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 15,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_tutorial/test_stream_data/test_tutorial002.py"
+   ]
+  },
+  "nodes": 4193,
+  "edges": 2390,
+  "edge_types": {
+   "calls": 2390
+  }
+ },
+ {
+  "instance_id": "fastapi_14986",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1000,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 4,
+   "lines_added": 25,
+   "lines_removed": 9,
+   "paths": [
+    "fastapi/applications.py",
+    "fastapi/openapi/docs.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 2,
+   "hunks": 2,
+   "lines_added": 112,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_openapi_cache_root_path.py",
+    "tests/test_swagger_ui_escape.py"
+   ]
+  },
+  "nodes": 4151,
+  "edges": 2354,
+  "edge_types": {
+   "calls": 2354
+  }
+ },
+ {
+  "instance_id": "fastapi_14978",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 112,
+  "patch": {
+   "files": 3,
+   "added_files": 1,
+   "hunks": 14,
+   "lines_added": 81,
+   "lines_removed": 1,
+   "paths": [
+    "docs_src/strict_content_type/tutorial001_py310.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 5,
+   "added_files": 4,
+   "hunks": 5,
+   "lines_added": 241,
+   "lines_removed": 8,
+   "paths": [
+    "tests/test_strict_content_type_app_level.py",
+    "tests/test_strict_content_type_nested.py",
+    "tests/test_strict_content_type_router_level.py",
+    "tests/test_tutorial/test_body/test_tutorial001.py",
+    "tests/test_tutorial/test_strict_content_type/test_tutorial001.py"
+   ]
+  },
+  "nodes": 4128,
+  "edges": 2354,
+  "edge_types": {
+   "calls": 2354
+  }
+ },
+ {
+  "instance_id": "requests_7505",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 518,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 6,
+   "lines_added": 9,
+   "lines_removed": 7,
+   "paths": [
+    "src/requests/_types.py",
+    "src/requests/models.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 15,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_requests.py"
+   ]
+  },
+  "nodes": 759,
+  "edges": 1884,
+  "edge_types": {
+   "calls": 1884
+  }
+ },
+ {
+  "instance_id": "requests_7502",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 67,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 3,
+   "lines_removed": 1,
+   "paths": [
+    "src/requests/models.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 11,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_requests.py"
+   ]
+  },
+  "nodes": 758,
+  "edges": 1884,
+  "edge_types": {
+   "calls": 1884
+  }
+ },
+ {
+  "instance_id": "requests_7433",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 498,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 3,
+   "lines_removed": 3,
+   "paths": [
+    "src/requests/models.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 15,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_requests.py"
+   ]
+  },
+  "nodes": 754,
+  "edges": 1878,
+  "edge_types": {
+   "calls": 1878
+  }
+ },
+ {
+  "instance_id": "requests_7427",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 394,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 4,
+   "lines_removed": 2,
+   "paths": [
+    "src/requests/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 23,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_utils.py"
+   ]
+  },
+  "nodes": 753,
+  "edges": 1876,
+  "edge_types": {
+   "calls": 1876
+  }
+ },
+ {
+  "instance_id": "requests_7315",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 694,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 0,
+   "lines_removed": 2,
+   "paths": [
+    "src/requests/adapters.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 2,
+   "lines_removed": 2,
+   "paths": [
+    "tests/test_adapters.py"
+   ]
+  },
+  "nodes": 733,
+  "edges": 1828,
+  "edge_types": {
+   "calls": 1828
+  }
+ },
+ {
+  "instance_id": "requests_7328",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 580,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 2,
+   "paths": [
+    "src/requests/sessions.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 8,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_requests.py"
+   ]
+  },
+  "nodes": 733,
+  "edges": 1828,
+  "edge_types": {
+   "calls": 1828
+  }
+ },
+ {
+  "instance_id": "requests_7309",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 406,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 6,
+   "lines_removed": 9,
+   "paths": [
+    "src/requests/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 5,
+   "lines_added": 4,
+   "lines_removed": 4,
+   "paths": [
+    "tests/test_utils.py"
+   ]
+  },
+  "nodes": 733,
+  "edges": 1828,
+  "edge_types": {
+   "calls": 1828
+  }
+ },
+ {
+  "instance_id": "requests_7205",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 609,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "src/requests/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 10,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_utils.py"
+   ]
+  },
+  "nodes": 732,
+  "edges": 1826,
+  "edge_types": {
+   "calls": 1826
+  }
+ },
+ {
+  "instance_id": "rich_4070",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 3096,
+  "patch": {
+   "files": 9,
+   "added_files": 0,
+   "hunks": 33,
+   "lines_added": 71,
+   "lines_removed": 57,
+   "paths": [
+    "rich/_emoji_replace.py",
+    "rich/console.py",
+    "rich/emoji.py",
+    "rich/logging.py",
+    "rich/protocol.py",
+    "rich/repr.py",
+    "rich/segment.py",
+    "rich/syntax.py",
+    "rich/theme.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 3,
+   "lines_removed": 3,
+   "paths": [
+    "tests/test_console.py",
+    "tests/test_syntax.py"
+   ]
+  },
+  "nodes": 2015,
+  "edges": 5762,
+  "edge_types": {
+   "calls": 5762
+  }
+ },
+ {
+  "instance_id": "rich_4077",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 66,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 3,
+   "lines_removed": 0,
+   "paths": [
+    "rich/file_proxy.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 17,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_file_proxy.py"
+   ]
+  },
+  "nodes": 2017,
+  "edges": 5776,
+  "edge_types": {
+   "calls": 5776
+  }
+ },
+ {
+  "instance_id": "rich_4079",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 71,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 4,
+   "lines_removed": 3,
+   "paths": [
+    "rich/markdown.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 16,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_markdown.py"
+   ]
+  },
+  "nodes": 2021,
+  "edges": 5786,
+  "edge_types": {
+   "calls": 5786
+  }
+ },
+ {
+  "instance_id": "rich_4076",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 71,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 3,
+   "lines_removed": 3,
+   "paths": [
+    "rich/ansi.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 4,
+   "lines_added": 23,
+   "lines_removed": 3,
+   "paths": [
+    "tests/test_ansi.py"
+   ]
+  },
+  "nodes": 2016,
+  "edges": 5774,
+  "edge_types": {
+   "calls": 5774
+  }
+ },
+ {
+  "instance_id": "rich_4075",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 101,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 4,
+   "lines_added": 12,
+   "lines_removed": 3,
+   "paths": [
+    "rich/console.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 6,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_console.py"
+   ]
+  },
+  "nodes": 2015,
+  "edges": 5772,
+  "edge_types": {
+   "calls": 5772
+  }
+ },
+ {
+  "instance_id": "rich_4006",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 96,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 33,
+   "lines_removed": 12,
+   "paths": [
+    "rich/cells.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 38,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_cells.py"
+   ]
+  },
+  "nodes": 2014,
+  "edges": 5760,
+  "edge_types": {
+   "calls": 5760
+  }
+ },
+ {
+  "instance_id": "fastapi_14258",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14258.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 418,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 4,
+   "lines_removed": 0,
+   "paths": [
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 12,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_router_circular_import.py"
+   ]
+  },
+  "nodes": 4364,
+  "edges": 2476,
+  "edge_types": {
+   "calls": 2476
+  }
+ },
+ {
+  "instance_id": "fastapi_14851",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14851.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 464,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 5,
+   "lines_added": 153,
+   "lines_removed": 4,
+   "paths": [
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 76,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_router_events.py"
+   ]
+  },
+  "nodes": 4363,
+  "edges": 2470,
+  "edge_types": {
+   "calls": 2470
+  }
+ },
+ {
+  "instance_id": "fastapi_14873",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14873.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 674,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 11,
+   "lines_removed": 10,
+   "paths": [
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 60,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_router_events.py"
+   ]
+  },
+  "nodes": 4363,
+  "edges": 2472,
+  "edge_types": {
+   "calls": 2472
+  }
+ },
+ {
+  "instance_id": "fastapi_13920",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_13920.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 225,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 4,
+   "lines_removed": 0,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 27,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_dependency_pep695.py"
+   ]
+  },
+  "nodes": 4353,
+  "edges": 2466,
+  "edge_types": {
+   "calls": 2466
+  }
+ },
+ {
+  "instance_id": "fastapi_14794",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14794.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 816,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 3,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 173,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_response_dependency.py"
+   ]
+  },
+  "nodes": 4338,
+  "edges": 2452,
+  "edge_types": {
+   "calls": 2452
+  }
+ },
+ {
+  "instance_id": "fastapi_14786",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14786.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 2303,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "fastapi/security/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 12,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_security_http_base.py",
+    "tests/test_security_oauth2_authorization_code_bearer.py"
+   ]
+  },
+  "nodes": 4330,
+  "edges": 2448,
+  "edge_types": {
+   "calls": 2448
+  }
+ },
+ {
+  "instance_id": "fastapi_14492",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14492.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 159,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "docs_src/metadata/tutorial001_1_py39.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_tutorial/test_metadata/test_tutorial001_1.py"
+   ]
+  },
+  "nodes": 4330,
+  "edges": 2448,
+  "edge_types": {
+   "calls": 2448
+  }
+ },
+ {
+  "instance_id": "fastapi_14479",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14479.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 2455,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 4,
+   "lines_added": 16,
+   "lines_removed": 4,
+   "paths": [
+    "tests/test_invalid_sequence_param.py"
+   ]
+  },
+  "nodes": 4269,
+  "edges": 2668,
+  "edge_types": {
+   "calls": 2668
+  }
+ },
+ {
+  "instance_id": "fastapi_14463",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14463.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 10095,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 2,
+   "lines_removed": 1,
+   "paths": [
+    "fastapi/openapi/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 123,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_additional_responses_union_duplicate_anyof.py"
+   ]
+  },
+  "nodes": 4275,
+  "edges": 2384,
+  "edge_types": {
+   "calls": 2384
+  }
+ },
+ {
+  "instance_id": "fastapi_12942",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_12942.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 1392,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 3,
+   "lines_removed": 0,
+   "paths": [
+    "fastapi/_compat.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 188,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_union_body_discriminator.py"
+   ]
+  },
+  "nodes": 3314,
+  "edges": 2062,
+  "edge_types": {
+   "calls": 2062
+  }
+ },
+ {
+  "instance_id": "fastapi_14099",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14099.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 644,
+  "patch": {
+   "files": 5,
+   "added_files": 3,
+   "hunks": 13,
+   "lines_added": 346,
+   "lines_removed": 131,
+   "paths": [
+    "docs_src/dependencies/tutorial013_an_py310.py",
+    "docs_src/dependencies/tutorial014_an_py310.py",
+    "fastapi/applications.py",
+    "fastapi/middleware/asyncexitstack.py",
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 6,
+   "added_files": 3,
+   "hunks": 7,
+   "lines_added": 284,
+   "lines_removed": 9,
+   "paths": [
+    "tests/test_dependency_after_yield_raise.py",
+    "tests/test_dependency_after_yield_streaming.py",
+    "tests/test_dependency_after_yield_websockets.py",
+    "tests/test_dependency_contextmanager.py",
+    "tests/test_route_scope.py",
+    "tests/test_tutorial/test_dependencies/test_tutorial008c.py"
+   ]
+  },
+  "nodes": 3263,
+  "edges": 2014,
+  "edge_types": {
+   "calls": 2014
+  }
+ },
+ {
+  "instance_id": "fastapi_14609",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14609.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 144,
+  "patch": {
+   "files": 20,
+   "added_files": 0,
+   "hunks": 92,
+   "lines_added": 192,
+   "lines_removed": 1855,
+   "paths": [
+    "docs_src/request_form_models/tutorial002_pv1_an_py39.py",
+    "docs_src/request_form_models/tutorial002_pv1_py39.py",
+    "fastapi/_compat/__init__.py",
+    "fastapi/_compat/main.py",
+    "fastapi/_compat/may_v1.py",
+    "fastapi/_compat/model_field.py",
+    "fastapi/_compat/shared.py",
+    "fastapi/_compat/v1.py",
+    "fastapi/_compat/v2.py",
+    "fastapi/datastructures.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/encoders.py",
+    "fastapi/exceptions.py",
+    "fastapi/openapi/models.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/param_functions.py",
+    "fastapi/params.py",
+    "fastapi/routing.py",
+    "fastapi/temp_pydantic_v1_params.py",
+    "fastapi/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 8,
+   "added_files": 0,
+   "hunks": 16,
+   "lines_added": 32,
+   "lines_removed": 1475,
+   "paths": [
+    "tests/test_compat.py",
+    "tests/test_compat_params_v1.py",
+    "tests/test_datetime_custom_encoder.py",
+    "tests/test_filter_pydantic_sub_model/app_pv1.py",
+    "tests/test_filter_pydantic_sub_model/test_filter_pydantic_sub_model_pv1.py",
+    "tests/test_get_model_definitions_formfeed_escape.py",
+    "tests/test_inherited_custom_class.py",
+    "tests/test_jsonable_encoder.py"
+   ]
+  },
+  "nodes": 4596,
+  "edges": 2664,
+  "edge_types": {
+   "calls": 2664
+  }
+ },
+ {
+  "instance_id": "fastapi_14372",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14372.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 1160,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 4,
+   "lines_removed": 3,
+   "paths": [
+    "fastapi/dependencies/utils.py",
+    "fastapi/params.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 25,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_depends_hashable.py"
+   ]
+  },
+  "nodes": 3689,
+  "edges": 2444,
+  "edge_types": {
+   "calls": 2444
+  }
+ },
+ {
+  "instance_id": "fastapi_14349",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14349.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 169,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 6,
+   "lines_removed": 6,
+   "paths": [
+    "fastapi/_compat/v2.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 72,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_schema_ref_pydantic_v2.py"
+   ]
+  },
+  "nodes": 3685,
+  "edges": 2442,
+  "edge_types": {
+   "calls": 2442
+  }
+ },
+ {
+  "instance_id": "fastapi_14512",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14512.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 289,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 48,
+   "lines_removed": 4,
+   "paths": [
+    "fastapi/_compat/v2.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 207,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_union_body_discriminator_annotated.py"
+   ]
+  },
+  "nodes": 4479,
+  "edges": 2776,
+  "edge_types": {
+   "calls": 2776
+  }
+ },
+ {
+  "instance_id": "fastapi_14487",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14487.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 204,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 5,
+   "lines_removed": 2,
+   "paths": [
+    "docs_src/handling_errors/tutorial004.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 2,
+   "lines_removed": 12,
+   "paths": [
+    "tests/test_tutorial/test_handling_errors/test_tutorial004.py"
+   ]
+  },
+  "nodes": 3944,
+  "edges": 2680,
+  "edge_types": {
+   "calls": 2680
+  }
+ },
+ {
+  "instance_id": "fastapi_11355",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_11355.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 299,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 9,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 26,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_stringified_annotations_simple.py"
+   ]
+  },
+  "nodes": 3818,
+  "edges": 2542,
+  "edge_types": {
+   "calls": 2542
+  }
+ },
+ {
+  "instance_id": "fastapi_14485",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14485.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 317,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 13,
+   "lines_removed": 6,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 80,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_stringified_annotation_dependency.py"
+   ]
+  },
+  "nodes": 3939,
+  "edges": 2674,
+  "edge_types": {
+   "calls": 2674
+  }
+ },
+ {
+  "instance_id": "fastapi_14482",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14482.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 266,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 5,
+   "lines_added": 25,
+   "lines_removed": 7,
+   "paths": [
+    "fastapi/_compat/v2.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 141,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_arbitrary_types.py"
+   ]
+  },
+  "nodes": 3931,
+  "edges": 2662,
+  "edge_types": {
+   "calls": 2662
+  }
+ },
+ {
+  "instance_id": "fastapi_14306",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14306.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 2791,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 12,
+   "lines_added": 121,
+   "lines_removed": 16,
+   "paths": [
+    "fastapi/exceptions.py",
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 168,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_validation_error_context.py"
+   ]
+  },
+  "nodes": 3837,
+  "edges": 2564,
+  "edge_types": {
+   "calls": 2564
+  }
+ },
+ {
+  "instance_id": "fastapi_14458",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14458.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 591,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 4,
+   "lines_added": 6,
+   "lines_removed": 1,
+   "paths": [
+    "fastapi/dependencies/models.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 32,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_dependency_class.py"
+   ]
+  },
+  "nodes": 3837,
+  "edges": 2564,
+  "edge_types": {
+   "calls": 2564
+  }
+ },
+ {
+  "instance_id": "fastapi_14459",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14459.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 815,
+  "patch": {
+   "files": 3,
+   "added_files": 0,
+   "hunks": 8,
+   "lines_added": 49,
+   "lines_removed": 22,
+   "paths": [
+    "fastapi/dependencies/models.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/openapi/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 1,
+   "hunks": 5,
+   "lines_added": 149,
+   "lines_removed": 3,
+   "paths": [
+    "tests/test_security_oauth2_authorization_code_bearer_scopes_openapi.py",
+    "tests/test_security_oauth2_authorization_code_bearer_scopes_openapi_simple.py"
+   ]
+  },
+  "nodes": 3826,
+  "edges": 2548,
+  "edge_types": {
+   "calls": 2548
+  }
+ },
+ {
+  "instance_id": "fastapi_14448",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14448.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 1226,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 82,
+   "lines_removed": 24,
+   "paths": [
+    "fastapi/dependencies/models.py",
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 376,
+   "lines_removed": 4,
+   "paths": [
+    "tests/test_dependency_wrapped.py"
+   ]
+  },
+  "nodes": 3792,
+  "edges": 2518,
+  "edge_types": {
+   "calls": 2518
+  }
+ },
+ {
+  "instance_id": "fastapi_14455",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14455.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 283,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 11,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/openapi/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 131,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_security_oauth2_authorization_code_bearer_scopes_openapi.py"
+   ]
+  },
+  "nodes": 3822,
+  "edges": 2548,
+  "edge_types": {
+   "calls": 2548
+  }
+ },
+ {
+  "instance_id": "fastapi_9753",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 689,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 5,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/dependencies/models.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 251,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_dependency_partial.py"
+   ]
+  },
+  "nodes": 3780,
+  "edges": 2510,
+  "edge_types": {
+   "calls": 2510
+  }
+ },
+ {
+  "instance_id": "fastapi_14430",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14430.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 335,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 2,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/_compat/v2.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 14,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_compat.py"
+   ]
+  },
+  "nodes": 3774,
+  "edges": 2502,
+  "edge_types": {
+   "calls": 2502
+  }
+ },
+ {
+  "instance_id": "fastapi_5077",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 2679,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 4,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 2,
+   "hunks": 2,
+   "lines_added": 40,
+   "lines_removed": 0,
+   "paths": [
+    "tests/forward_reference_type.py",
+    "tests/test_wrapped_method_forward_reference.py"
+   ]
+  },
+  "nodes": 3775,
+  "edges": 2506,
+  "edge_types": {
+   "calls": 2506
+  }
+ },
+ {
+  "instance_id": "fastapi_9555",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 2934,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 14,
+   "lines_removed": 8,
+   "paths": [
+    "fastapi/dependencies/models.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 77,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_dependency_wrapped.py"
+   ]
+  },
+  "nodes": 3768,
+  "edges": 2500,
+  "edge_types": {
+   "calls": 2500
+  }
+ },
+ {
+  "instance_id": "fastapi_14361",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14361.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 96,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "fastapi/_compat/v2.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 92,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_schema_compat_pydantic_v2.py"
+   ]
+  },
+  "nodes": 3698,
+  "edges": 2456,
+  "edge_types": {
+   "calls": 2456
+  }
+ },
+ {
+  "instance_id": "fastapi_13207",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_13207.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 354,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 12,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/_compat/v2.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 5,
+   "lines_removed": 2,
+   "paths": [
+    "tests/test_computed_fields.py"
+   ]
+  },
+  "nodes": 3768,
+  "edges": 2500,
+  "edge_types": {
+   "calls": 2500
+  }
+ },
+ {
+  "instance_id": "fastapi_14360",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14360.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 753,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 76,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_request_param_model_by_alias.py"
+   ]
+  },
+  "nodes": 3761,
+  "edges": 2500,
+  "edge_types": {
+   "calls": 2500
+  }
+ },
+ {
+  "instance_id": "fastapi_14356",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14356.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 1481,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 9,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 1,
+   "hunks": 2,
+   "lines_added": 112,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_query_cookie_header_model_extra_params.py",
+    "tests/test_tutorial/test_header_param_models/test_tutorial003.py"
+   ]
+  },
+  "nodes": 3750,
+  "edges": 2492,
+  "edge_types": {
+   "calls": 2492
+  }
+ },
+ {
+  "instance_id": "fastapi_5624",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 63,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 3,
+   "lines_removed": 1,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 45,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_security_scopes_dont_propagate.py"
+   ]
+  },
+  "nodes": 3715,
+  "edges": 2478,
+  "edge_types": {
+   "calls": 2478
+  }
+ },
+ {
+  "instance_id": "fastapi_14419",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14419.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 689,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 7,
+   "lines_added": 42,
+   "lines_removed": 20,
+   "paths": [
+    "fastapi/dependencies/models.py",
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 2,
+   "hunks": 2,
+   "lines_added": 153,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_security_scopes.py",
+    "tests/test_security_scopes_sub_dependency.py"
+   ]
+  },
+  "nodes": 3717,
+  "edges": 2478,
+  "edge_types": {
+   "calls": 2478
+  }
+ },
+ {
+  "instance_id": "fastapi_14301",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14301.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 739,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 4,
+   "lines_removed": 1,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 5,
+   "lines_added": 63,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_dependency_yield_scope.py"
+   ]
+  },
+  "nodes": 3677,
+  "edges": 2436,
+  "edge_types": {
+   "calls": 2436
+  }
+ },
+ {
+  "instance_id": "fastapi_14262",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14262.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 2437,
+  "patch": {
+   "files": 10,
+   "added_files": 3,
+   "hunks": 29,
+   "lines_added": 196,
+   "lines_removed": 70,
+   "paths": [
+    "docs_src/dependencies/tutorial008e.py",
+    "docs_src/dependencies/tutorial008e_an.py",
+    "docs_src/dependencies/tutorial008e_an_py39.py",
+    "fastapi/dependencies/models.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/exceptions.py",
+    "fastapi/param_functions.py",
+    "fastapi/params.py",
+    "fastapi/routing.py",
+    "fastapi/types.py"
+   ]
+  },
+  "test_patch": {
+   "files": 3,
+   "added_files": 3,
+   "hunks": 3,
+   "lines_added": 412,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_dependency_yield_scope.py",
+    "tests/test_dependency_yield_scope_websockets.py",
+    "tests/test_tutorial/test_dependencies/test_tutorial008e.py"
+   ]
+  },
+  "nodes": 3630,
+  "edges": 2390,
+  "edge_types": {
+   "calls": 2390
+  }
+ },
+ {
+  "instance_id": "fastapi_14266",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14266.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 247,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 8,
+   "lines_removed": 10,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 60,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_top_level_security_scheme_in_openapi.py"
+   ]
+  },
+  "nodes": 3627,
+  "edges": 2390,
+  "edge_types": {
+   "calls": 2390
+  }
+ },
+ {
+  "instance_id": "fastapi_14246",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14246.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 273,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 24,
+   "lines_removed": 4,
+   "paths": [
+    "fastapi/_compat/v2.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 1,
+   "hunks": 3,
+   "lines_added": 205,
+   "lines_removed": 13,
+   "paths": [
+    "tests/test_no_schema_split.py",
+    "tests/test_pydantic_v1_v2_multifile/test_multifile.py"
+   ]
+  },
+  "nodes": 3619,
+  "edges": 2392,
+  "edge_types": {
+   "calls": 2392
+  }
+ },
+ {
+  "instance_id": "fastapi_14186",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14186.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 1009,
+  "patch": {
+   "files": 10,
+   "added_files": 1,
+   "hunks": 51,
+   "lines_added": 266,
+   "lines_removed": 98,
+   "paths": [
+    "fastapi/_compat/__init__.py",
+    "fastapi/_compat/main.py",
+    "fastapi/_compat/may_v1.py",
+    "fastapi/_compat/shared.py",
+    "fastapi/_compat/v1.py",
+    "fastapi/_compat/v2.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/encoders.py",
+    "fastapi/temp_pydantic_v1_params.py",
+    "fastapi/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 3,
+   "added_files": 0,
+   "hunks": 8,
+   "lines_added": 17,
+   "lines_removed": 4,
+   "paths": [
+    "tests/test_compat.py",
+    "tests/test_get_model_definitions_formfeed_escape.py",
+    "tests/test_response_model_as_return_annotation.py"
+   ]
+  },
+  "nodes": 3601,
+  "edges": 2384,
+  "edge_types": {
+   "calls": 2384
+  }
+ },
+ {
+  "instance_id": "fastapi_9425",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 235,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 2,
+   "lines_removed": 0,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 17,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_return_none_stringified_annotations.py"
+   ]
+  },
+  "nodes": 3250,
+  "edges": 2012,
+  "edge_types": {
+   "calls": 2012
+  }
+ },
+ {
+  "instance_id": "fastapi_13713",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_13713.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 756,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 5,
+   "lines_added": 31,
+   "lines_removed": 0,
+   "paths": [
+    "fastapi/applications.py",
+    "fastapi/openapi/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 10,
+   "lines_removed": 1,
+   "paths": [
+    "tests/main.py",
+    "tests/test_application.py"
+   ]
+  },
+  "nodes": 3238,
+  "edges": 1988,
+  "edge_types": {
+   "calls": 1988
+  }
+ },
+ {
+  "instance_id": "fastapi_14077",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14077.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 677,
+  "patch": {
+   "files": 3,
+   "added_files": 0,
+   "hunks": 6,
+   "lines_added": 5,
+   "lines_removed": 6,
+   "paths": [
+    "docs_src/handling_errors/tutorial005.py",
+    "fastapi/exception_handlers.py",
+    "fastapi/openapi/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_enforce_once_required_parameter.py"
+   ]
+  },
+  "nodes": 3238,
+  "edges": 1988,
+  "edge_types": {
+   "calls": 1988
+  }
+ },
+ {
+  "instance_id": "rich_3718",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 749,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 3,
+   "lines_removed": 4,
+   "paths": [
+    "rich/panel.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 48,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_panel.py"
+   ]
+  },
+  "nodes": 1984,
+  "edges": 5668,
+  "edge_types": {
+   "calls": 5668
+  }
+ },
+ {
+  "instance_id": "rich_3934",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 64,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 17,
+   "lines_removed": 3,
+   "paths": [
+    "rich/live.py",
+    "rich/live_render.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 18,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_live.py"
+   ]
+  },
+  "nodes": 1998,
+  "edges": 5720,
+  "edge_types": {
+   "calls": 5720
+  }
+ },
+ {
+  "instance_id": "rich_3953",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 130,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 16,
+   "lines_removed": 10,
+   "paths": [
+    "rich/cells.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 17,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_cells.py"
+   ]
+  },
+  "nodes": 2012,
+  "edges": 5756,
+  "edge_types": {
+   "calls": 5756
+  }
+ },
+ {
+  "instance_id": "rich_3944",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 63,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/cells.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 6,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_cells.py"
+   ]
+  },
+  "nodes": 2011,
+  "edges": 5754,
+  "edge_types": {
+   "calls": 5754
+  }
+ },
+ {
+  "instance_id": "rich_3942",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 54,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 7,
+   "lines_added": 43,
+   "lines_removed": 27,
+   "paths": [
+    "rich/default_styles.py",
+    "rich/markdown.py"
+   ]
+  },
+  "test_patch": {
+   "files": 3,
+   "added_files": 0,
+   "hunks": 7,
+   "lines_added": 9,
+   "lines_removed": 9,
+   "paths": [
+    "tests/_card_render.py",
+    "tests/test_markdown.py",
+    "tests/test_markdown_no_hyperlinks.py"
+   ]
+  },
+  "nodes": 2010,
+  "edges": 5756,
+  "edge_types": {
+   "calls": 5756
+  }
+ },
+ {
+  "instance_id": "rich_3938",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 89,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 40,
+   "lines_removed": 5,
+   "paths": [
+    "rich/console.py",
+    "rich/segment.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 32,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_segment.py",
+    "tests/test_text.py"
+   ]
+  },
+  "nodes": 2006,
+  "edges": 5742,
+  "edge_types": {
+   "calls": 5742
+  }
+ },
+ {
+  "instance_id": "rich_3882",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 652,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/prompt.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 13,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_prompt.py"
+   ]
+  },
+  "nodes": 1986,
+  "edges": 5680,
+  "edge_types": {
+   "calls": 5680
+  }
+ },
+ {
+  "instance_id": "rich_3894",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1974,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 4,
+   "lines_removed": 0,
+   "paths": [
+    "rich/_inspect.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 13,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_inspect.py"
+   ]
+  },
+  "nodes": 1986,
+  "edges": 5680,
+  "edge_types": {
+   "calls": 5680
+  }
+ },
+ {
+  "instance_id": "rich_3935",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 75,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 5,
+   "lines_added": 13,
+   "lines_removed": 3,
+   "paths": [
+    "rich/table.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 30,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_columns.py",
+    "tests/test_table.py"
+   ]
+  },
+  "nodes": 2001,
+  "edges": 5730,
+  "edge_types": {
+   "calls": 5730
+  }
+ },
+ {
+  "instance_id": "rich_3905",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1672,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 4,
+   "lines_removed": 3,
+   "paths": [
+    "rich/progress.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 24,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_progress.py"
+   ]
+  },
+  "nodes": 2000,
+  "edges": 5726,
+  "edge_types": {
+   "calls": 5726
+  }
+ },
+ {
+  "instance_id": "rich_3930",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1224,
+  "patch": {
+   "files": 26,
+   "added_files": 23,
+   "hunks": 29,
+   "lines_added": 12170,
+   "lines_removed": 544,
+   "paths": [
+    "rich/__main__.py",
+    "rich/_cell_widths.py",
+    "rich/_unicode_data/__init__.py",
+    "rich/_unicode_data/_versions.py",
+    "rich/_unicode_data/unicode10-0-0.py",
+    "rich/_unicode_data/unicode11-0-0.py",
+    "rich/_unicode_data/unicode12-0-0.py",
+    "rich/_unicode_data/unicode12-1-0.py",
+    "rich/_unicode_data/unicode13-0-0.py",
+    "rich/_unicode_data/unicode14-0-0.py",
+    "rich/_unicode_data/unicode15-0-0.py",
+    "rich/_unicode_data/unicode15-1-0.py",
+    "rich/_unicode_data/unicode16-0-0.py",
+    "rich/_unicode_data/unicode17-0-0.py",
+    "rich/_unicode_data/unicode4-1-0.py",
+    "rich/_unicode_data/unicode5-0-0.py",
+    "rich/_unicode_data/unicode5-1-0.py",
+    "rich/_unicode_data/unicode5-2-0.py",
+    "rich/_unicode_data/unicode6-0-0.py",
+    "rich/_unicode_data/unicode6-1-0.py",
+    "rich/_unicode_data/unicode6-2-0.py",
+    "rich/_unicode_data/unicode6-3-0.py",
+    "rich/_unicode_data/unicode7-0-0.py",
+    "rich/_unicode_data/unicode8-0-0.py",
+    "rich/_unicode_data/unicode9-0-0.py",
+    "rich/cells.py"
+   ]
+  },
+  "test_patch": {
+   "files": 3,
+   "added_files": 1,
+   "hunks": 6,
+   "lines_added": 189,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_cells.py",
+    "tests/test_text.py",
+    "tests/test_unicode_data.py"
+   ]
+  },
+  "nodes": 1986,
+  "edges": 5680,
+  "edge_types": {
+   "calls": 5680
+  }
+ },
+ {
+  "instance_id": "httpx_3672",
+  "repo": "httpx",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 243,
+  "patch": {
+   "files": 7,
+   "added_files": 0,
+   "hunks": 18,
+   "lines_added": 57,
+   "lines_removed": 22,
+   "paths": [
+    "src/ahttpx/_parsers.py",
+    "src/ahttpx/_pool.py",
+    "src/ahttpx/_server.py",
+    "src/httpx/_network.py",
+    "src/httpx/_parsers.py",
+    "src/httpx/_pool.py",
+    "src/httpx/_server.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 5,
+   "lines_added": 5,
+   "lines_removed": 5,
+   "paths": [
+    "tests/test_parsers.py"
+   ]
+  },
+  "nodes": 740,
+  "edges": 1618,
+  "edge_types": {
+   "calls": 1618
+  }
+ },
+ {
+  "instance_id": "fastapi_14791",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14791.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 591,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 2,
+   "lines_removed": 0,
+   "paths": [
+    "fastapi/openapi/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 29,
+   "added_files": 0,
+   "hunks": 36,
+   "lines_added": 72,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_additional_properties.py",
+    "tests/test_additional_properties_bool.py",
+    "tests/test_additional_responses_custom_model_in_callback.py",
+    "tests/test_additional_responses_default_validationerror.py",
+    "tests/test_annotated.py",
+    "tests/test_application.py",
+    "tests/test_dependency_duplicates.py",
+    "tests/test_enforce_once_required_parameter.py",
+    "tests/test_extra_routes.py",
+    "tests/test_filter_pydantic_sub_model_pv2.py",
+    "tests/test_forms_single_param.py",
+    "tests/test_generate_unique_id_function.py",
+    "tests/test_get_model_definitions_formfeed_escape.py",
+    "tests/test_get_request_body.py",
+    "tests/test_include_router_defaults_overrides.py",
+    "tests/test_infer_param_optionality.py",
+    "tests/test_modules_same_name_body/test_main.py",
+    "tests/test_multi_body_errors.py",
+    "tests/test_multi_query_errors.py",
+    "tests/test_no_schema_split.py",
+    "tests/test_openapi_examples.py",
+    "tests/test_openapi_query_parameter_extension.py",
+    "tests/test_openapi_separate_input_output_schemas.py",
+    "tests/test_param_in_path_and_dependency.py",
+    "tests/test_param_include_in_schema.py",
+    "tests/test_put_no_body.py",
+    "tests/test_regex_deprecated_body.py",
+    "tests/test_regex_deprecated_params.py",
+    "tests/test_repeated_dependency_schema.py"
+   ]
+  },
+  "nodes": 4330,
+  "edges": 2448,
+  "edge_types": {
+   "calls": 2448
+  }
+ },
+ {
+  "instance_id": "fastapi_15800",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1236,
+  "patch": {
+   "files": 8,
+   "added_files": 6,
+   "hunks": 20,
+   "lines_added": 649,
+   "lines_removed": 5,
+   "paths": [
+    "docs_src/frontend/tutorial001_py310.py",
+    "docs_src/frontend/tutorial002_py310.py",
+    "docs_src/frontend/tutorial003_py310.py",
+    "docs_src/frontend/tutorial004_py310.py",
+    "docs_src/frontend/tutorial005_py310.py",
+    "docs_src/frontend/tutorial006_py310.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 858,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_frontend.py"
+   ]
+  },
+  "nodes": 4401,
+  "edges": 2752,
+  "edge_types": {
+   "calls": 2752
+  }
+ },
+ {
+  "instance_id": "fastapi_15785",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1263,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 6,
+   "lines_added": 66,
+   "lines_removed": 15,
+   "paths": [
+    "fastapi/openapi/utils.py",
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 104,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_router_include_context.py"
+   ]
+  },
+  "nodes": 4380,
+  "edges": 2708,
+  "edge_types": {
+   "calls": 2708
+  }
+ },
+ {
+  "instance_id": "fastapi_14371",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14371.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 397,
+  "patch": {
+   "files": 4,
+   "added_files": 0,
+   "hunks": 12,
+   "lines_added": 46,
+   "lines_removed": 16,
+   "paths": [
+    "fastapi/_compat/v2.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/params.py"
+   ]
+  },
+  "test_patch": {
+   "files": 23,
+   "added_files": 0,
+   "hunks": 242,
+   "lines_added": 309,
+   "lines_removed": 1073,
+   "paths": [
+    "tests/test_request_params/test_body/test_list.py",
+    "tests/test_request_params/test_body/test_optional_list.py",
+    "tests/test_request_params/test_body/test_optional_str.py",
+    "tests/test_request_params/test_body/test_required_str.py",
+    "tests/test_request_params/test_cookie/test_optional_str.py",
+    "tests/test_request_params/test_cookie/test_required_str.py",
+    "tests/test_request_params/test_file/test_list.py",
+    "tests/test_request_params/test_file/test_optional.py",
+    "tests/test_request_params/test_file/test_optional_list.py",
+    "tests/test_request_params/test_file/test_required.py",
+    "tests/test_request_params/test_form/test_list.py",
+    "tests/test_request_params/test_form/test_optional_list.py",
+    "tests/test_request_params/test_form/test_optional_str.py",
+    "tests/test_request_params/test_form/test_required_str.py",
+    "tests/test_request_params/test_header/test_list.py",
+    "tests/test_request_params/test_header/test_optional_list.py",
+    "tests/test_request_params/test_header/test_optional_str.py",
+    "tests/test_request_params/test_header/test_required_str.py",
+    "tests/test_request_params/test_path/test_required_str.py",
+    "tests/test_request_params/test_query/test_list.py",
+    "tests/test_request_params/test_query/test_optional_list.py",
+    "tests/test_request_params/test_query/test_optional_str.py",
+    "tests/test_request_params/test_query/test_required_str.py"
+   ]
+  },
+  "nodes": 4487,
+  "edges": 2780,
+  "edge_types": {
+   "calls": 2780
+  }
+ },
+ {
+  "instance_id": "fastapi_14605",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14605.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 242,
+  "patch": {
+   "files": 7,
+   "added_files": 0,
+   "hunks": 20,
+   "lines_added": 28,
+   "lines_removed": 16,
+   "paths": [
+    "fastapi/dependencies/utils.py",
+    "fastapi/exceptions.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/params.py",
+    "fastapi/routing.py",
+    "fastapi/temp_pydantic_v1_params.py",
+    "fastapi/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 12,
+   "added_files": 0,
+   "hunks": 33,
+   "lines_added": 38,
+   "lines_removed": 27,
+   "paths": [
+    "tests/benchmarks/test_general_performance.py",
+    "tests/test_compat_params_v1.py",
+    "tests/test_pydantic_v1_deprecation_warnings.py",
+    "tests/test_regex_deprecated_body.py",
+    "tests/test_regex_deprecated_params.py",
+    "tests/test_schema_extra_examples.py",
+    "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial002.py",
+    "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial003.py",
+    "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial004.py",
+    "tests/test_tutorial/test_query_params_str_validations/test_tutorial004.py",
+    "tests/test_tutorial/test_request_form_models/test_tutorial002_pv1.py",
+    "tests/test_tutorial/test_schema_extra_example/test_tutorial001_pv1.py"
+   ]
+  },
+  "nodes": 4597,
+  "edges": 2678,
+  "edge_types": {
+   "calls": 2678
+  }
+ },
+ {
+  "instance_id": "fastapi_15763",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1064,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 10,
+   "lines_removed": 3,
+   "paths": [
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 55,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_router_include_context.py"
+   ]
+  },
+  "nodes": 4377,
+  "edges": 2692,
+  "edge_types": {
+   "calls": 2692
+  }
+ },
+ {
+  "instance_id": "fastapi_14583",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14583.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 104,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 6,
+   "lines_added": 24,
+   "lines_removed": 0,
+   "paths": [
+    "fastapi/dependencies/utils.py",
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 18,
+   "added_files": 1,
+   "hunks": 36,
+   "lines_added": 778,
+   "lines_removed": 602,
+   "paths": [
+    "tests/benchmarks/test_general_performance.py",
+    "tests/test_compat_params_v1.py",
+    "tests/test_datetime_custom_encoder.py",
+    "tests/test_filter_pydantic_sub_model/app_pv1.py",
+    "tests/test_get_model_definitions_formfeed_escape.py",
+    "tests/test_pydantic_v1_deprecation_warnings.py",
+    "tests/test_pydantic_v1_v2_01.py",
+    "tests/test_pydantic_v1_v2_list.py",
+    "tests/test_pydantic_v1_v2_mixed.py",
+    "tests/test_pydantic_v1_v2_multifile/main.py",
+    "tests/test_pydantic_v1_v2_noneable.py",
+    "tests/test_read_with_orm_mode.py",
+    "tests/test_response_model_as_return_annotation.py",
+    "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial002.py",
+    "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial003.py",
+    "tests/test_tutorial/test_pydantic_v1_in_v2/test_tutorial004.py",
+    "tests/test_tutorial/test_request_form_models/test_tutorial002_pv1.py",
+    "tests/test_tutorial/test_schema_extra_example/test_tutorial001_pv1.py"
+   ]
+  },
+  "nodes": 4264,
+  "edges": 2668,
+  "edge_types": {
+   "calls": 2668
+  }
+ },
+ {
+  "instance_id": "fastapi_15745",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 4304,
+  "patch": {
+   "files": 4,
+   "added_files": 0,
+   "hunks": 21,
+   "lines_added": 939,
+   "lines_removed": 291,
+   "paths": [
+    "docs_src/path_operation_advanced_configuration/tutorial002_py310.py",
+    "fastapi/applications.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/routing.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 1,
+   "hunks": 3,
+   "lines_added": 858,
+   "lines_removed": 8,
+   "paths": [
+    "tests/test_custom_route_class.py",
+    "tests/test_router_include_context.py"
+   ]
+  },
+  "nodes": 4287,
+  "edges": 2490,
+  "edge_types": {
+   "calls": 2490
+  }
+ },
+ {
+  "instance_id": "fastapi_14297",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14297.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 1219,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 7,
+   "lines_removed": 0,
+   "paths": [
+    "fastapi/_compat/v2.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 1,
+   "hunks": 2,
+   "lines_added": 54,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_compat.py",
+    "tests/test_optional_file_list.py"
+   ]
+  },
+  "nodes": 3757,
+  "edges": 2492,
+  "edge_types": {
+   "calls": 2492
+  }
+ },
+ {
+  "instance_id": "fastapi_14303",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14303.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 2644,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 6,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 47,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_forms_single_model.py"
+   ]
+  },
+  "nodes": 3745,
+  "edges": 2492,
+  "edge_types": {
+   "calls": 2492
+  }
+ },
+ {
+  "instance_id": "fastapi_13537",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_13537.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 1650,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 2,
+   "lines_removed": 1,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 35,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_form_default.py"
+   ]
+  },
+  "nodes": 3743,
+  "edges": 2492,
+  "edge_types": {
+   "calls": 2492
+  }
+ },
+ {
+  "instance_id": "fastapi_14953",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14953.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 1775,
+  "patch": {
+   "files": 4,
+   "added_files": 2,
+   "hunks": 5,
+   "lines_added": 102,
+   "lines_removed": 2,
+   "paths": [
+    "docs_src/json_base64_bytes/tutorial001_py310.py",
+    "fastapi/_compat/v2.py",
+    "fastapi/datastructures.py",
+    "scripts/playwright/json_base64_bytes/image01.py"
+   ]
+  },
+  "test_patch": {
+   "files": 11,
+   "added_files": 1,
+   "hunks": 28,
+   "lines_added": 303,
+   "lines_removed": 28,
+   "paths": [
+    "tests/test_request_params/test_file/test_list.py",
+    "tests/test_request_params/test_file/test_optional.py",
+    "tests/test_request_params/test_file/test_optional_list.py",
+    "tests/test_request_params/test_file/test_required.py",
+    "tests/test_tutorial/test_json_base64_bytes/test_tutorial001.py",
+    "tests/test_tutorial/test_request_files/test_tutorial001.py",
+    "tests/test_tutorial/test_request_files/test_tutorial001_02.py",
+    "tests/test_tutorial/test_request_files/test_tutorial001_03.py",
+    "tests/test_tutorial/test_request_files/test_tutorial002.py",
+    "tests/test_tutorial/test_request_files/test_tutorial003.py",
+    "tests/test_tutorial/test_request_forms_and_files/test_tutorial001.py"
+   ]
+  },
+  "nodes": 4094,
+  "edges": 2320,
+  "edge_types": {
+   "calls": 2320
+  }
+ },
+ {
+  "instance_id": "fastapi_13786",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_13786.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 5328,
+  "patch": {
+   "files": 11,
+   "added_files": 2,
+   "hunks": 25,
+   "lines_added": 176,
+   "lines_removed": 83,
+   "paths": [
+    "docs_src/authentication_error_status_code/tutorial001_an.py",
+    "docs_src/authentication_error_status_code/tutorial001_an_py39.py",
+    "docs_src/security/tutorial003.py",
+    "docs_src/security/tutorial003_an.py",
+    "docs_src/security/tutorial003_an_py310.py",
+    "docs_src/security/tutorial003_an_py39.py",
+    "docs_src/security/tutorial003_py310.py",
+    "fastapi/security/api_key.py",
+    "fastapi/security/http.py",
+    "fastapi/security/oauth2.py",
+    "fastapi/security/open_id_connect_url.py"
+   ]
+  },
+  "test_patch": {
+   "files": 17,
+   "added_files": 0,
+   "hunks": 20,
+   "lines_added": 46,
+   "lines_removed": 28,
+   "paths": [
+    "tests/test_security_api_key_cookie.py",
+    "tests/test_security_api_key_cookie_description.py",
+    "tests/test_security_api_key_header.py",
+    "tests/test_security_api_key_header_description.py",
+    "tests/test_security_api_key_query.py",
+    "tests/test_security_api_key_query_description.py",
+    "tests/test_security_http_base.py",
+    "tests/test_security_http_base_description.py",
+    "tests/test_security_http_basic_optional.py",
+    "tests/test_security_http_basic_realm.py",
+    "tests/test_security_http_basic_realm_description.py",
+    "tests/test_security_http_bearer.py",
+    "tests/test_security_http_bearer_description.py",
+    "tests/test_security_http_digest.py",
+    "tests/test_security_http_digest_description.py",
+    "tests/test_security_oauth2.py",
+    "tests/test_security_openid_connect.py"
+   ]
+  },
+  "nodes": 3698,
+  "edges": 2456,
+  "edge_types": {
+   "calls": 2456
+  }
+ },
+ {
+  "instance_id": "fastapi_14616",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_14616.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 1176,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 10,
+   "lines_removed": 2,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 63,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_json_type.py"
+   ]
+  },
+  "nodes": 4354,
+  "edges": 2468,
+  "edge_types": {
+   "calls": 2468
+  }
+ },
+ {
+  "instance_id": "fastapi_11194",
+  "repo": "fastapi",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [
+   "fastapi_11194.tgz"
+  ],
+  "has_hints": false,
+  "ps_chars": 617,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 3,
+   "lines_removed": 4,
+   "paths": [
+    "fastapi/dependencies/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 90,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_file_and_form_order_issue_9116.py"
+   ]
+  },
+  "nodes": 3255,
+  "edges": 2014,
+  "edge_types": {
+   "calls": 2014
+  }
+ },
+ {
+  "instance_id": "requests_6757",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 268,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 16,
+   "lines_removed": 1,
+   "paths": [
+    "src/requests/compat.py",
+    "src/requests/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 24,
+   "lines_removed": 17,
+   "paths": [
+    "tests/test_requests.py"
+   ]
+  },
+  "nodes": 730,
+  "edges": 1812,
+  "edge_types": {
+   "calls": 1812
+  }
+ },
+ {
+  "instance_id": "requests_6629",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 836,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 10,
+   "lines_removed": 0,
+   "paths": [
+    "src/requests/exceptions.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 10,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_requests.py"
+   ]
+  },
+  "nodes": 712,
+  "edges": 1750,
+  "edge_types": {
+   "calls": 1750
+  }
+ },
+ {
+  "instance_id": "requests_6644",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 295,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 3,
+   "lines_removed": 0,
+   "paths": [
+    "src/requests/adapters.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 1,
+   "hunks": 1,
+   "lines_added": 8,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_adapters.py"
+   ]
+  },
+  "nodes": 714,
+  "edges": 1754,
+  "edge_types": {
+   "calls": 1754
+  }
+ },
+ {
+  "instance_id": "requests_6589",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 237,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 3,
+   "lines_removed": 0,
+   "paths": [
+    "src/requests/utils.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 17,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_requests.py"
+   ]
+  },
+  "nodes": 712,
+  "edges": 1750,
+  "edge_types": {
+   "calls": 1750
+  }
+ },
+ {
+  "instance_id": "requests_6592",
+  "repo": "requests",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 239,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "src/requests/status_codes.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 15,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_requests.py"
+   ]
+  },
+  "nodes": 711,
+  "edges": 1748,
+  "edge_types": {
+   "calls": 1748
+  }
+ },
+ {
+  "instance_id": "rich_3180",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1189,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 4,
+   "lines_added": 89,
+   "lines_removed": 38,
+   "paths": [
+    "rich/_wrap.py",
+    "rich/cells.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 5,
+   "lines_added": 85,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_cells.py",
+    "tests/test_text.py"
+   ]
+  },
+  "nodes": 1936,
+  "edges": 5516,
+  "edge_types": {
+   "calls": 5516
+  }
+ },
+ {
+  "instance_id": "rich_3486",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 98,
+  "patch": {
+   "files": 3,
+   "added_files": 0,
+   "hunks": 12,
+   "lines_added": 74,
+   "lines_removed": 24,
+   "paths": [
+    "rich/default_styles.py",
+    "rich/syntax.py",
+    "rich/traceback.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 31,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_traceback.py"
+   ]
+  },
+  "nodes": 1962,
+  "edges": 5594,
+  "edge_types": {
+   "calls": 5594
+  }
+ },
+ {
+  "instance_id": "rich_3777",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 341,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 12,
+   "lines_removed": 1,
+   "paths": [
+    "rich/console.py",
+    "rich/diagnose.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 25,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_console.py"
+   ]
+  },
+  "nodes": 1979,
+  "edges": 5658,
+  "edge_types": {
+   "calls": 5658
+  }
+ },
+ {
+  "instance_id": "rich_3468",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 146,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 4,
+   "lines_added": 36,
+   "lines_removed": 6,
+   "paths": [
+    "rich/console.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 21,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_console.py"
+   ]
+  },
+  "nodes": 1954,
+  "edges": 5574,
+  "edge_types": {
+   "calls": 5574
+  }
+ },
+ {
+  "instance_id": "rich_3782",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 68,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 7,
+   "lines_added": 24,
+   "lines_removed": 5,
+   "paths": [
+    "rich/syntax.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 24,
+   "lines_added": 41,
+   "lines_removed": 25,
+   "paths": [
+    "tests/test_syntax.py"
+   ]
+  },
+  "nodes": 1980,
+  "edges": 5660,
+  "edge_types": {
+   "calls": 5660
+  }
+ },
+ {
+  "instance_id": "rich_3772",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 131,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 6,
+   "lines_added": 29,
+   "lines_removed": 16,
+   "paths": [
+    "rich/traceback.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 24,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_traceback.py"
+   ]
+  },
+  "nodes": 1978,
+  "edges": 5654,
+  "edge_types": {
+   "calls": 5654
+  }
+ },
+ {
+  "instance_id": "rich_3296",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 818,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 3,
+   "paths": [
+    "rich/syntax.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 17,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_syntax.py"
+   ]
+  },
+  "nodes": 1953,
+  "edges": 5568,
+  "edge_types": {
+   "calls": 5568
+  }
+ },
+ {
+  "instance_id": "rich_3675",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 168,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 5,
+   "lines_added": 28,
+   "lines_removed": 13,
+   "paths": [
+    "rich/console.py",
+    "rich/diagnose.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 50,
+   "lines_added": 151,
+   "lines_removed": 85,
+   "paths": [
+    "tests/test_console.py"
+   ]
+  },
+  "nodes": 1971,
+  "edges": 5630,
+  "edge_types": {
+   "calls": 5630
+  }
+ },
+ {
+  "instance_id": "rich_3676",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 42,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 8,
+   "lines_added": 12,
+   "lines_removed": 1,
+   "paths": [
+    "rich/default_styles.py",
+    "rich/traceback.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 15,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_traceback.py"
+   ]
+  },
+  "nodes": 1970,
+  "edges": 5628,
+  "edge_types": {
+   "calls": 5628
+  }
+ },
+ {
+  "instance_id": "rich_3518",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 658,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/table.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 19,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_table.py"
+   ]
+  },
+  "nodes": 1969,
+  "edges": 5624,
+  "edge_types": {
+   "calls": 5624
+  }
+ },
+ {
+  "instance_id": "rich_3535",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 193,
+  "patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 7,
+   "lines_removed": 1,
+   "paths": [
+    "rich/cells.py",
+    "rich/segment.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 21,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_cells.py"
+   ]
+  },
+  "nodes": 1970,
+  "edges": 5628,
+  "edge_types": {
+   "calls": 5628
+  }
+ },
+ {
+  "instance_id": "rich_3521",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 80,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 16,
+   "lines_removed": 19,
+   "paths": [
+    "rich/segment.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 21,
+   "lines_removed": 5,
+   "paths": [
+    "tests/test_segment.py"
+   ]
+  },
+  "nodes": 1970,
+  "edges": 5628,
+  "edge_types": {
+   "calls": 5628
+  }
+ },
+ {
+  "instance_id": "rich_3506",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 115,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 15,
+   "lines_removed": 2,
+   "paths": [
+    "rich/segment.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 29,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_segment.py"
+   ]
+  },
+  "nodes": 1964,
+  "edges": 5598,
+  "edge_types": {
+   "calls": 5598
+  }
+ },
+ {
+  "instance_id": "rich_3480",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 81,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 2,
+   "lines_removed": 2,
+   "paths": [
+    "rich/text.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 11,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_text.py"
+   ]
+  },
+  "nodes": 1961,
+  "edges": 5592,
+  "edge_types": {
+   "calls": 5592
+  }
+ },
+ {
+  "instance_id": "rich_3472",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 88,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 3,
+   "lines_removed": 1,
+   "paths": [
+    "rich/pretty.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 20,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_pretty.py"
+   ]
+  },
+  "nodes": 1959,
+  "edges": 5588,
+  "edge_types": {
+   "calls": 5588
+  }
+ },
+ {
+  "instance_id": "rich_3454",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 865,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/highlighter.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_highlighter.py"
+   ]
+  },
+  "nodes": 1953,
+  "edges": 5572,
+  "edge_types": {
+   "calls": 5572
+  }
+ },
+ {
+  "instance_id": "rich_3471",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 86,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 0,
+   "paths": [
+    "rich/text.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 20,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_text.py"
+   ]
+  },
+  "nodes": 1958,
+  "edges": 5582,
+  "edge_types": {
+   "calls": 5582
+  }
+ },
+ {
+  "instance_id": "rich_3470",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 74,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/console.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 21,
+   "lines_removed": 17,
+   "paths": [
+    "tests/test_console.py"
+   ]
+  },
+  "nodes": 1958,
+  "edges": 5582,
+  "edge_types": {
+   "calls": 5582
+  }
+ },
+ {
+  "instance_id": "rich_3469",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 75,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/markdown.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 28,
+   "lines_removed": 3,
+   "paths": [
+    "tests/test_markdown.py"
+   ]
+  },
+  "nodes": 1957,
+  "edges": 5578,
+  "edge_types": {
+   "calls": 5578
+  }
+ },
+ {
+  "instance_id": "rich_3052",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 863,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 12,
+   "lines_added": 29,
+   "lines_removed": 5,
+   "paths": [
+    "rich/prompt.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 19,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_prompt.py"
+   ]
+  },
+  "nodes": 1936,
+  "edges": 5516,
+  "edge_types": {
+   "calls": 5516
+  }
+ },
+ {
+  "instance_id": "rich_3278",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1216,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 0,
+   "paths": [
+    "rich/ansi.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 14,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_ansi.py"
+   ]
+  },
+  "nodes": 1952,
+  "edges": 5564,
+  "edge_types": {
+   "calls": 5564
+  }
+ },
+ {
+  "instance_id": "rich_2943",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 473,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/style.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 14,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_style.py"
+   ]
+  },
+  "nodes": 1949,
+  "edges": 5556,
+  "edge_types": {
+   "calls": 5556
+  }
+ },
+ {
+  "instance_id": "rich_2725",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 1779,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 5,
+   "lines_removed": 5,
+   "paths": [
+    "rich/table.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 129,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_table.py"
+   ]
+  },
+  "nodes": 1944,
+  "edges": 5542,
+  "edge_types": {
+   "calls": 5542
+  }
+ },
+ {
+  "instance_id": "rich_3105",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 452,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/_export_format.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 3,
+   "lines_removed": 3,
+   "paths": [
+    "tests/test_console.py"
+   ]
+  },
+  "nodes": 1936,
+  "edges": 5516,
+  "edge_types": {
+   "calls": 5516
+  }
+ },
+ {
+  "instance_id": "rich_3130",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 878,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 5,
+   "lines_removed": 7,
+   "paths": [
+    "rich/markdown.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 35,
+   "lines_removed": 2,
+   "paths": [
+    "tests/test_markdown.py"
+   ]
+  },
+  "nodes": 1933,
+  "edges": 5504,
+  "edge_types": {
+   "calls": 5504
+  }
+ },
+ {
+  "instance_id": "rich_3043",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 286,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/_export_format.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 3,
+   "lines_removed": 3,
+   "paths": [
+    "tests/test_console.py"
+   ]
+  },
+  "nodes": 1926,
+  "edges": 5486,
+  "edge_types": {
+   "calls": 5486
+  }
+ },
+ {
+  "instance_id": "rich_3067",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 584,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/highlighter.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 10,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_highlighter.py"
+   ]
+  },
+  "nodes": 1933,
+  "edges": 5504,
+  "edge_types": {
+   "calls": 5504
+  }
+ },
+ {
+  "instance_id": "rich_3006",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 677,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 1,
+   "lines_removed": 1,
+   "paths": [
+    "rich/repr.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 3,
+   "lines_added": 40,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_repr.py"
+   ]
+  },
+  "nodes": 1926,
+  "edges": 5486,
+  "edge_types": {
+   "calls": 5486
+  }
+ },
+ {
+  "instance_id": "rich_3064",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 76,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 8,
+   "lines_removed": 9,
+   "paths": [
+    "rich/markdown.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 1,
+   "lines_added": 8,
+   "lines_removed": 0,
+   "paths": [
+    "tests/test_markdown.py"
+   ]
+  },
+  "nodes": 1925,
+  "edges": 5482,
+  "edge_types": {
+   "calls": 5482
+  }
+ },
+ {
+  "instance_id": "rich_3063",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 85,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 3,
+   "lines_removed": 1,
+   "paths": [
+    "rich/markup.py"
+   ]
+  },
+  "test_patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 2,
+   "lines_added": 13,
+   "lines_removed": 1,
+   "paths": [
+    "tests/test_markup.py"
+   ]
+  },
+  "nodes": 1924,
+  "edges": 5476,
+  "edge_types": {
+   "calls": 5476
+  }
+ },
+ {
+  "instance_id": "rich_3061",
+  "repo": "rich",
+  "has_graph": true,
+  "has_emb": true,
+  "snapshots": [],
+  "has_hints": false,
+  "ps_chars": 411,
+  "patch": {
+   "files": 1,
+   "added_files": 0,
+   "hunks": 13,
+   "lines_added": 67,
+   "lines_removed": 24,
+   "paths": [
+    "rich/text.py"
+   ]
+  },
+  "test_patch": {
+   "files": 2,
+   "added_files": 0,
+   "hunks": 4,
+   "lines_added": 112,
+   "lines_removed": 3,
+   "paths": [
+    "tests/test_panel.py",
+    "tests/test_text.py"
+   ]
+  },
+  "nodes": 1920,
+  "edges": 5464,
+  "edge_types": {
+   "calls": 5464
+  }
+ }
+]

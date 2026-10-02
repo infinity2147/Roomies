@@ -1,0 +1,12 @@
+.venv/
+.venv-harness/
+data/
+external/
+results/
+reference/notebooks/*/*.ipynb
+__pycache__/
+*.pyc
+*.zip
+reference/
+*.log
+results_*.log
