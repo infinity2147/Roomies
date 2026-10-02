@@ -10,3 +10,4 @@ __pycache__/
 reference/
 *.log
 results_*.log
+reports/report/build.log
