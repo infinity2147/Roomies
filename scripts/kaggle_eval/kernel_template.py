@@ -111,7 +111,56 @@ server = VllmServer(VllmConfig(
 ), adapter_manifest=adapters)
 server.start()
 print(f"[{time.time() - T0:.0f}s] vLLM up on {ngpu} GPUs", flush=True)
+# --- capture proxy (SFT data): log every chat request/response between harness and vLLM ---
+import threading, urllib.request, urllib.error  # noqa: E401,E402
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer  # noqa: E402
+CAPTURE = WORK / "results" / RUN_NAME / "capture.jsonl"
+CAPTURE.parent.mkdir(parents=True, exist_ok=True)
+_LOCK = threading.Lock()
+
+
+class _Proxy(BaseHTTPRequestHandler):
+    def _fwd(self, method):
+        n = int(self.headers.get("Content-Length") or 0)
+        body = self.rfile.read(n) if n else None
+        req = urllib.request.Request("http://127.0.0.1:8000" + self.path, data=body, method=method,
+                                     headers={k: v for k, v in self.headers.items() if k.lower() not in ("host", "content-length")})
+        t0 = time.time()
+        try:
+            with urllib.request.urlopen(req, timeout=3600) as r:
+                data, status, hdrs = r.read(), r.status, r.headers
+        except urllib.error.HTTPError as e:
+            data, status, hdrs = e.read(), e.code, e.headers
+        self.send_response(status)
+        for k, v in hdrs.items():
+            if k.lower() not in ("transfer-encoding", "connection", "content-length"):
+                self.send_header(k, v)
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+        if self.path.endswith("/chat/completions") and body:
+            rec = {"t": t0, "dt": time.time() - t0, "status": status, "request": json.loads(body)}
+            try:
+                rec["response"] = json.loads(data)
+            except Exception:
+                rec["response_raw"] = data[:2000].decode("utf-8", "replace")
+            with _LOCK, open(CAPTURE, "a") as f:
+                f.write(json.dumps(rec) + "\n")
+
+    def do_POST(self):
+        self._fwd("POST")
+
+    def do_GET(self):
+        self._fwd("GET")
+
+    def log_message(self, *a):
+        pass
+
+
+threading.Thread(target=ThreadingHTTPServer(("127.0.0.1", 8001), _Proxy).serve_forever, daemon=True).start()
+server.config.port = 8001  # registry -> proxy -> vLLM on 8000
 models = server.create_model_registry(aliases=[declared, "gemma-4-31b-it-qat-w4a16-ct"], model_prefix="openai/", api_key="EMPTY")
+server.config.port = 8000
 
 raw = yaml.safe_load((AGENT_DIR / "eval_config.yaml").read_text()) if (AGENT_DIR / "eval_config.yaml").exists() else {}
 ev = (raw or {}).get("evaluation", raw or {})
