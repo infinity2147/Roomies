@@ -51,7 +51,7 @@ async def run_one(ev: Evaluator, task, patch: str) -> dict:
 
 
 async def main_async(args) -> None:
-    tasks = load_tasks(DATA / "tasks.jsonl")
+    tasks = load_tasks(Path(args.tasks))
     by_repo = defaultdict(list)
     for t in tasks:
         by_repo[t.repo].append(t)
@@ -63,10 +63,10 @@ async def main_async(args) -> None:
     else:
         chosen = tasks
 
-    out_dir = ROOT / "results" / f"verify_{args.mode}"
+    out_dir = ROOT / "results" / f"verify_{args.name or ''}{args.mode}"
     cfg = EvalConfig(
-        tasks_path=DATA / "tasks.jsonl",
-        snapshots_dir=DATA / "snapshots",
+        tasks_path=Path(args.tasks),
+        snapshots_dir=Path(args.snapshots_dir),
         results_dir=out_dir,
         submission_dir=DATA / "sample_submission",
         models={},
@@ -105,6 +105,9 @@ def main() -> None:
     ap.add_argument("--task-ids", nargs="*")
     ap.add_argument("--concurrency", type=int, default=4)
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--tasks", default=str(DATA / "tasks.jsonl"))
+    ap.add_argument("--snapshots-dir", default=str(DATA / "snapshots"))
+    ap.add_argument("--name", default="", help="prefix for results/verify_<name><mode>")
     asyncio.run(main_async(ap.parse_args()))
 
 

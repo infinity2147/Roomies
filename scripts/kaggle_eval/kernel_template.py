@@ -75,7 +75,19 @@ else:
 # --- unpack our submission ---
 AGENT_DIR = WORK / "submission"
 shutil.rmtree(AGENT_DIR, ignore_errors=True)
-zipfile.ZipFile(io.BytesIO(base64.b64decode(SUBMISSION_B64))).extractall(AGENT_DIR)
+if SUBMISSION_B64.startswith("DATASET:"):
+    _slug = SUBMISSION_B64.split(":", 1)[1]
+    _hits = glob.glob(f"/kaggle/input/**/{_slug}/**/agent.yaml", recursive=True) + glob.glob(f"/kaggle/input/**/{_slug}*/**/agent.yaml", recursive=True)
+    _zips = glob.glob(f"/kaggle/input/**/{_slug}/**/submission.zip", recursive=True) + glob.glob(f"/kaggle/input/**/{_slug}*/**/submission.zip", recursive=True)
+    if _zips:
+        zipfile.ZipFile(_zips[0]).extractall(AGENT_DIR)
+    elif _hits:
+        shutil.copytree(os.path.dirname(_hits[0]), AGENT_DIR)
+    else:
+        raise FileNotFoundError(f"submission dataset {_slug} not mounted: {os.listdir('/kaggle/input')}")
+else:
+    zipfile.ZipFile(io.BytesIO(base64.b64decode(SUBMISSION_B64))).extractall(AGENT_DIR)
+print("submission files:", sorted(str(p.relative_to(AGENT_DIR)) for p in AGENT_DIR.rglob("*") if p.is_file())[:20], flush=True)
 
 import litellm  # noqa: E402
 import torch  # noqa: E402

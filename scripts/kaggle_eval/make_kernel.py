@@ -51,14 +51,39 @@ def main() -> None:
     kdir = ROOT / "results" / "kaggle_kernels" / slug
     kdir.mkdir(parents=True, exist_ok=True)
     code = (ROOT / "scripts" / "kaggle_eval" / "kernel_template.py").read_text()
+    blob = zip_submission(Path(a.submission))
+    extra_datasets = []
+    if len(blob) > 2 * 2**20:
+        # Large submissions (LoRA adapters) go through a private dataset instead of inline base64.
+        ds_slug = re.sub(r"[^a-z0-9-]", "-", f"gemma-rl-sub-{a.run}".lower())
+        ddir = ROOT / "results" / "kaggle_datasets" / ds_slug
+        ddir.mkdir(parents=True, exist_ok=True)
+        (ddir / "submission.zip").write_bytes(blob)
+        (ddir / "dataset-metadata.json").write_text(json.dumps({"title": ds_slug, "id": f"{USER}/{ds_slug}", "licenses": [{"name": "other"}]}))
+        if a.push:
+            k = str(ROOT / ".venv" / "bin" / "kaggle")
+            r = subprocess.run([k, "datasets", "create", "-p", str(ddir)], capture_output=True, text=True)
+            if "already" in (r.stdout + r.stderr).lower() or r.returncode != 0:
+                subprocess.run([k, "datasets", "version", "-p", str(ddir), "-m", a.run], check=True)
+            print("uploaded submission dataset", ds_slug, "- waiting for it to be ready")
+            import time
+            for _ in range(60):
+                st = subprocess.run([k, "datasets", "status", f"{USER}/{ds_slug}"], capture_output=True, text=True).stdout
+                if "ready" in st:
+                    break
+                time.sleep(20)
+        extra_datasets.append(f"{USER}/{ds_slug}")
+        blob_b64 = "DATASET:" + ds_slug
+    else:
+        blob_b64 = base64.b64encode(blob).decode()
     code = (code.replace("__RUN_NAME__", a.run).replace("__TASK_IDS__", json.dumps(ids))
                 .replace("__CONCURRENCY__", str(a.concurrency))
-                .replace("__SUBMISSION_B64__", base64.b64encode(zip_submission(Path(a.submission))).decode()))
+                .replace("__SUBMISSION_B64__", blob_b64))
     (kdir / "kernel.py").write_text(code)
     meta = {
         "id": f"{USER}/{slug}", "title": slug, "code_file": "kernel.py", "language": "python",
         "kernel_type": "script", "is_private": True, "enable_gpu": True, "enable_tpu": False,
-        "enable_internet": False, "dataset_sources": ["metric/gemma-4-developer-agent-wheelhouse", f"{USER}/gemma-rl-test-wheels"],
+        "enable_internet": False, "dataset_sources": ["metric/gemma-4-developer-agent-wheelhouse", f"{USER}/gemma-rl-test-wheels", *extra_datasets],
         "competition_sources": ["gemma-4-developer-agent"], "kernel_sources": [],
         "model_sources": ["google/gemma-4/Other/gemma-4-31b-it-qat-w4a16-ct/2"], "machine_shape": "NvidiaL4",
     }
