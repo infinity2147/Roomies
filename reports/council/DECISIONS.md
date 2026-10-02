@@ -59,4 +59,10 @@ Ranked by the forensics' estimated gain (each ≤ one standard error alone; comb
 - Decision: next submission = `submission_c6a_t5.zip` (frozen C6a prompt, `max_time_minutes: 5`). Every future candidate must pass a projected-runtime check: 150 × mean task time + 0.5 h ≤ 11 h.
 - Use the completion time of c6a_t5 as a signal of hidden-set size / serial speed.
 
+**D10 — Training (Q3 closed).** Rule met: tiny end-to-end test passes (re-run by lead: PASS; logit diff vs vLLM semantics 1.9e-5 with the global-layer k→v LoRA copy, 15.3 without).
+- Method: train LoRA on the frozen int4 QAT weights unpacked on the fly (bit-identical to what vLLM serves) — no bf16-base mismatch.
+- Bug found and fixed: global-attention layers have no v_proj (V = K); vLLM copies only base K into V, so every exported adapter must duplicate k_proj LoRA into v_proj (`train_lora.py` exporter does; `--verify` checks it).
+- Compute: 1×80 GB GPU (H100 ≈2–3 h, A100 ≈6–9 h per 300×20k×2-epoch run; 3 LORO folds + final ≈3×). Local A5000s and Kaggle GPUs cannot train it. First step on rented hardware: `--preflight` (512-dim global-head attention at 32k) and a vLLM log-prob parity check.
+- E1 starts when: (a) hardware is available, (b) D1 Kaggle env fixed, (c) C6a×4 capture runs produce ≥30 clean successful trajectories (D5 filters).
+
 **D8 — Needs the user.** Join the paper competition `gemma-4-developer-agent-paper` on Kaggle (account shows not entered). Arrange training hardware (pending training plan).
