@@ -1,0 +1,381 @@
+% references.bib -- Paper Strategist, research council, 2026-10-02
+% Every entry was checked on 2026-10-02: arXiv entries against the arXiv export API
+% (title, first authors, date, comment/journal-ref fields), the rest via web search (publisher / official page).
+% Venues are given only where the arXiv comment/journal-ref or the publisher page confirms them;
+% otherwise the entry is cited as an arXiv preprint. "and others" truncates long author lists.
+% 40 entries.
+
+% ---------------------------------------------------------------- Benchmarks
+@inproceedings{jimenez2024swebench,
+  title     = {{SWE}-bench: Can Language Models Resolve Real-World {GitHub} Issues?},
+  author    = {Jimenez, Carlos E. and Yang, John and Wettig, Alexander and Yao, Shunyu and Pei, Kexin and Press, Ofir and Narasimhan, Karthik},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024},
+  eprint    = {2310.06770},
+  archivePrefix = {arXiv},
+  note      = {Also defines SWE-bench Lite and the BM25 retrieval baseline}
+}
+
+@misc{openai2024verified,
+  title        = {Introducing {SWE}-bench Verified},
+  author       = {{OpenAI}},
+  year         = {2024},
+  howpublished = {\url{https://openai.com/index/introducing-swe-bench-verified/}},
+  note         = {Human-validated 500-task subset of SWE-bench, released 13 Aug 2024}
+}
+
+% ---------------------------------------------------------------- Agent scaffolds
+@inproceedings{yang2024sweagent,
+  title     = {{SWE}-agent: Agent-Computer Interfaces Enable Automated Software Engineering},
+  author    = {Yang, John and Jimenez, Carlos E. and Wettig, Alexander and Lieret, Kilian and Yao, Shunyu and Narasimhan, Karthik and Press, Ofir},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2024},
+  eprint    = {2405.15793},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{wang2025openhands,
+  title     = {{OpenHands}: An Open Platform for {AI} Software Developers as Generalist Agents},
+  author    = {Wang, Xingyao and Li, Boxuan and Song, Yufan and Xu, Frank F. and Tang, Xiangru and others},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2025},
+  eprint    = {2407.16741},
+  archivePrefix = {arXiv}
+}
+
+@article{xia2025agentless,
+  title   = {Demystifying {LLM}-Based Software Engineering Agents},
+  author  = {Xia, Chunqiu Steven and Deng, Yinlin and Dunn, Soren and Zhang, Lingming},
+  journal = {Proceedings of the ACM on Software Engineering},
+  volume  = {2},
+  number  = {FSE},
+  pages   = {801--824},
+  year    = {2025},
+  doi     = {10.1145/3715754},
+  eprint  = {2407.01489},
+  archivePrefix = {arXiv},
+  note    = {arXiv title: ``Agentless: Demystifying LLM-based Software Engineering Agents''}
+}
+
+@inproceedings{zhang2024autocoderover,
+  title     = {{AutoCodeRover}: Autonomous Program Improvement},
+  author    = {Zhang, Yuntong and Ruan, Haifeng and Fan, Zhiyu and Roychoudhury, Abhik},
+  booktitle = {ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA)},
+  year      = {2024},
+  eprint    = {2404.05427},
+  archivePrefix = {arXiv}
+}
+
+@misc{orwall2024moatless,
+  title        = {Moatless Tools},
+  author       = {{\"O}rwall, Albert},
+  year         = {2024},
+  howpublished = {\url{https://github.com/aorwall/moatless-tools}},
+  note         = {Open-source SWE-bench agent framework; basis of SWE-Search (arXiv:2410.20285)}
+}
+
+% ---------------------------------------------------------------- Localization / code graphs
+@inproceedings{chen2025locagent,
+  title     = {{LocAgent}: Graph-Guided {LLM} Agents for Code Localization},
+  author    = {Chen, Zhaoling and Tang, Xiangru and Deng, Gangda and Wu, Fang and Wu, Jialong and Jiang, Zhiwei and Prasanna, Viktor and Cohan, Arman and Wang, Xingyao},
+  booktitle = {Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (ACL), Volume 1: Long Papers},
+  pages     = {8697--8727},
+  year      = {2025},
+  eprint    = {2503.09089},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{ouyang2025repograph,
+  title     = {{RepoGraph}: Enhancing {AI} Software Engineering with Repository-level Code Graph},
+  author    = {Ouyang, Siru and Yu, Wenhao and Ma, Kaixin and Xiao, Zilin and Zhang, Zhihan and others},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2025},
+  eprint    = {2410.14684},
+  archivePrefix = {arXiv}
+}
+
+@misc{li2025coderag,
+  title         = {{CodeRAG}: Supportive Code Retrieval on Bigraph for Real-World Code Generation},
+  author        = {Li, Jia and Shi, Xianjie and Zhang, Kechi and Li, Lei and Li, Ge and others},
+  year          = {2025},
+  eprint        = {2504.10046},
+  archivePrefix = {arXiv},
+  note          = {v1 title; v2 retitled ``GraphCodeAgent: Dual Graph-Guided LLM Agent for Retrieval-Augmented Repo-Level Code Generation''}
+}
+
+@inproceedings{yu2025orcaloca,
+  title     = {{OrcaLoca}: An {LLM} Agent Framework for Software Issue Localization},
+  author    = {Yu, Zhongming and Zhang, Hejia and Zhao, Yujie and Huang, Hanxian and Yao, Matrix and Ding, Ke and Zhao, Jishen},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2025},
+  eprint    = {2502.00350},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{jiang2025cosil,
+  title     = {Issue Localization via {LLM}-Driven Iterative Code Graph Searching},
+  author    = {Jiang, Zhonghao and Ren, Xiaoxue and Yan, Meng and Jiang, Wei and Li, Yong and others},
+  booktitle = {IEEE/ACM International Conference on Automated Software Engineering (ASE)},
+  year      = {2025},
+  eprint    = {2503.22424},
+  archivePrefix = {arXiv},
+  note      = {CoSIL}
+}
+
+@inproceedings{reddy2026swerank,
+  title     = {{SweRank}: Software Issue Localization with Code Ranking},
+  author    = {Reddy, Revanth Gangi and Suresh, Tarun and Doo, JaeHyeok and Liu, Ye and Nguyen, Xuan Phi and others},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2026},
+  eprint    = {2505.07849},
+  archivePrefix = {arXiv}
+}
+
+@article{robertson2009bm25,
+  title   = {The Probabilistic Relevance Framework: {BM25} and Beyond},
+  author  = {Robertson, Stephen and Zaragoza, Hugo},
+  journal = {Foundations and Trends in Information Retrieval},
+  volume  = {3},
+  number  = {4},
+  pages   = {333--389},
+  year    = {2009},
+  doi     = {10.1561/1500000019}
+}
+
+@techreport{burges2010lambdamart,
+  title       = {From {RankNet} to {LambdaRank} to {LambdaMART}: An Overview},
+  author      = {Burges, Christopher J. C.},
+  institution = {Microsoft Research},
+  number      = {MSR-TR-2010-82},
+  year        = {2010}
+}
+
+% ---------------------------------------------------------------- RL for retrieval / graph walks / localization
+@inproceedings{das2018minerva,
+  title     = {Go for a Walk and Arrive at the Answer: Reasoning Over Paths in Knowledge Bases using Reinforcement Learning},
+  author    = {Das, Rajarshi and Dhuliawala, Shehzaad and Zaheer, Manzil and Vilnis, Luke and Durugkar, Ishan and Krishnamurthy, Akshay and Smola, Alex and McCallum, Andrew},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2018},
+  eprint    = {1711.05851},
+  archivePrefix = {arXiv},
+  note      = {MINERVA}
+}
+
+@inproceedings{xiong2017deeppath,
+  title     = {{DeepPath}: A Reinforcement Learning Method for Knowledge Graph Reasoning},
+  author    = {Xiong, Wenhan and Hoang, Thien and Wang, William Yang},
+  booktitle = {Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2017},
+  eprint    = {1707.06690},
+  archivePrefix = {arXiv}
+}
+
+@misc{ma2025tooltrain,
+  title         = {Tool-integrated Reinforcement Learning for Repo Deep Search},
+  author        = {Ma, Zexiong and Peng, Chao and Zeng, Qunhong and Gao, Pengfei and Zou, Yanzhen and others},
+  year          = {2025},
+  eprint        = {2508.03012},
+  archivePrefix = {arXiv},
+  note          = {ToolTrain: rejection-sampled SFT + tool-integrated RL for issue localization}
+}
+
+@misc{zhang2025reponavigator,
+  title         = {One Tool Is Enough: Reinforcement Learning for Repository-Level {LLM} Agents},
+  author        = {Zhang, Zhaoxi and Duan, Yitong and Zhang, Yanzhi and Xu, Yiming and Wang, Zhixiang and others},
+  year          = {2025},
+  eprint        = {2512.20957},
+  archivePrefix = {arXiv},
+  note          = {RepoNavigator}
+}
+
+@inproceedings{kim2026a2agent,
+  title     = {{A$^2$Agent}: Action-Aware Reinforcement Learning for Repository-Level Code Localization Agents},
+  author    = {Kim, Doyeon and Bae, Suyoung and Lee, Yumin and Lee, Jee-Hyong},
+  booktitle = {Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2026},
+  eprint    = {2608.29831},
+  archivePrefix = {arXiv},
+  note      = {Accepted, EMNLP 2026 Main (per arXiv comment)}
+}
+
+% ---------------------------------------------------------------- Training SWE agents
+@inproceedings{pan2025swegym,
+  title     = {Training Software Engineering Agents and Verifiers with {SWE-Gym}},
+  author    = {Pan, Jiayi and Wang, Xingyao and Neubig, Graham and Jaitly, Navdeep and Ji, Heng and Suhr, Alane and Zhang, Yizhe},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2025},
+  eprint    = {2412.21139},
+  archivePrefix = {arXiv}
+}
+
+@misc{yang2025swesmith,
+  title         = {{SWE-smith}: Scaling Data for Software Engineering Agents},
+  author        = {Yang, John and Lieret, Kilian and Jimenez, Carlos E. and Wettig, Alexander and Khandpur, Kabir and others},
+  year          = {2025},
+  eprint        = {2504.21798},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{wei2025swerl,
+  title     = {{SWE-RL}: Advancing {LLM} Reasoning via Reinforcement Learning on Open Software Evolution},
+  author    = {Wei, Yuxiang and Duchenne, Olivier and Copet, Jade and Carbonneaux, Quentin and Zhang, Lingming and others},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2025},
+  eprint    = {2502.18449},
+  archivePrefix = {arXiv}
+}
+
+@misc{jain2025r2egym,
+  title         = {{R2E-Gym}: Procedural Environments and Hybrid Verifiers for Scaling Open-Weights {SWE} Agents},
+  author        = {Jain, Naman and Singh, Jaskirat and Shetty, Manish and Zheng, Liang and Sen, Koushik and Stoica, Ion},
+  year          = {2025},
+  eprint        = {2504.07164},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{wang2025swedev,
+  title     = {{SWE-Dev}: Building Software Engineering Agents with Training and Inference Scaling},
+  author    = {Wang, Haoran and Hou, Zhenyu and Wei, Yao and Tang, Jie and Dong, Yuxiao},
+  booktitle = {Findings of the Association for Computational Linguistics: ACL 2025},
+  year      = {2025},
+  eprint    = {2506.07636},
+  archivePrefix = {arXiv},
+  note      = {Not to be confused with the feature-development benchmark SWE-Dev, arXiv:2505.16975}
+}
+
+@misc{ludwig2026swehero,
+  title         = {From {SWE-ZERO} to {SWE-HERO}: Execution-free to Execution-based Fine-tuning for Software Engineering Agents},
+  author        = {Ludwig, Nikolai and Ahmad, Wasi Uddin and Majumdar, Somshubra and Ginsburg, Boris},
+  year          = {2026},
+  eprint        = {2604.01496},
+  archivePrefix = {arXiv}
+}
+
+% ---------------------------------------------------------------- Self-training / rejection sampling / expert iteration
+@inproceedings{anthony2017exit,
+  title     = {Thinking Fast and Slow with Deep Learning and Tree Search},
+  author    = {Anthony, Thomas and Tian, Zheng and Barber, David},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2017},
+  eprint    = {1705.08439},
+  archivePrefix = {arXiv},
+  note      = {Expert Iteration}
+}
+
+@inproceedings{zelikman2022star,
+  title     = {{STaR}: Bootstrapping Reasoning With Reasoning},
+  author    = {Zelikman, Eric and Wu, Yuhuai and Mu, Jesse and Goodman, Noah D.},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2022},
+  eprint    = {2203.14465},
+  archivePrefix = {arXiv}
+}
+
+@misc{yuan2023rft,
+  title         = {Scaling Relationship on Learning Mathematical Reasoning with Large Language Models},
+  author        = {Yuan, Zheng and Yuan, Hongyi and Li, Chengpeng and Dong, Guanting and Lu, Keming and others},
+  year          = {2023},
+  eprint        = {2308.01825},
+  archivePrefix = {arXiv},
+  note          = {Rejection-sampling fine-tuning (RFT)}
+}
+
+@article{dong2023raft,
+  title   = {{RAFT}: Reward rAnked FineTuning for Generative Foundation Model Alignment},
+  author  = {Dong, Hanze and Xiong, Wei and Goyal, Deepanshu and Zhang, Yihan and Chow, Winnie and others},
+  journal = {Transactions on Machine Learning Research (TMLR)},
+  year    = {2023},
+  eprint  = {2304.06767},
+  archivePrefix = {arXiv}
+}
+
+@misc{gulcehre2023rest,
+  title         = {Reinforced Self-Training ({ReST}) for Language Modeling},
+  author        = {Gulcehre, Caglar and Paine, Tom Le and Srinivasan, Srivatsan and Konyushkova, Ksenia and Weerts, Lotte and others},
+  year          = {2023},
+  eprint        = {2308.08998},
+  archivePrefix = {arXiv}
+}
+
+@article{singh2024restem,
+  title   = {Beyond Human Data: Scaling Self-Training for Problem-Solving with Language Models},
+  author  = {Singh, Avi and Co-Reyes, John D. and Agarwal, Rishabh and Anand, Ankesh and Patil, Piyush and others},
+  journal = {Transactions on Machine Learning Research (TMLR)},
+  year    = {2024},
+  eprint  = {2312.06585},
+  archivePrefix = {arXiv},
+  note    = {ReST$^{EM}$ (expectation-maximization self-training)}
+}
+
+% ---------------------------------------------------------------- pass@k vs pass@1, evaluation noise
+@misc{chen2021codex,
+  title         = {Evaluating Large Language Models Trained on Code},
+  author        = {Chen, Mark and Tworek, Jerry and Jun, Heewoo and Yuan, Qiming and Pinto, Henrique Ponde de Oliveira and others},
+  year          = {2021},
+  eprint        = {2107.03374},
+  archivePrefix = {arXiv},
+  note          = {Unbiased pass@k estimator}
+}
+
+@misc{brown2024monkeys,
+  title         = {Large Language Monkeys: Scaling Inference Compute with Repeated Sampling},
+  author        = {Brown, Bradley and Juravsky, Jordan and Ehrlich, Ryan and Clark, Ronald and Le, Quoc V. and others},
+  year          = {2024},
+  eprint        = {2407.21787},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{yue2025rlreasoning,
+  title     = {Does Reinforcement Learning Really Incentivize Reasoning Capacity in {LLMs} Beyond the Base Model?},
+  author    = {Yue, Yang and Chen, Zhiqi and Lu, Rui and Zhao, Andrew and Wang, Zhaokai and others},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2025},
+  eprint    = {2504.13837},
+  archivePrefix = {arXiv}
+}
+
+@misc{liu2026gapft,
+  title         = {Learning from the Gap Between {Pass@K} and {Pass@1}},
+  author        = {Liu, Xuan and Qian, Jingbin and Chen, Haosheng},
+  year          = {2026},
+  eprint        = {2609.35793},
+  archivePrefix = {arXiv},
+  note          = {GapFT; submitted 17 Sep 2026 -- closest prior work to our consistency framing (single-turn reasoning, not agents)}
+}
+
+@misc{delarubia2026identical,
+  title         = {Identical Runs, Different Results: Benchmarking {AI} Coding Agents on Open-Weight Models},
+  author        = {Ari{\~n}o de la Rubia, Eduardo and Pafka, Szilard},
+  year          = {2026},
+  eprint        = {2609.33812},
+  archivePrefix = {arXiv}
+}
+
+% ---------------------------------------------------------------- Context management
+@misc{lindenbauer2025complexity,
+  title         = {The Complexity Trap: Simple Observation Masking Is as Efficient as {LLM} Summarization for Agent Context Management},
+  author        = {Lindenbauer, Tobias and Slinko, Igor and Felder, Ludwig and Bogomolov, Egor and Zharov, Yaroslav},
+  year          = {2025},
+  eprint        = {2508.21433},
+  archivePrefix = {arXiv},
+  note          = {DL4C workshop camera-ready (per arXiv comment)}
+}
+
+@inproceedings{kang2026acon,
+  title     = {{ACON}: Optimizing Context Compression for Long-horizon {LLM} Agents},
+  author    = {Kang, Minki and Chen, Wei-Ning and Han, Dongge and Inan, Huseyin A. and Wutschitz, Lukas and others},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2026},
+  eprint    = {2510.00615},
+  archivePrefix = {arXiv}
+}
+
+% ---------------------------------------------------------------- Parameter-efficient fine-tuning
+@inproceedings{hu2022lora,
+  title     = {{LoRA}: Low-Rank Adaptation of Large Language Models},
+  author    = {Hu, Edward J. and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2022},
+  eprint    = {2106.09685},
+  archivePrefix = {arXiv}
+}

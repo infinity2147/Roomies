@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 import math
 from collections import Counter, deque
 from dataclasses import dataclass
@@ -83,7 +84,11 @@ class GraphIndex:
 
 @lru_cache(maxsize=16)
 def graph_index(key: str) -> GraphIndex:
-    g = load_graph(key)
+    """key = competition graph key, or "path:<json file>" for our own graphs (no embeddings)."""
+    if key.startswith("path:"):
+        g = json.loads(Path(key[5:]).read_text())
+    else:
+        g = load_graph(key)
     names = [n["name"] for n in g["nodes"]]
     texts = [n.get("text") or "" for n in g["nodes"]]
     idx = {n: i for i, n in enumerate(names)}
@@ -129,6 +134,8 @@ def graph_index(key: str) -> GraphIndex:
 
     emb = None
     try:
+        if key.startswith("path:"):
+            raise FileNotFoundError
         enames, mat = load_embeddings(key)
         pos = {n: i for i, n in enumerate(enames)}
         emb = np.zeros((len(names), mat.shape[1]), dtype=np.float32)

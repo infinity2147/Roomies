@@ -1,0 +1,13 @@
+{
+ "gold in BM25 top-6..20 (pure re-rank, no graph needed)": 21,
+ "gold in BM25 top-21..50 (re-rank of top-50)": 13,
+ "gold in BM25 top-51..100": 5,
+ "gold <=1 hop of BM25 top-5": 10,
+ "gold <=2 hops of BM25 top-5": 23,
+ "gold <=1 hop of anchor/top-5 seeds": 14,
+ "gold <=2 hops of anchor/top-5 seeds": 27,
+ "gold <=2 hops of top-5/anchors AND not in BM25 top-50 (graph-unique)": 6,
+ "gold <=2 hops of top-5/anchors AND not in BM25 top-100 (graph-unique)": 5,
+ "gold <=1 hop of top-5/anchors AND not in BM25 top-50 (graph-unique, cheap)": 1,
+ "unreachable: >2 hops and not in top-100": 13
+}
