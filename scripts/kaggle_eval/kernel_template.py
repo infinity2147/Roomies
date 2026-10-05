@@ -131,10 +131,9 @@ def _install_test_dependencies(docker, container_id, repo="", *, fast_path=True,
     entries = [str(ws / "src")] if (ws / "src").is_dir() else []
     entries.append(str(ws))
     (sp / "000_workspace_first.pth").write_text("\n".join(entries) + "\n")
-    script = _cs.resolve_sandbox_setup_script(config)
-    if script and script.exists():
-        docker.copy_to(container_id, script, "/tmp/setup.py")
-        docker.exec(container_id, f"python3 /tmp/setup.py --fast-path {_shlex.quote(repo)}; rm -f /tmp/setup.py")
+    # NOTE: do not run sandbox/setup.py --fast-path here: it puts every workspace subdirectory on
+    # sys.path (e.g. fastapi/requests.py then shadows the real `requests`) - kverify-fix v1 lost all
+    # 67 fastapi gold passes that way.
 
 
 for _m in (_cs, _vf, _ar):
