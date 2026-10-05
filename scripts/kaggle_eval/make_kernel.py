@@ -41,9 +41,10 @@ def main() -> None:
     ap.add_argument("--concurrency", type=int, default=4)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--push", action="store_true")
+    ap.add_argument("--tasks-dataset", default="", help="dataset slug with tasks.jsonl + *.tgz (e.g. gemma-rl-proxy)")
     a = ap.parse_args()
 
-    ids = [l.strip() for l in open(a.ids) if l.strip()]
+    ids = [] if a.tasks_dataset else [l.strip() for l in open(a.ids) if l.strip()]
     if a.n:
         random.Random(a.seed).shuffle(ids)
         ids = sorted(ids[: a.n])
@@ -78,12 +79,13 @@ def main() -> None:
         blob_b64 = base64.b64encode(blob).decode()
     code = (code.replace("__RUN_NAME__", a.run).replace("__TASK_IDS__", json.dumps(ids))
                 .replace("__CONCURRENCY__", str(a.concurrency))
-                .replace("__SUBMISSION_B64__", blob_b64))
+                .replace("__SUBMISSION_B64__", blob_b64).replace("__TASKS_DATASET__", a.tasks_dataset))
     (kdir / "kernel.py").write_text(code)
     meta = {
         "id": f"{USER}/{slug}", "title": slug, "code_file": "kernel.py", "language": "python",
         "kernel_type": "script", "is_private": True, "enable_gpu": True, "enable_tpu": False,
-        "enable_internet": False, "dataset_sources": ["metric/gemma-4-developer-agent-wheelhouse", f"{USER}/gemma-rl-test-wheels", *extra_datasets],
+        "enable_internet": False, "dataset_sources": ["metric/gemma-4-developer-agent-wheelhouse", f"{USER}/gemma-rl-test-wheels", *extra_datasets,
+                            *([f"{USER}/{a.tasks_dataset}"] if a.tasks_dataset else [])],
         "competition_sources": ["gemma-4-developer-agent"], "kernel_sources": [],
         "model_sources": ["google/gemma-4/Other/gemma-4-31b-it-qat-w4a16-ct/2"], "machine_shape": "NvidiaL4",
     }

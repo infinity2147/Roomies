@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Push Kaggle eval kernels one by one as GPU session slots free up (max 2 concurrent), then fetch all.
 # Usage: scripts/kaggle_eval/queue.sh "submissions/c6a:c6a_full_r2" "data/sample_submission:b0_full_r1" ...
-#        (optional third field = --n subset size)
+#        (optional 3rd field = --n subset size, 4th = tasks dataset slug e.g. gemma-rl-proxy)
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 runs=()
 for item in "$@"; do
-  IFS=: read -r sub run n <<< "$item"
-  extra=(); [[ -n "$n" ]] && extra=(--n "$n")
+  IFS=: read -r sub run n tds <<< "$item"
+  extra=(); [[ -n "$n" ]] && extra=(--n "$n"); [[ -n "$tds" ]] && extra+=(--tasks-dataset "$tds")
   .venv/bin/python scripts/kaggle_eval/make_kernel.py --submission "$sub" --run "$run" --concurrency 4 "${extra[@]}" >/dev/null
   slug="gemma-rl-eval-$(echo "$run" | tr '_' '-' | tr 'A-Z' 'a-z')"
   until out=$(.venv/bin/kaggle kernels push -p "results/kaggle_kernels/$slug" 2>&1) && echo "$out" | grep -q "successfully pushed"; do

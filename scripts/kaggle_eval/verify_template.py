@@ -11,6 +11,7 @@ from pathlib import Path
 
 RUN_NAME = "__RUN_NAME__"
 APPLY_FIX = __APPLY_FIX__
+TASKS_DATASET = "__TASKS_DATASET__"
 T0 = time.time()
 
 
@@ -26,6 +27,9 @@ WHEELHOUSE = find_dir("/kaggle/input/datasets/metric/gemma-4-developer-agent-whe
                       "/kaggle/input/*/gemma-4-developer-agent-wheelhouse", "/kaggle/input/gemma-4-developer-agent-wheelhouse")
 DATA = find_dir("/kaggle/input/competitions/gemma-4-developer-agent", "/kaggle/input/gemma-4-developer-agent")
 WORK = Path("/kaggle/working")
+PROXY_DIR = None
+if TASKS_DATASET:
+    PROXY_DIR = find_dir(f"/kaggle/input/*/{TASKS_DATASET}", f"/kaggle/input/datasets/*/{TASKS_DATASET}", f"/kaggle/input/{TASKS_DATASET}")
 # install only the harness packages (no vLLM/torch needed for verification)
 harness = [str(w) for w in WHEELHOUSE.glob("*.whl") if w.name.split("-")[0] in
            ("swegemma", "adk_submission", "adk_eval_core", "google_adk", "google_genai")]
@@ -47,11 +51,21 @@ if APPLY_FIX:
 
 out = WORK / "results" / RUN_NAME
 out.mkdir(parents=True, exist_ok=True)
-cfg = EvalConfig(tasks_path=DATA / "tasks.jsonl", snapshots_dir=DATA / "snapshots", results_dir=out / "verify",
+TASKS_PATH, SNAP_DIR = DATA / "tasks.jsonl", DATA / "snapshots"
+if PROXY_DIR:
+    import shutil
+    _ev = WORK / "proxy_evaldata"
+    (_ev / "snapshots").mkdir(parents=True, exist_ok=True)
+    for _t in PROXY_DIR.glob("*.tgz"):
+        if not (_ev / "snapshots" / _t.name).exists():
+            os.symlink(_t, _ev / "snapshots" / _t.name)
+    shutil.copy(PROXY_DIR / "tasks.jsonl", _ev / "tasks.jsonl")
+    TASKS_PATH, SNAP_DIR = _ev / "tasks.jsonl", _ev / "snapshots"
+cfg = EvalConfig(tasks_path=TASKS_PATH, snapshots_dir=SNAP_DIR, results_dir=out / "verify",
                  submission_dir=DATA / "sample_submission", models={}, sandbox="subprocess", wheels_dir=DATA / "wheels",
                  graph_dir=str(DATA / "graphs"), embeddings_dir=str(DATA / "embeddings"), display_mode="quiet")
 ev = Evaluator(cfg)
-tasks = load_tasks(DATA / "tasks.jsonl")
+tasks = load_tasks(TASKS_PATH)
 sem = asyncio.Semaphore(max(2, os.cpu_count() or 2))
 
 

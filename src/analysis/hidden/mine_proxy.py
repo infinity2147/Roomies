@@ -57,6 +57,20 @@ REPOS = {
     "jd/tenacity": "tenacity",
     "andialbrecht/sqlparse": "sqlparse",
 }
+# Google repos exported from the internal monorepo by Copybara: each commit carries
+# "PiperOrigin-RevId: <CL>". The hidden-set harness keys tasks by CL (swegemma.deduplication.get_task_cl)
+# and supports Google test conventions (*_test.py, *Test classes, fake_gfile), so these are the closest
+# public analogue of "private repositories". Task = one CL; statement = CL description.
+GOOGLE = {
+    "google/adk-python": "adk-python",
+    "google/pyglove": "pyglove",
+    "google/fiddle": "fiddle",
+    "google/ml_collections": "ml_collections",
+    "google/etils": "etils",
+}
+REPOS.update(GOOGLE)
+SKIP_CL = re.compile(r"internal change|no public description|automated code change|copybara|"
+                     r"rollback|roll back|revert|presubmit|pytype|BUILD", re.I)
 SINCE = "2023-01-01"
 MAX_SRC_FILES, MAX_SRC_CHURN, MAX_TEST_CHURN = 4, 250, 600
 SKIP_SUBJ = re.compile(
@@ -167,7 +181,13 @@ def mine_repo(slug: str, short: str, per_repo: int) -> list[dict]:
         if not rec:
             continue
         sha, parents, cdate, subj, body = (rec.split("\x1f") + [""] * 5)[:5]
-        num = pr_number(subj, body)
+        if slug in GOOGLE:
+            m = re.search(r"PiperOrigin-RevId:\s*(\d+)", body)
+            num = int(m.group(1)) if m else None
+            if num is None or len(parents.split()) != 1 or SKIP_CL.search(subj):
+                continue
+        else:
+            num = pr_number(subj, body)
         if num is None or num in seen:
             continue
         seen.add(num)
@@ -211,12 +231,15 @@ def build_snapshot(row: dict) -> bool:
         ws.mkdir()
         env = dict(os.environ, GIT_INDEX_FILE=str(Path(td) / "idx"))
         r = subprocess.run(["git", "--git-dir", str(REPOS_DIR / short / ".git"), "--work-tree", str(ws),
-                            "read-tree", "-u", row["base_commit"]], env=env, capture_output=True)
+                            "read-tree", "--reset", "-u", row["base_commit"]], env=env, capture_output=True)
         if r.returncode != 0:
             return False
         cfg = ["-c", "user.email=agent@eval", "-c", "user.name=Agent", "-c", "init.defaultBranch=main"]
         subprocess.run(["git", *cfg, "init", "-q", str(ws)], check=True)
-        subprocess.run(["git", *cfg, "-C", str(ws), "add", "-A"], check=True)
+        r = subprocess.run(["git", *cfg, "-C", str(ws), "add", "-A"], capture_output=True, text=True)
+        if r.returncode != 0:
+            print(f"snapshot failed {row['instance_id']}: {r.stderr[-300:]}", flush=True)
+            return False
         subprocess.run(["git", *cfg, "-C", str(ws), "commit", "-qm", "base"], check=True)
         subprocess.run(["tar", "czf", str(tgz), "-C", str(ws), "."], check=True)
     return True
@@ -225,7 +248,8 @@ def build_snapshot(row: dict) -> bool:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--per-repo", type=int, default=20)
-    ap.add_argument("--repos", nargs="*", default=list(REPOS))
+    ap.add_argument("--repos", nargs="*", default=[r for r in REPOS if r not in GOOGLE])
+    ap.add_argument("--suffix", default="", help="write candidates<suffix>.jsonl / tasks<suffix>.jsonl")
     a = ap.parse_args()
     SNAP.mkdir(parents=True, exist_ok=True)
     cands = []
@@ -234,20 +258,26 @@ def main() -> None:
         print(f"{slug}: {len(rs)} candidates", flush=True)
         cands += rs
     for r in cands:  # sequential + polite: ~1 req/s
+        if r["repo"] in GOOGLE:  # CL description = commit message without trailers
+            body = re.sub(r"^(PiperOrigin-RevId|COPYBARA_INTEGRATE_REVIEW|GitOrigin-RevId|FUTURE_COPYBARA_INTEGRATE_REVIEW|"
+                          r"Merge-Request|Co-authored-by|Change-Id):.*$", "", r["commit_body"], flags=re.M | re.I).strip()
+            r["problem_statement"] = (r["subject"] + ("\n\n" + body if body else "")).strip()
+            r["statement_source"] = "cl_description"
+            continue
         pr = fetch_pr(r["repo"], int(r["instance_id"].rsplit("_", 1)[1]))
         title, body = pr if pr and pr[0] else (r["subject"], "")
         r["problem_statement"] = (title + ("\n\n" + body if body else "")).strip()
         r["statement_source"] = "pr_page" if pr and pr[0] else "commit"
-    with ThreadPoolExecutor(8) as ex:
+    with ThreadPoolExecutor(int(os.environ.get("SNAP_WORKERS", "8"))) as ex:
         ok = list(ex.map(build_snapshot, cands))
-    with open(PROXY / "candidates.jsonl", "w") as f:
+    with open(PROXY / f"candidates{a.suffix}.jsonl", "w") as f:
         for r in cands:
             f.write(json.dumps(r) + "\n")
-    with open(PROXY / "tasks.jsonl", "w") as f:
+    with open(PROXY / f"tasks{a.suffix}.jsonl", "w") as f:
         for r, good in zip(cands, ok):
             if good:
                 f.write(json.dumps({k: r[k] for k in FIELDS}) + "\n")
-    print(f"tasks: {sum(ok)}/{len(cands)} -> {PROXY / 'tasks.jsonl'}")
+    print(f"tasks: {sum(ok)}/{len(cands)} -> {PROXY / f'tasks{a.suffix}.jsonl'}")
 
 
 if __name__ == "__main__":

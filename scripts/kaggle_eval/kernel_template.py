@@ -18,6 +18,7 @@ RUN_NAME = "__RUN_NAME__"
 TASK_IDS = __TASK_IDS__
 CONCURRENCY = __CONCURRENCY__
 SUBMISSION_B64 = "__SUBMISSION_B64__"
+TASKS_DATASET = "__TASKS_DATASET__"  # "" = competition tasks; else a dataset slug with tasks.jsonl + *.tgz
 
 os.environ.update({
     "LITELLM_LOCAL_MODEL_COST_MAP": "True", "TRANSFORMERS_NO_TF": "1", "VLLM_WORKER_MULTIPROC_METHOD": "spawn",
@@ -41,6 +42,9 @@ DATA = find_dir("/kaggle/input/competitions/gemma-4-developer-agent", "/kaggle/i
 MODEL = find_dir("/kaggle/input/models/google/gemma-4/*/gemma-4-31b-it-qat-w4a16-ct/*",
                  "/kaggle/input/gemma-4/*/gemma-4-31b-it-qat-w4a16-ct/*")
 WORK = Path("/kaggle/working")
+PROXY_DIR = None
+if TASKS_DATASET:
+    PROXY_DIR = find_dir(f"/kaggle/input/*/{TASKS_DATASET}", f"/kaggle/input/datasets/*/{TASKS_DATASET}", f"/kaggle/input/{TASKS_DATASET}")
 
 # --- install wheelhouse exactly like the official getting-started notebook ---
 for pth in glob.glob("/usr/local/lib/python*/dist-packages/*cutlass*.pth") + glob.glob("/usr/local/lib/python*/site-packages/*cutlass*.pth"):
@@ -113,10 +117,6 @@ import shlex as _shlex
 from swegemma.harness import agent_runner as _ar, container_setup as _cs, verification as _vf
 from swegemma.sandbox.subprocess import SubprocessManager as _SM
 
-_COMP_WHEELS = DATA / "wheels"
-subprocess.run([sys.executable, "-m", "pip", "install", "-q", "--no-index", f"--find-links={_COMP_WHEELS}",
-                "hatchling", "pdm-backend", "flit-core", "poetry-core", "editables", "setuptools", "wheel"],
-               capture_output=True)
 _orig_install = _cs.install_test_dependencies
 
 
@@ -126,11 +126,19 @@ def _install_test_dependencies(docker, container_id, repo="", *, fast_path=True,
     paths = docker.sandboxes[container_id]
     sp = next(paths["venv"].glob("lib/python*/site-packages"))
     ws = paths["workspace"]
-    docker.exec(container_id, "cd /workspace && python3 -m pip install -q --disable-pip-version-check --no-index "
-                              "--find-links=/wheels --no-build-isolation --no-deps -e . 2>&1 | tail -2")
-    entries = [str(ws / "src")] if (ws / "src").is_dir() else []
-    entries.append(str(ws))
-    (sp / "000_workspace_first.pth").write_text("\n".join(entries) + "\n")
+    # v3 (minimal): only src-layout repos get their src/ ahead of system site-packages. Non-src repos
+    # (fastapi) keep the exact no-fix environment (v1/v2's editable install + backend installs changed
+    # starlette resolution and broke older fastapi tasks: 62 -> 16 gold passes).
+    if (ws / "src").is_dir():
+        (sp / "000_workspace_src_first.pth").write_text(str(ws / "src") + "\n")
+    _pdir = globals().get("PROXY_DIR")
+    if _pdir:  # proxy benchmark: extra test-only wheels (attrs excluded: never shadow the attrs repo)
+        _g = set((Path(_pdir) / "google_wheels.txt").read_text().split()) if (Path(_pdir) / "google_wheels.txt").exists() else set()
+        _whl = [w for w in sorted(Path(_pdir).glob("*.whl")) if not w.name.startswith("attrs-")
+                and (w.name not in _g or repo.startswith(("google/", "google-deepmind/")))]
+        if _whl:
+            docker.exec(container_id, "python3 -m pip install -q --disable-pip-version-check --no-index --no-deps "
+                        + " ".join(_shlex.quote(str(w)) for w in _whl) + " 2>&1 | tail -2")
     # NOTE: do not run sandbox/setup.py --fast-path here: it puts every workspace subdirectory on
     # sys.path (e.g. fastapi/requests.py then shadows the real `requests`) - kverify-fix v1 lost all
     # 67 fastapi gold passes that way.
@@ -139,7 +147,7 @@ def _install_test_dependencies(docker, container_id, repo="", *, fast_path=True,
 for _m in (_cs, _vf, _ar):
     if hasattr(_m, "install_test_dependencies"):
         _m.install_test_dependencies = _install_test_dependencies
-print("sandbox fix installed (workspace-first .pth + editable install)", flush=True)
+print("sandbox fix v3 installed (src-layout precedence only)", flush=True)
 # -------------------------------------------------------------------------------------------------
 
 declared = validate_single_declared_model(AGENT_DIR)
@@ -208,8 +216,21 @@ raw = yaml.safe_load((AGENT_DIR / "eval_config.yaml").read_text()) if (AGENT_DIR
 ev = (raw or {}).get("evaluation", raw or {})
 limits, gen = build_submission_limits()
 results_dir = WORK / "results" / RUN_NAME
+TASKS_PATH, SNAP_DIR, GRAPH_DIR, EMB_DIR = DATA / "tasks.jsonl", DATA / "snapshots", DATA / "graphs", DATA / "embeddings"
+if PROXY_DIR:
+    _ev = WORK / "proxy_evaldata"
+    (_ev / "snapshots").mkdir(parents=True, exist_ok=True)
+    for _d in ("graphs", "embeddings"):
+        (_ev / _d).mkdir(exist_ok=True)
+    for _t in PROXY_DIR.glob("*.tgz"):
+        if not (_ev / "snapshots" / _t.name).exists():
+            os.symlink(_t, _ev / "snapshots" / _t.name)
+    shutil.copy(PROXY_DIR / "tasks.jsonl", _ev / "tasks.jsonl")
+    TASKS_PATH, SNAP_DIR, GRAPH_DIR, EMB_DIR = _ev / "tasks.jsonl", _ev / "snapshots", _ev / "graphs", _ev / "embeddings"
+    if not TASK_IDS:
+        TASK_IDS = [json.loads(l)["instance_id"] for l in open(TASKS_PATH) if l.strip()]
 cfg = EvalConfig(
-    tasks_path=DATA / "tasks.jsonl", snapshots_dir=DATA / "snapshots", results_dir=results_dir,
+    tasks_path=TASKS_PATH, snapshots_dir=SNAP_DIR, results_dir=results_dir,
     submission_dir=AGENT_DIR, models=models, sandbox="subprocess",
     timeout_seconds=int(ev.get("timeout_seconds", 300)), max_time_minutes=float(ev.get("max_time_minutes", 60)),
     max_tool_calls=int(ev.get("max_tool_calls", 100)),
@@ -217,7 +238,7 @@ cfg = EvalConfig(
     task_ids=TASK_IDS or None, limits=limits, generation_constraints=gen, adapter_manifest=adapters,
     context_cache_config=ContextCacheConfig(min_tokens=2048, ttl_seconds=1800, cache_intervals=10),
     events_compaction_config=EventsCompactionConfig(compaction_interval=5, overlap_size=2, token_threshold=14336, event_retention_size=5),
-    graph_dir=str(DATA / "graphs"), embeddings_dir=str(DATA / "embeddings"), wheels_dir=DATA / "wheels",
+    graph_dir=str(GRAPH_DIR), embeddings_dir=str(EMB_DIR), wheels_dir=DATA / "wheels",
     concurrency=CONCURRENCY, display_mode="quiet",
 )
 res = asyncio.run(Evaluator(cfg).run())
