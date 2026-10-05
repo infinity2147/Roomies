@@ -66,3 +66,12 @@ Ranked by the forensics' estimated gain (each ≤ one standard error alone; comb
 - E1 starts when: (a) hardware is available, (b) D1 Kaggle env fixed, (c) C6a×4 capture runs produce ≥30 clean successful trajectories (D5 filters).
 
 **D8 — Needs the user.** Join the paper competition `gemma-4-developer-agent-paper` on Kaggle (account shows not entered). Arrange training hardware (pending training plan).
+
+# Round 2 (2026-10-05) — leaderboard reality check
+
+**Evidence.** C6a_t5 scored **0.06** on the public LB (vs ~0.20 on our 107 public-repo valid tasks: C6a run 1 = 21/107; 21/97 excluding the 10 env-broken src-layout tasks). The public "anchor" bundle (thinking on, read-only analyzer sub-agent, no eval_config) scored 0.12. Harness source (`swegemma/harness/sample_verification.py`) describes the benchmark as "all 13 repositories" with only 4 public ⇒ the hidden set very likely contains ~9 unseen repos. LoRA smoke on Kaggle scorer stack: adapter served for 283/283 agent steps (P3 closed).
+
+**D11 — Our offline metric is invalid for model selection until calibrated.** All C-series choices were made on 4 public repos. New primary metric: a proxy benchmark from likely hidden repos (hidden-set analyst, in progress); calibration requirement: the offline metric must rank anchor (0.12) > C6a_t5 (0.06).
+**D12 — Calibration runs on Kaggle GPUs** (gated on kverify-fix2 env check): anchor_public vs C6a_t5 vs C8 on the 107 public valid tasks now; repeat on the proxy benchmark when built.
+**D13 — Next submission = C8 (anchor + 2 measured hygiene fixes)**: tests whether thinking-on + analyzer sub-agent generalizes better; no eval_config (anchor proved this fits 12 h).
+**D14 — Account hygiene**: eval kernels run on `vedantmoghe`; submissions come from another account — both must be on the same Kaggle Team (rules §3.5).
