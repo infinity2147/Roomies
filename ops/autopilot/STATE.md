@@ -3,6 +3,22 @@
 ## Champion
 C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB 0.13 (2026-10-06).
 
+## TODAY'S PUSH (2026-10-07, deadline 12:30 IST): pick the best evaluated submission
+- GPU eval queue (ops/queue): workers = `sbatch -p <a40|l40|dgx> --qos=<same> --gres=gpu:N --cpus-per-task=$((12*N)) --mem=$((80*N))G ops/slurm/ap_worker.sbatch`
+  (QoS caps: a40 ≤2 GPU/job & 3 running jobs, l40 ≤4/job & 4 jobs, dgx ≤4/job & 4 jobs). One vLLM (TP=1) per GPU,
+  each slot pulls items from ops/queue/pending (name <prio>_<shard>_<run>), results in results/px/<run>/<shard>/.
+  Add work: `ops/queue/enqueue.sh <prio> <submission_dir> <run> proxy` (8 stratified shards × 19 = 152 proxy tasks).
+  A40/L40 nodes are Rocky 8: works because vllm._moe_C import is optional and cryptography was swapped to manylinux_2_28.
+- Queued (prio): 10 = C8 s1 + C9a s1, 20 = C9b s1, 30 = anchor s1 + c6a_t5 s1 (calibration), 40 = C8 s2 + C9a s2.
+- Gold/empty env check of proxy on Prajna: job ap-verify -> results/verify_prajna_proxy_{gold,empty}/verify.jsonl;
+  score only tasks with gold=pass, empty=fail.
+- Decision rule (by ~11:30): paired per-task comparison on completed shards (same tasks for both runs). Release C9a
+  (or C9b) instead of C8 only if it is ≥ C8 on the paired set; else release C9a anyway as the informative one-change
+  experiment (already packaged). Update submissions/daily/2026-10-07/RELEASE.md (+ the SUBMIT line) with the evidence table.
+- Also keep GPUs busy: if the queue runs dry, enqueue more seeds / new one-change candidates (anti-loop guard,
+  brute-force checks, early first edit) built from C8.
+- LoRA preflight PASSED on A100-80GB (job 337543): 32k seq, peak 61.8 GiB, ~110 tok/s -> E1 training is feasible on 1 GPU.
+
 ## Running jobs
 (none)
 

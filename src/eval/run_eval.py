@@ -52,7 +52,15 @@ def main() -> None:
     ap.add_argument("--concurrency", type=int, default=3)
     ap.add_argument("--api-base", default=os.environ.get("OPENAI_BASE_URL", "http://127.0.0.1:8011/v1"))
     ap.add_argument("--display", default="quiet")
+    ap.add_argument("--proxy", action="store_true",
+                    help="proxy benchmark: data/derived/proxy tasks/snapshots + proxy test-dep wheels (verify_proxy)")
     a = ap.parse_args()
+    data, tasks_path, snaps = DATA, DATA / "tasks.jsonl", DATA / "snapshots"
+    if a.proxy:
+        import src.analysis.hidden.verify_proxy  # noqa: F401  (patches install_test_dependencies)
+
+        px = ROOT / "data" / "derived" / "proxy"
+        data, tasks_path, snaps = px / "shim", px / "valid_tasks.jsonl", px / "snapshots"
 
     litellm.drop_params = True
     sub = Path(a.submission_dir).resolve()
@@ -68,8 +76,8 @@ def main() -> None:
     models = setup_gemma_model_registry(api_base=a.api_base, api_key="EMPTY", adapter_manifest=adapters)
     limits, gen_constraints = build_submission_limits()
     cfg = EvalConfig(
-        tasks_path=DATA / "tasks.jsonl",
-        snapshots_dir=DATA / "snapshots",
+        tasks_path=tasks_path,
+        snapshots_dir=snaps,
         results_dir=Path(a.results_dir),
         submission_dir=sub,
         models=models,
@@ -86,9 +94,9 @@ def main() -> None:
         events_compaction_config=EventsCompactionConfig(
             compaction_interval=5, overlap_size=2, token_threshold=14336, event_retention_size=5
         ),
-        graph_dir=str(DATA / "graphs"),
-        embeddings_dir=str(DATA / "embeddings"),
-        wheels_dir=DATA / "wheels",
+        graph_dir=str(data / "graphs"),
+        embeddings_dir=str(data / "embeddings"),
+        wheels_dir=data / "wheels",
         concurrency=a.concurrency,
         display_mode=a.display,
     )
