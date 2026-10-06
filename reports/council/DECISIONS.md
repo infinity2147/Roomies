@@ -75,3 +75,7 @@ Ranked by the forensics' estimated gain (each ≤ one standard error alone; comb
 **D12 — Calibration runs on Kaggle GPUs** (gated on kverify-fix2 env check): anchor_public vs C6a_t5 vs C8 on the 107 public valid tasks now; repeat on the proxy benchmark when built.
 **D13 — Next submission = C8 (anchor + 2 measured hygiene fixes)**: tests whether thinking-on + analyzer sub-agent generalizes better; no eval_config (anchor proved this fits 12 h).
 **D14 — Account hygiene**: eval kernels run on `vedantmoghe`; submissions come from another account — both must be on the same Kaggle Team (rules §3.5).
+
+# 2026-10-07 — C8 result
+**C8 (public anchor + 2 measured hygiene fixes: /tmp via heredoc, revert test edits) scored LB 0.13** (vs C6a_t5 0.06, anchor 0.12). Confirms D11: thinking-on + read-only analyzer sub-agent generalizes to the hidden repos; our public-repo-tuned C6a did not. C8 is the new base (successor to the frozen C6a for SFT data collection once proxy calibration confirms).
+Compute: moving to IITB Prajna (DGX/A40/L40 SLURM partitions) — enables scorer-identical TP=4 serving, fast eval, and E1 LoRA training. Migration: scripts/migrate/{push_to_prajna.sh, setup_env.sh}.
