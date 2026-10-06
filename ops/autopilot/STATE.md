@@ -9,18 +9,28 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
   each slot pulls items from ops/queue/pending (name <prio>_<shard>_<run>), results in results/px/<run>/<shard>/.
   Add work: `ops/queue/enqueue.sh <prio> <submission_dir> <run> proxy` (8 stratified shards × 19 = 152 proxy tasks).
   A40/L40 nodes are Rocky 8: works because vllm._moe_C import is optional and cryptography was swapped to manylinux_2_28.
-- Queued (prio): 10 = C8 s1 + C9a s1, 20 = C9b s1, 30 = anchor s1 + c6a_t5 s1 (calibration), 40 = C8 s2 + C9a s2.
-- Gold/empty env check of proxy on Prajna: job ap-verify -> results/verify_prajna_proxy_{gold,empty}/verify.jsonl;
-  score only tasks with gold=pass, empty=fail.
-- Decision rule (by ~11:30): paired per-task comparison on completed shards (same tasks for both runs). Release C9a
-  (or C9b) instead of C8 only if it is ≥ C8 on the paired set; else release C9a anyway as the informative one-change
-  experiment (already packaged). Update submissions/daily/2026-10-07/RELEASE.md (+ the SUBMIT line) with the evidence table.
+- Queued (prio): 10 = C8 s1 + C9a s1, 11 = C9e s1, 12 = C9all s1, 15 = C9c s1, 22 = C9b s1, 25 = C9d s1,
+  30 = anchor s1 + c6a_t5 s1 (calibration), 40 = C8/C9a/C9all s2, 41 = C9e s2. (C9c/C9d/C9all were built and
+  queued ~04:24 before this cycle: c9c = early first edit + brute-force checks, c9d = import check before submit,
+  c9all = c9a+b+c+d bundle.)
+- Proxy validity: Prajna gold/empty check DONE (job 337590): gold 152/152, empty 0/152 -> all 152 tasks count.
+- Report: `.venv/bin/python ops/queue/px_report.py [--done-only]` (per-run pass/ctxErr/err/empty + paired vs c8).
+- **D16 finding:** ~31% of the first 13 proxy tasks died with ContextWindowExceededError inside the code_analyzer
+  sub-agent (no compaction in sub-agent sessions). C9e = C8 + analyzer context cap built & queued.
+- RELEASE.md (SUBMIT line) is PROVISIONAL = C9e. NOTE: the daemon skips the release cycle because RELEASE.md exists,
+  so the work cycle running at/after ~10:30 IST MUST finalize it, per the D16 rule: C9e if its paired shards vs C8 show
+  fewer ctx errors and diff ≥ 0; else C9a if diff ≥ 0; else C9e anyway (most informative). Put the evidence table
+  (px_report output) into RELEASE.md and keep line 1 `SUBMIT: <zip>`.
 - Also keep GPUs busy: if the queue runs dry, enqueue more seeds / new one-change candidates (anti-loop guard,
   brute-force checks, early first edit) built from C8.
 - LoRA preflight PASSED on A100-80GB (job 337543): 32k seq, peak 61.8 GiB, ~110 tok/s -> E1 training is feasible on 1 GPU.
 
-## Running jobs
-(none)
+## Running jobs (as of 05:30 IST 2026-10-07)
+- ap-worker (ops/slurm/ap_worker.sbatch, all pull from ops/queue/pending; logs results/slurm/ap_worker_<id>.out):
+  running 337605 (a40 1 GPU), 337608 (a40 2), 337687 (a40 2), 337593 (l40 1), 337612 (l40 1);
+  pending 337609 (dgx 4), 337610 (dgx 2), 337611 (l40 2). Total if all start = 15 GPUs (cap 16).
+  Workers exit when the queue is empty (time limit 10 h). Check: ls ops/queue/{running,done,failed}; failed items
+  -> inspect results/px/<run>/<shard>/run_eval.log and re-enqueue by moving the item back to pending/.
 
 ## Environment status (2026-10-07)
 - Prajna: .venv, .venv-eval built on login; .venv-harness (vLLM 0.19.1 + Kaggle Gemma-4 LoRA build, torch 2.10 cu128)
@@ -32,6 +42,9 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
   investigated. Dataset vedantmoghe/gemma-rl-proxy is `ready`. results/chain_master.sh (old machine) never got past the gate.
 
 ## Backlog (prioritized; re-prioritize every cycle)
+0. P0 (today) Finalize RELEASE.md by ~11:30 (see the push section). Then plan C10 = C9e + the C9a-d changes that win
+   their paired tests (≥2 seeds). Check whether root-agent ctx errors also occur (px_report ctxErr after C9e) and
+   whether other analyzer pathologies remain (malformed tool-arg keys such as `start_line"`).
 1. P0 Prajna eval pipeline: ops/slurm/ap_eval.sbatch = start vLLM (scorer-identical: TP=4, max_model_len 32768,
    same flags as the Kaggle scorer) on 4 A100s + run scripts/eval_submission.sh on a task set + write a summary.
    Allow 2 evals per 8-GPU node. Verify the sandbox (no internet on DGX: tests must not need pip) with gold/empty
@@ -39,7 +52,7 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
 2. P0 Proxy calibration: anchor_public vs c6a_t5 vs c8_anchorplus, ≥2 seeds each, on the proxy benchmark (+ the 107
    public valid tasks). Pass rule: anchor > c6a_t5 and C8 ≥ anchor (matches LB). Decision memo either way.
 3. P1 Debug kverify-fix3 ERROR (Kaggle) only if Kaggle runs are still needed for L4 runtime checks.
-4. P1 C9 = C8 + one change at a time (each must be a separate candidate so LB results are interpretable):
+4. P1 (in progress: C9a-e + C9all queued) C9 = C8 + one change at a time (each must be a separate candidate so LB results are interpretable):
    a) edit robustness when new_string contains ``` fences (trajectory_forensics: ~600 malformed edit calls),
    b) early first edit / anti-loop guard, c) brute-force property checks over long hand-simulation (D3.1).
 5. P1 E1: trajectory capture with C8 on proxy + public train tasks → D5 filters → LoRA SFT (src/sft/train_lora.py,
@@ -52,4 +65,6 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
 - Joined the paper competition (D8)?
 
 ## Journal
+- 2026-10-07 05:30: cycle 042819: harvested the verify job (proxy valid), found the analyzer ctx overflow (D16), built C9e,
+  added a 2-GPU a40 worker, px_report.py, provisional RELEASE = C9e.
 - 2026-10-07: autopilot installed (ops/autopilot). First cycles should do backlog items 1–2.
