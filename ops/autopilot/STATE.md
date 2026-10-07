@@ -3,21 +3,19 @@
 ## Champion
 C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB 0.13 (2026-10-06).
 
-## TODAY'S PUSH (2026-10-07, deadline 12:30 IST) — RELEASE = C9ae (D24)
-- At 10:45 the L4 timing kernels (`gemma-rl-eval-c11t-t30s`, `-c9ae-t30s`) were still RUNNING (serial since 08:30, est. done ~14:30).
-  **11:28 cycle:** `.venv/bin/kaggle kernels status vedantmoghe/gemma-rl-eval-c11t-t30s`; only if it is COMPLETE before 12:00 and passes D22,
-  change today's RELEASE.md line 1 to `SUBMIT: submission_2026-10-07_c11t_c9ae_think.zip`. Otherwise do nothing; C9ae ships.
-- px s1 FINAL (10:40, leak 0): C11t vs C9ae n=152 +0.112 (24W/7L z+3.05); time 1.25× C9ae on same GPU types (median per-task 1.54×).
-  C10 vs C9ae n=122 +0.000 → C10 DROPPED (D24). C9ae vs C8 n=133 +0.083.
+## TODAY (2026-10-07) — RELEASE = C9ae (final; D22 not met: C11t kernel still RUNNING at 11:30)
+- Nothing left to do for today's release. If the C9ae LB score arrives, log it in lb_scores.tsv (vs C8 0.13; noise ±0.03).
 
-## Tomorrow (2026-10-08): submissions/daily/2026-10-08/RELEASE.md DRAFT. Planned pick = C11t once the L4 kernel passes D9 (D24)
-- When the kernels are COMPLETE: `.venv/bin/kaggle kernels output vedantmoghe/gemma-rl-eval-c11t-t30s -p results/kaggle/c11t-t30s` (and c9ae →
-  results/kaggle/c9ae-t30s), then `.venv/bin/python scripts/kaggle_eval/d9_timing.py c11t-t30s c9ae-t30s`. If it PASSES, set the 2026-10-08 line 1 to
-  `SUBMIT: submission_2026-10-08_c11t_c9ae_think.zip`. If it FAILS, keep C9ae and look at C11n (faster) as the thinking candidate.
-- After the kernels free up, launch an L4 timing kernel for C11n or C13t (whichever leads vs C11t): `scripts/kaggle_eval/make_kernel.py` (see D20, pinned image).
-- C11n `submissions/c11n_think_noanalyzer` (D21) and C13t `submissions/c13t_c11t_locskill` (D23) are running at prio 07, paired vs C11t
-  (n=14 / 6 so far). Zips are validated in the 2026-10-08 dir. Upgrade over C11t only by the D21/D23 rules (≥ 60 pairs).
-- If the 2026-10-07 LB for C9ae is in by then, log it (lb_scores.tsv) and interpret (vs C8 0.13; noise ±1–2 tasks ≈ ±0.03).
+## Tomorrow (2026-10-08): submissions/daily/2026-10-08/RELEASE.md DRAFT (line 1 = C9ae). Planned pick = C11t if the D25 gate passes
+- **D25 (11:50):** C9ae L4 kernel COMPLETE: 8/30, 4.92 min/task serial (results/kaggle/c9ae-t30s). 150×mean rule fails even for C9ae
+  (12.8 h) though C8-speed runs completed on the scorer → gate is now the paired L4 total-time ratio vs c9ae-t30s ≤ 1.10 (same 30 ids,
+  data/derived/l4_t30_ids.txt). L4 cost model: decode 87% of time (~35 tok/s); predicts C11t ≈ 1.04× C9ae.
+- When `gemma-rl-eval-c11t-t30s` is COMPLETE (est. ~14:30): `.venv/bin/kaggle kernels output vedantmoghe/gemma-rl-eval-c11t-t30s -p results/kaggle/c11t-t30s`,
+  then `.venv/bin/python scripts/kaggle_eval/capture_task_times.py c11t-t30s c9ae-t30s` (d9_timing.py does not work: no task_results.jsonl in
+  kernel output). ≥25 tasks and ratio ≤ 1.10 → set 2026-10-08 line 1 to `SUBMIT: submission_2026-10-08_c11t_c9ae_think.zip` + D-entry.
+- `gemma-rl-eval-c11n-t30s` (same ids) pushed 11:45 (est. done ~15:00). Fallback if C11t > 1.10: C11n if ≤ 1.10 and proxy ≥ −0.01 vs C11t.
+  If both > 1.10: build C11t + eval_config `max_time_minutes` cap (+ thinking_budget 2048) and L4-time it; keep C9ae meanwhile.
+- C11n / C13t vs C11t on proxy (11:40): C11n n=48 +0.021 (4W/3L), C13t n=45 +0.044 (5W/3L) — not decisive yet (≥60 pairs needed, D21/D23).
 
 ## Queue (ops/queue; items sorted by name)
 07 C11n s1 + C13t s1 (s0–s1 running) + C8 s7 → 08 anchor/c6a_t5 s1 (D11 calibration) + C9ae s2 → 14 C9all → 15 C9c → 20 C9a/C9e s6–s7 → 22 C9b
@@ -28,14 +26,14 @@ It writes results/px/px_c11t_s2 (px_report picks it up) and results/capture/<job
 Workers: `sbatch -p <a40|l40|dgx> --qos=<same> --gres=gpu:N --cpus-per-task=$((12*N)) --mem=$((80*N))G ops/slurm/ap_worker.sbatch`
 (QoS caps: a40 ≤2 GPU/job & 3 jobs, l40 ≤4/job & 4 jobs, dgx ≤4/job & 4 jobs). Add work: `ops/queue/enqueue.sh <prio> <sub> <run> proxy`. leak must be 0 (D18).
 
-## Running jobs (as of 10:45 IST 2026-10-07)
+## Running jobs (as of 11:50 IST 2026-10-07)
 - ap-worker RUNNING: 337605 (a40 1), 337608 (a40 2), 337687 (a40 2), 337593 (l40 1), 337612 (l40 1) = 7 GPUs. 10 h limit → they END ~14:15–14:30 IST.
-  **The next cycle after 14:30 must resubmit workers** (keep about 8–15 GPUs) or the main queue stalls.
-- PENDING: 338533 (dgx 4), 338535 (l40 2), 339851 ap-worker-cap (l40 2, capture queue). 338534 (dgx 2) was cancelled to make room for the capture worker.
-  When they start: `grep selftest results/slurm/ap_worker_<id>.out` must say OK. For 339851, also check that the log has
-  "capture proxy" lines and results/capture/339851_*.jsonl is growing. If the capture shards fail (ops/queue_cap/failed), move the items
-  back to ops/queue/pending (as plain runs) and debug the capture setup offline.
-- Kaggle (vedantmoghe, private, pinned image D20): `gemma-rl-eval-c9ae-t30s`, `gemma-rl-eval-c11t-t30s` RUNNING since 08:30 IST (2 of 2 slots).
+  **The first cycle after 14:15 must resubmit workers** (keep total ≤ 16 GPUs incl. pending) or the main queue stalls.
+- PENDING: 338533 (dgx 4), 338535 (l40 2), 339851 ap-worker-cap (l40 2, capture queue ops/queue_cap). When they start:
+  `grep selftest results/slurm/ap_worker_<id>.out` must say OK; for 339851 also check "capture proxy" lines and results/capture/339851_*.jsonl growing.
+  If capture shards fail (ops/queue_cap/failed), move items back to ops/queue/pending as plain runs and debug offline.
+- Kaggle (vedantmoghe, private, pinned image D20; 2 slots both busy): `gemma-rl-eval-c11t-t30s` RUNNING since 08:30; `gemma-rl-eval-c11n-t30s` pushed 11:45.
+  `gemma-rl-eval-c9ae-t30s` COMPLETE (fetched).
 
 ## Findings this cycle
 - Harness (reports/autopilot/harness_knobs_20261007.md): no schema key hard-caps sub-agent calls; submit_patch doesn't end the run;
@@ -54,7 +52,7 @@ Workers: `sbatch -p <a40|l40|dgx> --qos=<same> --gres=gpu:N --cpus-per-task=$((1
   investigated. Dataset vedantmoghe/gemma-rl-proxy is `ready`. results/chain_master.sh (old machine) never got past the gate.
 
 ## Backlog (prioritized; re-prioritize every cycle)
-0. P0 11:28 cycle: D22 last check (see TODAY). Afternoon: fetch the L4 kernels → d9_timing → finalize the 2026-10-08 line 1 (C11t or C9ae).
+0. P0 Afternoon: fetch c11t-t30s (and later c11n-t30s) → capture_task_times.py vs c9ae-t30s → finalize the 2026-10-08 line 1 by D25.
 1. P0 Resubmit workers when the 10 h workers end (~14:30). Then L4 timing for the C11n/C13t leader once the Kaggle slots free.
 2. P0 Proxy calibration (D11): anchor + c6a_t5 s1 at prio 08. Pass rule: anchor > c6a_t5, and C8 ≥ anchor.
 3. P1 C11n vs C11t and C13t vs C11t (D21/D23) → candidate for 2026-10-09. If both win: build C11n + repo-locate on the root.
@@ -69,6 +67,9 @@ Workers: `sbatch -p <a40|l40|dgx> --qos=<same> --gres=gpu:N --cpus-per-task=$((1
 - Joined the paper competition (D8)?
 
 ## Journal
+- 2026-10-07 11:50: cycle 112820: no LB; C11t kernel still running → C9ae ships today (final). C9ae L4 kernel done: 4.92 min/task,
+  150-task D9 rule unattainable even for C8-speed → D25 gate = L4 ratio vs C9ae ≤ 1.10 (model predicts C11t 1.04×); capture_task_times.py;
+  C11n L4 kernel pushed on the same 30 ids.
 - 2026-10-07 10:45: cycle 102819: no LB; C11t s1 complete (+0.112 vs C9ae, n=152, 1.25× time); L4 kernels not done → C9ae ships today
   (D24), C11t planned for 2026-10-08 pending L4; C10 dropped; capture option in ap_worker (APQ/CAPTURE) + capture queue for C11t s2 (job 339851);
   C11n/C13t zips validated in the 2026-10-08 dir.
