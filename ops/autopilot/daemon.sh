@@ -27,7 +27,7 @@ while true; do
 (Cycle $ts, kind=$kind, now $(date '+%F %T %Z'). Today's release dir: submissions/daily/$today/)"
   log "cycle $ts $kind start"
   t0=$(date +%s)
-  timeout --kill-after=120 "$CYCLE_TIMEOUT" claude -p "$prompt" --model "${AP_MODEL:-sonnet}" ${AP_CLAUDE_FLAGS:---dangerously-skip-permissions} \
+  timeout --kill-after=120 "$CYCLE_TIMEOUT" claude -p "$prompt" --model "${AP_MODEL:-claude-sonnet-5-5}" ${AP_CLAUDE_FLAGS:---dangerously-skip-permissions} \
       --output-format stream-json --verbose > "$out.jsonl" 2> "$out.err" < /dev/null
   rc=$?; dt=$(( $(date +%s) - t0 ))
   # final assistant summary -> .txt (last "result" event of the stream)
