@@ -18,7 +18,9 @@ Cadence changed: cycles every 15 min, up to 60 min of work each, 16–20 GPUs bu
 5. Synthetic tasks (SWE-smith-style bug injection) + more Google-style repos for proxy/SFT.
 6. Kaggle intel (memo §6c): public LB top 0.24, cluster 0.15, we are 0.13; public = ~half of hidden; 2 finals selected.
    A participant saw `get_code_*` graph tools return EMPTY in official runs → every candidate (esp. C13t locate skill) must
-   degrade gracefully with no graphs/embeddings; verify C13t's skill uses only grep/BM25 over /workspace.
+   degrade gracefully with no graphs/embeddings. Checked 12:55: C13t's `skills/repo-locate/scripts/locate.py` has no
+   graph/embedding dependency; the analyzer merely *offers* get_code_* tools, which already return empty on proxy repos
+   (shim has public graphs only) — so proxy scores are measured under the pessimistic no-graph condition. OK.
 7. Paper track: target the **New Resource** prize with the proxy benchmark + synthetic generator + forensics taxonomy
    (memo §6c); RL-re-ranked traversal only as a section if results exist by ~Nov 1.
 
