@@ -20,6 +20,9 @@ CONC=${CONC:-$(( MEMGB > 60000 ? 10 : 6 ))}
 echo "$(date +%T) node $(hostname -s) gpus=${CUDA_VISIBLE_DEVICES} conc=$CONC"
 export LITELLM_LOCAL_MODEL_COST_MAP=True OTEL_SDK_DISABLED=true OPENAI_API_KEY=EMPTY
 export TP=1 MAX_LEN=32768 GPU_UTIL=0.92
+# The harness baseline `git commit` silently fails without a git identity (cn17-dgx: no auto-detectable email),
+# which leaks harness conftest.py/pytest.ini into every patch. Set it explicitly (D18).
+export GIT_AUTHOR_NAME=swegemma GIT_AUTHOR_EMAIL=swegemma@localhost GIT_COMMITTER_NAME=swegemma GIT_COMMITTER_EMAIL=swegemma@localhost
 
 slot() {  # $1 = local gpu index
   local i=$1 port=$((8100 + $1)) tag="${SLURM_JOB_ID}_$1"
@@ -52,6 +55,8 @@ slot() {  # $1 = local gpu index
   kill $vpid; wait $vpid 2>/dev/null
   echo "$(date +%T) slot $i: queue empty, exiting"
 }
+( t=$(mktemp -d) && cd "$t" && git init -q && touch x && git add -A && git commit -qm t && echo "git-commit selftest OK" \
+  || echo "git-commit selftest FAILED"; rm -rf "$t" )
 .venv-harness/bin/python scripts/patch_vllm_gemma4_pp.py >/dev/null
 for i in $(seq 0 $((NG - 1))); do slot $i & sleep 5; done
 wait

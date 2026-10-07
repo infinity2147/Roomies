@@ -17,6 +17,7 @@ a = ap.parse_args()
 
 done = {p.name for p in (ROOT / "ops/queue/done").iterdir()}
 res = defaultdict(dict)  # (cand, seed) -> {task: row}
+leak = defaultdict(int)  # (cand, seed) -> patches containing harness conftest.py/pytest.ini (D18: broken worker)
 for f in sorted((ROOT / "results/px").glob("px_*/s*/task_results.jsonl")):
     run, shard = f.parent.parent.name, f.parent.name
     m = re.match(r"px_(.+)_s(\d+)$", run)
@@ -24,11 +25,14 @@ for f in sorted((ROOT / "results/px").glob("px_*/s*/task_results.jsonl")):
         continue
     if a.done_only and not any(d.endswith(f"_{shard}_{run}") for d in done):
         continue
+    for pf in (f.parent / "patches").glob("*"):
+        t = pf.read_text(errors="ignore")
+        leak[(m[1], m[2])] += ("b/conftest.py" in t) or ("b/pytest.ini" in t)
     for line in open(f):
         r = json.loads(line)
         res[(m[1], m[2])][r["instance_id"]] = r
 
-print(f"{'run':<22}{'n':>5}{'pass':>6}{'rate':>7}{'min/task':>9}{'ctxErr':>7}{'err':>5}{'empty':>6}")
+print(f"{'run':<22}{'n':>5}{'pass':>6}{'rate':>7}{'min/task':>9}{'ctxErr':>7}{'err':>5}{'empty':>6}{'leak':>5}")
 for (c, s), rows in sorted(res.items()):
     v = list(rows.values()); n = len(v)
     p = sum(r["resolved"] for r in v)
@@ -36,7 +40,7 @@ for (c, s), rows in sorted(res.items()):
     err = sum(bool(r.get("error")) for r in v)
     emp = sum(not r.get("agent_patch_size") for r in v)
     t = sum(r.get("duration_seconds") or 0 for r in v) / max(n, 1) / 60
-    print(f"{c+'_s'+s:<22}{n:>5}{p:>6}{p/max(n,1):>7.3f}{t:>9.1f}{ctx:>7}{err:>5}{emp:>6}")
+    print(f"{c+'_s'+s:<22}{n:>5}{p:>6}{p/max(n,1):>7.3f}{t:>9.1f}{ctx:>7}{err:>5}{emp:>6}{leak[(c, s)]:>5}")
 
 print(f"\nPaired vs {a.base} (pairs = same task & seed; wins = cand pass & base fail):")
 cands = sorted({c for c, _ in res} - {a.base})

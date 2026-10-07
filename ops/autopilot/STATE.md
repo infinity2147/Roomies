@@ -4,40 +4,30 @@
 C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB 0.13 (2026-10-06).
 
 ## TODAY'S PUSH (2026-10-07, deadline 12:30 IST): pick the best evaluated submission
-- GPU eval queue (ops/queue): workers = `sbatch -p <a40|l40|dgx> --qos=<same> --gres=gpu:N --cpus-per-task=$((12*N)) --mem=$((80*N))G ops/slurm/ap_worker.sbatch`
-  (QoS caps: a40 ≤2 GPU/job & 3 running jobs, l40 ≤4/job & 4 jobs, dgx ≤4/job & 4 jobs). One vLLM (TP=1) per GPU,
-  each slot pulls items from ops/queue/pending (name <prio>_<shard>_<run>), results in results/px/<run>/<shard>/.
-  Add work: `ops/queue/enqueue.sh <prio> <submission_dir> <run> proxy` (8 stratified shards × 19 = 152 proxy tasks).
-  A40/L40 nodes are Rocky 8: works because vllm._moe_C import is optional and cryptography was swapped to manylinux_2_28.
-- **Queue reordered 05:45 (D17):** 05 = C9e s1 shards s0–s5, 06 = C9ae s1 s0–s5 (C9ae = C8+C9a+C9e, submissions/c9ae_editfix_analyzercap),
-  then 10 = C8/C9a s1 s6–s7, 11 = C9e/C9ae s1 s6–s7. Original queue: 10 = C8 s1 + C9a s1, 11 = C9e s1, 12 = C9all s1, 15 = C9c s1, 22 = C9b s1, 25 = C9d s1,
-  30 = anchor s1 + c6a_t5 s1 (calibration), 40 = C8/C9a/C9all s2, 41 = C9e s2. (C9c/C9d/C9all were built and
-  queued ~04:24 before this cycle: c9c = early first edit + brute-force checks, c9d = import check before submit,
-  c9all = c9a+b+c+d bundle.)
-- Proxy validity: Prajna gold/empty check DONE (job 337590): gold 152/152, empty 0/152 -> all 152 tasks count.
-- Report: `.venv/bin/python ops/queue/px_report.py [--done-only]` (per-run pass/ctxErr/err/empty + paired vs c8).
-- **D16 finding:** ~31% of the first 13 proxy tasks died with ContextWindowExceededError inside the code_analyzer
-  sub-agent (no compaction in sub-agent sessions). C9e = C8 + analyzer context cap built & queued.
-- **Results at 05:40:** C8 s1 22/77 (0.286), C9a s1 25/65 (0.385). Paired C9a−C8 = +0.095 (n=63, 7W/1L, z=+2.12).
-  ctxErr: C8 10/77, C9a 9. 2 tasks (click_3704, jinja_1984) fail in both runs with test_patch "can't find file"
-  (the agent deleted a test file; a candidate for a C9f fix: only `rm` files that `git status` lists as `??`).
-- **RELEASE.md is now PROVISIONAL = C9a (D17 supersedes the D16 rule below).** Final rule: largest paired diff vs C8
-  among {C9a, C9e, C9ae} (C9e/C9ae need ≥38 pairs; C9ae wins ties within 0.03 of C9a if it has fewer ctxErr); else C9a.
-  Update the table in RELEASE.md, keep line 1 `SUBMIT: <zip>`. All three zips are in submissions/daily/2026-10-07/.
-- (superseded) RELEASE.md (SUBMIT line) was PROVISIONAL = C9e. NOTE: the daemon skips the release cycle because RELEASE.md exists,
-  so the work cycle running at/after ~10:30 IST MUST finalize it, per the D16 rule: C9e if its paired shards vs C8 show
-  fewer ctx errors and diff ≥ 0; else C9a if diff ≥ 0; else C9e anyway (most informative). Put the evidence table
-  (px_report output) into RELEASE.md and keep line 1 `SUBMIT: <zip>`.
-- Also keep GPUs busy: if the queue runs dry, enqueue more seeds / new one-change candidates (anti-loop guard,
-  brute-force checks, early first edit) built from C8.
-- LoRA preflight PASSED on A100-80GB (job 337543): 32k seq, peak 61.8 GiB, ~110 tok/s -> E1 training is feasible on 1 GPU.
+- **RELEASE.md PROVISIONAL = C9ae** (zip submission_2026-10-07_c9ae_editfix_analyzercap.zip, identical to submissions/c9ae_combo).
+  FINAL RULE (D17 + D18, the ~10:30 work cycle MUST apply it): run `.venv/bin/python ops/queue/px_report.py` and
+  `--base c9a`. Use only runs with leak=0. Pick the largest clean paired diff vs C8 among {C9a, C9e, C9ae} with ≥38 pairs
+  (C9a needs none). C9ae wins ties within 0.03 if it has fewer ctxErr. If C9ae has < 38 clean pairs, ship C9e
+  (+0.131, n=61 clean at 07:00). Rewrite the RELEASE.md table, keeping line 1 `SUBMIT: <zip>`.
+- Clean results at 07:00: C8 34/114, C9a 41/114, C9e 27/66, C9ae 10/27. Paired vs C8: C9a +0.061 (n=114, z=1.61),
+  C9e +0.131 (n=61, z=2.14), C9ae +0.120 (n=25). C9ae vs C9a +0.080 (n=25).
+- **D18 harness bug:** worker 337610 (cn17-dgx) leaked harness conftest.py/pytest.ini into all patches (silent baseline
+  `git commit` failure, no git identity). Shards C9ae s1/s2 and C9e s5 moved to results/px_quarantine/ and re-enqueued at prio 05.
+  Fixed in ops/slurm/ap_worker.sbatch (GIT_* env + startup `git-commit selftest` line). px_report has a `leak` column, and leak must be 0.
+- Queue (ops/queue): 05 = C9ae s1 (s1,s2,s6,s7) + C9e s5 reruns; 10 = C8/C9a s1 s6–s7; 11 = C9e s1 s6–s7; 12 = **C10 s1** (new);
+  14 = C9all s1; 15 = C9c; 22 = C9b; 25 = C9d; 30 = anchor + c6a_t5 (calibration); 40 = C8/C9a/C9all/C9ae s2; 41 = C9e s2.
+  Workers: `sbatch -p <a40|l40|dgx> --qos=<same> --gres=gpu:N --cpus-per-task=$((12*N)) --mem=$((80*N))G ops/slurm/ap_worker.sbatch`
+  (QoS caps: a40 ≤2 GPU/job & 3 jobs, l40 ≤4/job & 4 jobs, dgx ≤4/job & 4 jobs). Add work: `ops/queue/enqueue.sh <prio> <sub> <run> proxy`.
+- Forensics (reports/autopilot/forensics_20261007.md): the remaining C9ae failures are mostly wrong fixes (20/28). Others:
+  analyzer repeat-loops (the 20-call cap is often ignored; the sub-agent shares the 100-call budget), shallow early submits,
+  and repeated submit_patch calls. No root-agent ctx overflow seen.
+- Proxy validity: gold 152/152, empty 0/152 (job 337590). LoRA preflight PASSED (job 337543).
 
-## Running jobs (as of 06:00 IST 2026-10-07; unchanged since 05:30)
-- ap-worker (ops/slurm/ap_worker.sbatch, all pull from ops/queue/pending; logs results/slurm/ap_worker_<id>.out):
-  running 337605 (a40 1 GPU), 337608 (a40 2), 337687 (a40 2), 337593 (l40 1), 337612 (l40 1);
-  pending 337609 (dgx 4), 337610 (dgx 2), 337611 (l40 2). Total if all start = 15 GPUs (cap 16).
-  Workers exit when the queue is empty (time limit 10 h). Check: ls ops/queue/{running,done,failed}; failed items
-  -> inspect results/px/<run>/<shard>/run_eval.log and re-enqueue by moving the item back to pending/.
+## Running jobs (as of 07:05 IST 2026-10-07)
+- ap-worker running with the OLD script (fine; their nodes commit OK, leak=0): 337605 (a40 1), 337608 (a40 2), 337687 (a40 2),
+  337593 (l40 1), 337612 (l40 1). New (fixed script), PENDING: 338533 (dgx 4), 338534 (dgx 2), 338535 (l40 2). Total if all run = 15 GPUs.
+  CHECK: `grep selftest results/slurm/ap_worker_33853[345].out` must say OK, and px_report leak = 0 for the shards they run.
+  If the selftest FAILED, scancel that job and quarantine its shards.
 
 ## Environment status (2026-10-07)
 - Prajna: .venv, .venv-eval built on login; .venv-harness (vLLM 0.19.1 + Kaggle Gemma-4 LoRA build, torch 2.10 cu128)
@@ -49,30 +39,26 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
   investigated. Dataset vedantmoghe/gemma-rl-proxy is `ready`. results/chain_master.sh (old machine) never got past the gate.
 
 ## Backlog (prioritized; re-prioritize every cycle)
-0. P0 (today) Finalize RELEASE.md by ~11:30 (see the push section). Then plan C10 = C9e + the C9a-d changes that win
-   their paired tests (≥2 seeds). Check whether root-agent ctx errors also occur (px_report ctxErr after C9e) and
-   whether other analyzer pathologies remain (malformed tool-arg keys such as `start_line"`).
-1. P0 Prajna eval pipeline: ops/slurm/ap_eval.sbatch = start vLLM (scorer-identical: TP=4, max_model_len 32768,
-   same flags as the Kaggle scorer) on 4 A100s + run scripts/eval_submission.sh on a task set + write a summary.
-   Allow 2 evals per 8-GPU node. Verify the sandbox (no internet on DGX: tests must not need pip) with gold/empty
-   patches on public tasks and on the proxy tasks first (CPU job: gold must pass, empty must fail).
-2. P0 Proxy calibration: anchor_public vs c6a_t5 vs c8_anchorplus, ≥2 seeds each, on the proxy benchmark (+ the 107
-   public valid tasks). Pass rule: anchor > c6a_t5 and C8 ≥ anchor (matches LB). Decision memo either way.
-3. P1 Debug kverify-fix3 ERROR (Kaggle) only if Kaggle runs are still needed for L4 runtime checks.
-4. P1 (in progress: C9a-e + C9all queued) C9 = C8 + one change at a time (each must be a separate candidate so LB results are interpretable):
-   a) edit robustness when new_string contains ``` fences (trajectory_forensics: ~600 malformed edit calls),
-   b) early first edit / anti-loop guard, c) brute-force property checks over long hand-simulation (D3.1).
-   f) NEW: test-file deletion guard (2/152 proxy tasks lose to test_patch "can't find file"); build after the release.
-5. P1 E1: trajectory capture with C8 on proxy + public train tasks → D5 filters → LoRA SFT (src/sft/train_lora.py,
-   `--preflight` first, 1×A100-80GB) → LORO evaluation → candidate C8+LoRA.
-6. P2 Paper track (deadline 2026-11-12): reports/council/paper_plan.md; RL re-ranking for fault localization as the
-   research contribution; user must join the paper competition on Kaggle (D8).
+0. P0 (today ~10:30–11:30) Finalize RELEASE.md by the rule in the push section.
+1. P0 (tomorrow's release) C10 s1 results vs C9ae on paired tasks (≥38 pairs). If C10 ≥ C9ae, it becomes the 2026-10-08 candidate.
+   Then queue C10 s2 + C9ae s2 for a second seed. Next ideas from forensics: analyzer call cap enforced by the harness? (check
+   whether agent_tool / sub-agent yaml supports a per-agent max-call limit); "follow the issue even if an existing test asserts
+   the old behaviour"; never repeat an edit that returned "identical".
+2. P0 Proxy calibration (D11): the anchor + c6a_t5 s1 queue items (prio 30) must run. Pass rule: anchor > c6a_t5, and C8 ≥ anchor.
+3. P1 Runtime on the scorer (D9): C9e/C9ae look faster than C8 on proxy, but the hardware is confounded. The next Kaggle L4 check
+   should cover the release candidate if there is quota.
+4. P1 E1: trajectory capture → D5 filters → LoRA SFT (src/sft/train_lora.py, preflight passed) → LORO evaluation. Use proxy
+   repos held out by repo to avoid contamination.
+5. P2 Paper track (deadline 2026-11-12): reports/council/paper_plan.md; the user must join the paper competition (D8).
+6. P3 kverify-fix3 Kaggle ERROR. Debug only if Kaggle L4 runs are needed.
 
 ## Open questions for the user (write here; user reads RELEASE.md / STATE.md)
 - Are the submitting account and vedantmoghe on the same Kaggle Team (D14)?
 - Joined the paper competition (D8)?
 
 ## Journal
+- 2026-10-07 07:05: cycle 062819: deduped the c9ae queue (two identical dirs), forensics -> found the cn17 conftest leak (D18),
+  quarantined + re-enqueued 3 shards, fixed the worker, resubmitted 3 workers; provisional RELEASE -> C9ae; built + queued C10.
 - 2026-10-07 06:00: cycle 052819: harvested partial proxy (C9a +0.095 vs C8), built C9ae, reordered the queue so C9e/C9ae
   pair on s0–s5 before the 11:30 decision, provisional RELEASE -> C9a, D17.
 - 2026-10-07 05:30: cycle 042819: harvested the verify job (proxy valid), found the analyzer ctx overflow (D16), built C9e,

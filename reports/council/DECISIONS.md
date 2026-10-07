@@ -93,3 +93,13 @@ Release rule for 2026-10-07: C9e if its paired proxy shards vs C8 show (a) fewer
 - C9ae wins ties within 0.03 of C9a if its ctxErr count is lower, because it combines two independently motivated fixes.
 - If nothing reaches 38 pairs, ship C9a.
 We drop the one-change-per-LB rule for today. Score is the mission, and the proxy (16 unseen repos) now supplies the attribution evidence.
+
+# 2026-10-07 06:30–07:30 — autopilot work cycle
+**Evidence.** Forensics (reports/autopilot/forensics_20261007.md): on worker job 337610 (cn17-dgx), every patch included the harness's own `conftest.py`/`pytest.ini`. The harness's baseline `git commit` fails silently there, most likely because git has no identity on that node. No other node's patches show this (px_report `leak` column). Affected shards: C9ae s1/s2 and C9e s5. In jinja_1984 the agent ran `git checkout -- .` and lost its fix. We moved those shards to results/px_quarantine/ and re-enqueued them. Clean paired results vs C8: C9e n=61 **+0.131** (11W/3L, z=+2.14); C9a n=114 +0.061 (13W/6L); C9ae n=25 +0.120 (4W/1L), which is +0.080 vs C9a.
+**D18 — The harness needs a git identity on every worker, and contaminated data never counts.** ap_worker.sbatch now exports GIT_AUTHOR/COMMITTER and logs a `git-commit selftest` at startup. We cancelled 337609/337610/337611 and resubmitted them as 338533 (dgx 4), 338534 (dgx 2) and 338535 (l40 2). Any run with leak > 0 must be quarantined before it is used. The D17 release rule stands, applied to clean data only. Provisional SUBMIT = C9ae: both of its components beat C8 independently on clean data, and C9ae beats C9a on clean pairs. If C9ae still has < 38 clean pairs at finalization, ship C9e, which then has the largest significant diff.
+**C10 = C9ae + four forensics fixes** (`submissions/c10_c9ae_plus`, validated; queued as px_c10_s1 at prio 12; a candidate for 2026-10-08):
+- `read_file` removed from the analyzer. Malformed `start_line"` keys drive its loops and overflows; it reads with `sed -n` instead.
+- No whole-tree git reverts (`checkout -- .`, `stash`, `clean`, `reset`).
+- Stop making tool calls after `submit_patch` succeeds. Up to 238 repeated submits per task were seen.
+- The repro script asserts each behaviour the issue states.
+We rejected `presence_penalty` for the analyzer loops: vLLM applies it within one response only, and the loops repeat across turns.
