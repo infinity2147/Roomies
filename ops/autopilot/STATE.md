@@ -5,6 +5,21 @@
 ## Champion
 C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB 0.13 (2026-10-06).
 
+## D27 (13:05, lead session): why C11t is slow, and the C15 fix under test
+- Capture analysis (results/kaggle/{c11t,c9ae}-t30s capture.jsonl): C11t makes FEWER calls (78 vs 129/task) and less prefill
+  (679k vs 1145k prompt tok/task) but generates 13.5k vs 8.2k tokens/task; decode is ~87 % of L4 time. vLLM receives
+  `thinking_token_budget` and honors it (max completion 4504 ≈ 4096 + answer). Reasoning is heavy-tailed: p50 39 tok/call,
+  p90 436, p99 1974; the 55 calls > 1024 tokens hold 30 % of all output.
+- Projection (budget B on the root): B=512 → ~5.8 min/task (1.18× C9ae); B=1024 → ~6.7 (1.35×). Budget alone is unlikely to
+  reach 1.10, but must be measured (quality may hold, and the tail may shrink more than the lower bound assumes).
+- Built + validated: submissions/c15_think512, submissions/c15_think1024 (= C11t with root thinking_budget 512/1024; analyzer
+  unchanged). Proxy: px_c15t512_s1 + px_c15t1024_s1 enqueued at prio 04 (front). Kaggle L4 timing pushed 13:05:
+  `gemma-rl-eval-c15t512-t30s` (same 30 ids, concurrency 1). When COMPLETE: fetch to results/kaggle/c15t512-t30s, then
+  `.venv/bin/python scripts/kaggle_eval/capture_task_times.py c15t512-t30s c9ae-t30s`.
+- Decision rule for 2026-10-08 line 1: C15t512 if L4 ratio ≤ 1.10 AND proxy paired vs C9ae ≥ +0.05 (n ≥ 100); else C11n if its
+  kernel passes; else C9ae. If C15t512 lands at 1.10–1.25 with a strong proxy gain, next step = C15t512 + no-analyzer (C11n
+  style) or `max_time_minutes` 6 insurance, re-timed.
+
 ## D26 (12:40, lead session): C11t FAILS the L4 runtime gate — do NOT release C11t as-is
 - results/kaggle/c11t-t30s: 7.67 min/task vs C9ae 4.92 (ratio 1.56 > 1.10) → 15.8 h at 120 tasks = Notebook Timeout.
   L4 solves on the same 30 tasks: C11t 12/30 vs C9ae 8/30. Cap simulation (from task durations): cap 5 min keeps 7/12 solves
