@@ -16,6 +16,11 @@ Cadence changed: cycles every 15 min, up to 60 min of work each, 16–20 GPUs bu
    (fall back to 64 if >75 GiB) → 4 LORO folds on DGX. Check the rules before any non-Gemma teacher distillation.
 4. Rebuild the ACI micro-fixes (repro-must-fail, import check, timebox, anti-loop) on the C11t base; seeds.
 5. Synthetic tasks (SWE-smith-style bug injection) + more Google-style repos for proxy/SFT.
+6. Kaggle intel (memo §6c): public LB top 0.24, cluster 0.15, we are 0.13; public = ~half of hidden; 2 finals selected.
+   A participant saw `get_code_*` graph tools return EMPTY in official runs → every candidate (esp. C13t locate skill) must
+   degrade gracefully with no graphs/embeddings; verify C13t's skill uses only grep/BM25 over /workspace.
+7. Paper track: target the **New Resource** prize with the proxy benchmark + synthetic generator + forensics taxonomy
+   (memo §6c); RL-re-ranked traversal only as a section if results exist by ~Nov 1.
 
 ## TODAY (2026-10-07) — RELEASE = C9ae (final; D22 not met: C11t kernel still RUNNING at 11:30)
 - Nothing left to do for today's release. If the C9ae LB score arrives, log it in lb_scores.tsv (vs C8 0.13; noise ±0.03).
