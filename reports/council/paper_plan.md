@@ -318,3 +318,41 @@ The community's default answer is localization. A large body of work builds code
 - E1 mainly stabilizes stochastic tasks.
 - The headroom figure will be small. Q2's owner should confirm.
 - Writeup visibility, reference counting and whether two final writeups are allowed are all unknown.
+
+---
+
+## v2 addendum (2026-10-08, lead session): what changed since 2026-10-02, and the plan to Nov 12
+
+**New facts.** (1) Proxy benchmark built and validated on Prajna: 152 tasks from 16 public repos the competition does not use
+(gold 152/152 pass, empty 0/152) — mined from public GitHub, so it is **releasable** (unlike competition data). (2) Measured paired
+intervention effects on it (C8 → C9a/C9e/C9ae/C11t; e.g. thinking on the root +0.165 vs C8, n=133, sign-z 4.0) and an LB
+calibration loop (C6a_t5 0.06 vs anchor 0.12 vs C8 0.13; proxy ranking check queued, D11). (3) Serial-inference cost model from
+captured L4 traffic: decode ≈ 87 % of time; reasoning is heavy-tailed (p50 39 tok/call, p99 1,974; 55 calls hold 30 % of output),
+which explains why "thinking on" fails the 12 h budget and how per-call budgets trade accuracy for time (C15 experiments).
+(4) External data is allowed (rules §2.6), so the "too little data" problem of E1 can be attacked with open trajectory sets
+(SERA / SWE-smith / SWE-Gym …), converted to the harness tool schema.
+
+**Two writeups (≤ 2 final submissions allowed; verify on the forum that 2 different writeups may be selected):**
+- **W1 — Best New Resource:** *"An LB-calibrated held-out benchmark + toolkit for small open SWE agents"*: the 152-task proxy
+  (Docker-free subprocess sandbox, gold/empty verified, Google-style subset), the mining + verification pipeline, the
+  capture proxy / trajectory-forensics taxonomy tooling, and a trajectory-format converter (SWE-agent/OpenHands → ADK harness).
+  Evidence of usefulness: the proxy reproduces the hidden-LB ranking that the public-repo dev set got wrong (C6a vs anchor) —
+  this calibration result is the centrepiece; without it W1 is "just another dataset".
+- **W2 — Best Paper (empirical):** *"Thinking under a serial budget: what a 4-bit 31B agent needs to fix real bugs offline"*:
+  (a) failure taxonomy (171 trajectories, MALF/TIME/LOC/…); (b) paired one-change interventions with effect sizes; (c) the
+  decode-bound cost model + per-call thinking budgets (accuracy–time frontier, C11t/C15 at 512/1024/4096); (d) LoRA SFT:
+  own rejection-sampled trajectories vs external open trajectories (converted) vs both, evaluated LORO on the proxy;
+  (e) negative result: localization is not the bottleneck (149/171 failures read the gold file); RL graph traversal only as
+  headroom bound unless it passes its gate.
+
+**Rubric mapping.** Novelty: serial-budget cost model + thinking-tail finding + calibration-of-proxy-to-hidden-LB method.
+Quality/generality: unseen-repo evaluation, method independent of the competition harness. Relevance: offline single-node
+quantized agents (the track's stated mission). Verifiability: public notebook + all numbers from result files, paired stats.
+Clarity: 3,000 words, 4 figures (accuracy–time frontier, failure taxonomy, calibration scatter, SFT data ablation).
+
+**Timeline.** Oct 8–12: data converter + external-data SFT pilot; C15 frontier; calibration runs. Oct 13–22: SFT ablations
+(own / external / both, 4 LORO folds on DGX); intervention seeds. Oct 23–Nov 1: freeze results; figures; release repo +
+benchmark (Apache-2.0). Nov 2–9: write both writeups; internal review. Nov 10: submit (2 days of slack before Nov 12 23:59 UTC).
+**Risks.** (1) Writeups may become public before the main competition ends (Dec 2) → hold back the exact winning prompt, or
+accept it. (2) If the proxy fails calibration, W1 is reframed as a benchmark + negative calibration finding.
+**User actions.** Join the paper competition (not joined as of 10-02); ask the forum the 2-writeup and word-count questions.
