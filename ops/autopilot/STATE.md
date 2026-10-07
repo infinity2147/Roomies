@@ -3,6 +3,18 @@
 ## Champion
 C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB 0.13 (2026-10-06).
 
+## RESEARCH PROGRAM (lead session 12:30) — read reports/council/strategy_20261007.md every cycle
+Cadence changed: cycles every 15 min, up to 60 min of work each, 16–20 GPUs busy at all times. P0 order:
+1. Settle the base: seed 2 for C11t / C11n / C13t (paired n ≥ 150 × 2 seeds) and the D25 L4 timing gate; add runtime
+   insurance (`eval_config max_time_minutes` ≈ 5) to the 10-08 candidate if its L4 ratio > 1.05.
+2. L2 feasibility spike: ParallelAgent best-of-K (schema allows Sequential/Parallel/Loop). Check: does max_tool_calls
+   count sub-agent calls (swegemma/context.py budget)? can edit_file/read_file touch /tmp? Build K=2 prototype
+   (worktree copies + execution-based selector), run 2 shards paired vs C11t, measure time. Also the cheap variant:
+   parallel planners (2–3 analyzer strategies) + critic.
+3. E1 capture at scale on the C11t base (T=0.8, 4 seeds, proxy+public) → D5 filters → 4 LORO LoRA folds on DGX.
+4. Rebuild the ACI micro-fixes (repro-must-fail, import check, timebox, anti-loop) on the C11t base; seeds.
+5. Synthetic tasks (SWE-smith-style bug injection) + more Google-style repos for proxy/SFT.
+
 ## TODAY (2026-10-07) — RELEASE = C9ae (final; D22 not met: C11t kernel still RUNNING at 11:30)
 - Nothing left to do for today's release. If the C9ae LB score arrives, log it in lb_scores.tsv (vs C8 0.13; noise ±0.03).
 

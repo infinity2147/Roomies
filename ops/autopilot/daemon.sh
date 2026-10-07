@@ -7,7 +7,7 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT" || exit 1
 export PATH="$HOME/.local/bin:/opt/slurm/bin:/usr/local/bin:/usr/bin:/bin" HOME="${HOME:-/home/fmr-group/24b4518}"
 A=ops/autopilot; L=results/autopilot
-CYCLE_GAP_MIN="${CYCLE_GAP_MIN:-60}"      # minimum minutes between cycle starts
+CYCLE_GAP_MIN="${CYCLE_GAP_MIN:-15}"      # minimum minutes between cycle starts (cycles should use most of it)
 CYCLE_TIMEOUT="${CYCLE_TIMEOUT:-4h}"      # hard cap per cycle
 RELEASE_HOUR="${RELEASE_HOUR:-9}"         # release cycle once per day after this hour (IST)
 mkdir -p "$L/logs" submissions/daily
