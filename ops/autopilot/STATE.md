@@ -9,7 +9,8 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
   each slot pulls items from ops/queue/pending (name <prio>_<shard>_<run>), results in results/px/<run>/<shard>/.
   Add work: `ops/queue/enqueue.sh <prio> <submission_dir> <run> proxy` (8 stratified shards × 19 = 152 proxy tasks).
   A40/L40 nodes are Rocky 8: works because vllm._moe_C import is optional and cryptography was swapped to manylinux_2_28.
-- Queued (prio): 10 = C8 s1 + C9a s1, 11 = C9e s1, 12 = C9all s1, 15 = C9c s1, 22 = C9b s1, 25 = C9d s1,
+- **Queue reordered 05:45 (D17):** 05 = C9e s1 shards s0–s5, 06 = C9ae s1 s0–s5 (C9ae = C8+C9a+C9e, submissions/c9ae_editfix_analyzercap),
+  then 10 = C8/C9a s1 s6–s7, 11 = C9e/C9ae s1 s6–s7. Original queue: 10 = C8 s1 + C9a s1, 11 = C9e s1, 12 = C9all s1, 15 = C9c s1, 22 = C9b s1, 25 = C9d s1,
   30 = anchor s1 + c6a_t5 s1 (calibration), 40 = C8/C9a/C9all s2, 41 = C9e s2. (C9c/C9d/C9all were built and
   queued ~04:24 before this cycle: c9c = early first edit + brute-force checks, c9d = import check before submit,
   c9all = c9a+b+c+d bundle.)
@@ -17,7 +18,13 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
 - Report: `.venv/bin/python ops/queue/px_report.py [--done-only]` (per-run pass/ctxErr/err/empty + paired vs c8).
 - **D16 finding:** ~31% of the first 13 proxy tasks died with ContextWindowExceededError inside the code_analyzer
   sub-agent (no compaction in sub-agent sessions). C9e = C8 + analyzer context cap built & queued.
-- RELEASE.md (SUBMIT line) is PROVISIONAL = C9e. NOTE: the daemon skips the release cycle because RELEASE.md exists,
+- **Results at 05:40:** C8 s1 22/77 (0.286), C9a s1 25/65 (0.385). Paired C9a−C8 = +0.095 (n=63, 7W/1L, z=+2.12).
+  ctxErr: C8 10/77, C9a 9. 2 tasks (click_3704, jinja_1984) fail in both runs with test_patch "can't find file"
+  (the agent deleted a test file; a candidate for a C9f fix: only `rm` files that `git status` lists as `??`).
+- **RELEASE.md is now PROVISIONAL = C9a (D17 supersedes the D16 rule below).** Final rule: largest paired diff vs C8
+  among {C9a, C9e, C9ae} (C9e/C9ae need ≥38 pairs; C9ae wins ties within 0.03 of C9a if it has fewer ctxErr); else C9a.
+  Update the table in RELEASE.md, keep line 1 `SUBMIT: <zip>`. All three zips are in submissions/daily/2026-10-07/.
+- (superseded) RELEASE.md (SUBMIT line) was PROVISIONAL = C9e. NOTE: the daemon skips the release cycle because RELEASE.md exists,
   so the work cycle running at/after ~10:30 IST MUST finalize it, per the D16 rule: C9e if its paired shards vs C8 show
   fewer ctx errors and diff ≥ 0; else C9a if diff ≥ 0; else C9e anyway (most informative). Put the evidence table
   (px_report output) into RELEASE.md and keep line 1 `SUBMIT: <zip>`.
@@ -25,7 +32,7 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
   brute-force checks, early first edit) built from C8.
 - LoRA preflight PASSED on A100-80GB (job 337543): 32k seq, peak 61.8 GiB, ~110 tok/s -> E1 training is feasible on 1 GPU.
 
-## Running jobs (as of 05:30 IST 2026-10-07)
+## Running jobs (as of 06:00 IST 2026-10-07; unchanged since 05:30)
 - ap-worker (ops/slurm/ap_worker.sbatch, all pull from ops/queue/pending; logs results/slurm/ap_worker_<id>.out):
   running 337605 (a40 1 GPU), 337608 (a40 2), 337687 (a40 2), 337593 (l40 1), 337612 (l40 1);
   pending 337609 (dgx 4), 337610 (dgx 2), 337611 (l40 2). Total if all start = 15 GPUs (cap 16).
@@ -55,6 +62,7 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
 4. P1 (in progress: C9a-e + C9all queued) C9 = C8 + one change at a time (each must be a separate candidate so LB results are interpretable):
    a) edit robustness when new_string contains ``` fences (trajectory_forensics: ~600 malformed edit calls),
    b) early first edit / anti-loop guard, c) brute-force property checks over long hand-simulation (D3.1).
+   f) NEW: test-file deletion guard (2/152 proxy tasks lose to test_patch "can't find file"); build after the release.
 5. P1 E1: trajectory capture with C8 on proxy + public train tasks → D5 filters → LoRA SFT (src/sft/train_lora.py,
    `--preflight` first, 1×A100-80GB) → LORO evaluation → candidate C8+LoRA.
 6. P2 Paper track (deadline 2026-11-12): reports/council/paper_plan.md; RL re-ranking for fault localization as the
@@ -65,6 +73,8 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
 - Joined the paper competition (D8)?
 
 ## Journal
+- 2026-10-07 06:00: cycle 052819: harvested partial proxy (C9a +0.095 vs C8), built C9ae, reordered the queue so C9e/C9ae
+  pair on s0–s5 before the 11:30 decision, provisional RELEASE -> C9a, D17.
 - 2026-10-07 05:30: cycle 042819: harvested the verify job (proxy valid), found the analyzer ctx overflow (D16), built C9e,
   added a 2-GPU a40 worker, px_report.py, provisional RELEASE = C9e.
 - 2026-10-07: autopilot installed (ops/autopilot). First cycles should do backlog items 1–2.

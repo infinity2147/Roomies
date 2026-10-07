@@ -1,27 +1,23 @@
-SUBMIT: submission_2026-10-07_c9e_analyzercap.zip
+SUBMIT: submission_2026-10-07_c9a_editfix.zip
 
-# Release 2026-10-07: PROVISIONAL (as of 05:30 IST; a later cycle finalizes it by about 11:30 IST with proxy evidence)
+# Release 2026-10-07: PROVISIONAL (as of 06:00 IST). The cycle around 10:30–11:30 IST finalizes it by DECISIONS D17.
 
-**Candidate:** C9e = C8 (LB 0.13 champion) + one change: a context cap on the `code_analyzer` sub-agent.
-- The analyzer gets its own sampling config: max_output_tokens 4096 and thinking_budget 2048, instead of 8192 and 4096.
-- The analyzer prompt gets a budget section:
-  - at most 20 tool calls and reads of at most 60 lines;
-  - no repeated identical calls;
-  - a `sed -n` fallback when `read_file` returns the wrong lines;
-  - at the cap, answer with `CONFIDENCE: low`.
-- The root agent is unchanged.
+**Candidate:** C9a = C8 (LB 0.13 champion) + one change to the root system prompt: an edit-failure fallback.
+- After one failed `edit_file`, apply the edit with a Python heredoc that asserts the old text occurs exactly once.
+- Never put ``` fences in `old_string`/`new_string`.
 
-**Why (DECISIONS D16):**
-- On Prajna, the first 13 proxy tasks (C8 s1 + C9a s1) produced 4 tasks (31%) that died with `ContextWindowExceededError`.
-- In all 4, the analyzer sub-agent was the last caller. It has no event compaction, and it ran 19–83 calls, one of them a 12× identical-read loop. The task then errors with an empty patch.
-- The scorer runs the same harness code, so C8 very likely loses hidden tasks this way.
+**Evidence (proxy benchmark, 16 unseen repos, seed 1, partial, 05:40 IST):**
+| run | n | pass | rate | ctxErr |
+|---|---|---|---|---|
+| C8 | 77 | 22 | 0.286 | 10 |
+| C9a | 65 | 25 | 0.385 | 8 |
 
-**Evidence so far:** the proxy benchmark is valid (gold 152/152, empty 0/152). The paired C9e vs C8 shards are queued at prio 11; read the latest numbers with `.venv/bin/python ops/queue/px_report.py`.
+Paired C9a vs C8: 63 tasks, diff **+0.095**, 7 wins / 1 loss, sign-z +2.12.
 
-**Runtime:** the change can only make runs shorter, because the analyzer makes fewer calls. The 12-hour risk is no higher than C8's, and C8 completed.
+**Runtime:** about the same as C8 (10.9 vs 11.0 min/task on the same proxy tasks). C8 completed on the scorer.
 
-**Alternatives (both packaged in this dir):**
-- `submission_2026-10-07_c9a_editfix.zip`: C8 + edit-failure fallback.
-- `submission_2026-10-07_c9b_reprofail.zip`: C8 + the repro must fail before editing.
+**Still being evaluated (may replace C9a at finalization):**
+- `submission_2026-10-07_c9ae_editfix_analyzercap.zip`: C9a + the C9e analyzer context cap (DECISIONS D16). It targets the ContextWindowExceeded failures, about 13% of proxy tasks.
+- `submission_2026-10-07_c9e_analyzercap.zip`: C8 + the analyzer cap only.
 
-**What the LB score teaches:** whether analyzer overflow costs hidden tasks. Expect +1 to +3 tasks if the 31% overflow rate is real on hidden repos and some of those tasks were solvable.
+Also in this dir: `submission_2026-10-07_c9b_reprofail.zip`.
