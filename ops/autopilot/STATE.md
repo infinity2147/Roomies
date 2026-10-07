@@ -1,3 +1,5 @@
+## 04:40 work cycle (sonnet, frugal): E2 training 342833 RUNNING (r=128 passed preflight, 57 GiB peak, ~60-70 tok/s, 1.5h in; check runs/lora/e2_nebius_r128/train_log.jsonl, TRAIN_DONE → export/--verify → c16_e2lora). Workers: 3 a40 + 2 l40 running, dgx/l40/a40 workers pending; queue 57 pending / 10 running / 150 done / 0 failed. No new LB score. 10-08 release stays C9ae. Next: harvest px results; E2 export when done.
+
 ## 02:40 work cycle (sonnet, frugal): no change. Workers 342384/87/88 running (+342385/86, 338533, 337593 pending); queue 76 pending / 6 running / 135 done / 0 failed. No new LB score. 10-08 release stays C9ae. Next: harvest px results when workers finish; resubmit at end.
 
 # Autopilot STATE (single source of truth between cycles; newest first in Journal)
