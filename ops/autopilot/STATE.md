@@ -1,5 +1,7 @@
 # Autopilot STATE (single source of truth between cycles; newest first in Journal)
 
+## 14:40 work cycle (sonnet, frugal): 337xxx workers ended; returned 6 orphaned running items to pending (04 c15n512/c15t1024 s0,s1; 06 c14p s0; 07 c11n s2 s0). Live: 340599-602 (a40 3x2, l40 2), 338535 (l40 2), cap 339851 (l40 2) = 14 GPUs; pending 338533 (dgx 4), 337593 (l40 1, ghost?). Queue 152 pending. Kaggle c11n-t30s and c15t512-t30s both still RUNNING. No new LB score. Next: fetch both kernels when COMPLETE (capture_task_times vs c9ae-t30s), then apply D27 rule for 10-08.
+
 ## 12:40 work cycle (sonnet, frugal): no change. Queue 136 pending; workers 337593/605/608/612/687 end ~14:15-14:30; pending workers 338533,339851,340599-602 queued (+338535 running, 2 l40). c11n-t30s kernel still RUNNING. Next cycle: if 337xxx workers gone, resubmit; fetch c11n-t30s when COMPLETE (capture_task_times vs c9ae-t30s).
 
 ## Champion
