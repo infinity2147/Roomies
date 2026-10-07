@@ -1,5 +1,7 @@
 # Autopilot STATE (single source of truth between cycles; newest first in Journal)
 
+## 00:40 work cycle (sonnet, frugal): all workers had ended; returned 10 orphaned running items to pending (84 pending); submitted 342384-86 (a40 2 GPU each), 342387-88 (l40 2 each); 338533 dgx + 337593 still pending. No new LB score. 10-08 release stays C9ae. Next: check workers started; harvest px results.
+
 ## 22:40 work cycle (sonnet, frugal): no change. 5 live workers (340599-602, 339851; 10 running items), pending 338533 dgx + 337593 held. Queue 83 pending / 124 done / 0 failed (>2h work). No new LB score; no kernels outstanding. 10-08 release stays C9ae (RELEASE.md draft current). Next: when workers end (~8.5h in), resubmit; open item = why thinking doubles L4 time (D28 follow-up).
 
 ## 20:40 work cycle (sonnet, frugal): L4 timing results in, BOTH FAIL D25: c11n-t30s 8.69 min/task (ratio 1.77 vs c9ae 4.92); c15t512-t30s 8.97 min/task (1.82; one task 60 min). Thinking (even budget 512, no analyzer) ~doubles L4 time => 2026-10-09 release stays C9ae (D28: thinking variants are not releasable on L4; budget 512 does not shrink the tail). Next: look at why c15t512 is not faster than c11t (more calls/looping?), consider thinking only on first N turns or disabling thinking + proxy-only gains from C13t/non-thinking ideas. GPUs 14 busy, 106 pending. Pending thinking-variant px items (c15*, c11n/c11t seeds) are now low value: deprioritize.
