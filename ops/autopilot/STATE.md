@@ -16,6 +16,9 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
   unchanged). Proxy: px_c15t512_s1 + px_c15t1024_s1 enqueued at prio 04 (front). Kaggle L4 timing pushed 13:05:
   `gemma-rl-eval-c15t512-t30s` (same 30 ids, concurrency 1). When COMPLETE: fetch to results/kaggle/c15t512-t30s, then
   `.venv/bin/python scripts/kaggle_eval/capture_task_times.py c15t512-t30s c9ae-t30s`.
+- Also queued (prio 04): px_c15n512_s1 = submissions/c15n_think512_noanalyzer (C11n + budget 512). Time it on the first free
+  Kaggle slot after c11n-t30s finishes (make_kernel.py --submission submissions/c15n_think512_noanalyzer --run c15n512-t30s
+  --ids data/derived/l4_t30_ids.txt --concurrency 1 --push).
 - Decision rule for 2026-10-08 line 1: C15t512 if L4 ratio ≤ 1.10 AND proxy paired vs C9ae ≥ +0.05 (n ≥ 100); else C11n if its
   kernel passes; else C9ae. If C15t512 lands at 1.10–1.25 with a strong proxy gain, next step = C15t512 + no-analyzer (C11n
   style) or `max_time_minutes` 6 insurance, re-timed.
