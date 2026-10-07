@@ -3,6 +3,15 @@
 ## Champion
 C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB 0.13 (2026-10-06).
 
+## D26 (12:40, lead session): C11t FAILS the L4 runtime gate — do NOT release C11t as-is
+- results/kaggle/c11t-t30s: 7.67 min/task vs C9ae 4.92 (ratio 1.56 > 1.10) → 15.8 h at 120 tasks = Notebook Timeout.
+  L4 solves on the same 30 tasks: C11t 12/30 vs C9ae 8/30. Cap simulation (from task durations): cap 5 min keeps 7/12 solves
+  (8.8 h mean, worst case 10 h); cap 6 min keeps 9/12 (9.9 h mean, worst case 12 h ✗). Thinking must get cheaper, not capped:
+  next candidates = C11t with thinking_budget 1024–2048 on the root and/or thinking only on the first N turns; C11n timing pending.
+- 2026-10-08 line 1 stays C9ae unless a faster thinking variant passes D25 (L4 ratio ≤ 1.10 vs c9ae-t30s).
+- Budget rule from the user (12:40): autopilot must use ≤ 10–20 % of each 5 h Claude usage window → model sonnet, one ≤30-min
+  cycle every 2 h, no subagents. Keep GPUs busy through the queue (cheap), not through more Claude turns.
+
 ## RESEARCH PROGRAM (lead session 12:30) — read reports/council/strategy_20261007.md every cycle
 Cadence changed: cycles every 15 min, up to 60 min of work each, 16–20 GPUs busy at all times. P0 order:
 1. Settle the base: seed 2 for C11t / C11n / C13t (paired n ≥ 150 × 2 seeds) and the D25 L4 timing gate; add runtime

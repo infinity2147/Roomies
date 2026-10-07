@@ -7,8 +7,8 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT" || exit 1
 export PATH="$HOME/.local/bin:/opt/slurm/bin:/usr/local/bin:/usr/bin:/bin" HOME="${HOME:-/home/fmr-group/24b4518}"
 A=ops/autopilot; L=results/autopilot
-CYCLE_GAP_MIN="${CYCLE_GAP_MIN:-15}"      # minimum minutes between cycle starts (cycles should use most of it)
-CYCLE_TIMEOUT="${CYCLE_TIMEOUT:-4h}"      # hard cap per cycle
+CYCLE_GAP_MIN="${CYCLE_GAP_MIN:-120}"     # minimum minutes between cycle starts (budget: ≤10-20% of each 5 h usage window)
+CYCLE_TIMEOUT="${CYCLE_TIMEOUT:-30m}"     # hard cap per cycle
 RELEASE_HOUR="${RELEASE_HOUR:-9}"         # release cycle once per day after this hour (IST)
 mkdir -p "$L/logs" submissions/daily
 echo "$(hostname -s) $$" > "$L/daemon.pid"
@@ -27,7 +27,7 @@ while true; do
 (Cycle $ts, kind=$kind, now $(date '+%F %T %Z'). Today's release dir: submissions/daily/$today/)"
   log "cycle $ts $kind start"
   t0=$(date +%s)
-  timeout --kill-after=120 "$CYCLE_TIMEOUT" claude -p "$prompt" ${AP_CLAUDE_FLAGS:---dangerously-skip-permissions} \
+  timeout --kill-after=120 "$CYCLE_TIMEOUT" claude -p "$prompt" --model "${AP_MODEL:-sonnet}" ${AP_CLAUDE_FLAGS:---dangerously-skip-permissions} \
       --output-format stream-json --verbose > "$out.jsonl" 2> "$out.err" < /dev/null
   rc=$?; dt=$(( $(date +%s) - t0 ))
   # final assistant summary -> .txt (last "result" event of the stream)
