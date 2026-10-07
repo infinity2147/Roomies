@@ -11,7 +11,7 @@
 set -uo pipefail
 ROOT=/home/fmr-group/24b4518/project/Gemma_RL
 cd "$ROOT"
-Q=ops/queue
+Q=${APQ:-ops/queue}   # APQ=ops/queue_cap + CAPTURE=1: route LLM calls through src/sft/capture_proxy (E1 SFT data)
 mkdir -p $Q/pending $Q/running $Q/done $Q/failed
 NG=$(nvidia-smi -L | wc -l)
 GPUS=(${CUDA_VISIBLE_DEVICES//,/ })
@@ -33,6 +33,13 @@ slot() {  # $1 = local gpu index
   if ! curl -sf "http://127.0.0.1:$port/v1/models" >/dev/null; then
     echo "$(date +%T) slot $i: VLLM_FAILED"; tail -5 results/slurm/vllm_$tag.log; kill $vpid 2>/dev/null; return 1; fi
   echo "$(date +%T) slot $i: server up"
+  local api=$port cpid=""
+  if [[ "${CAPTURE:-0}" == 1 ]]; then
+    api=$((8200 + $1)); mkdir -p results/capture
+    .venv/bin/python -m src.sft.capture_proxy --listen $api --upstream "http://127.0.0.1:$port" \
+      --out "results/capture/${tag}.jsonl" > results/slurm/capture_$tag.log 2>&1 &
+    cpid=$!; sleep 3; echo "$(date +%T) slot $i: capture proxy :$api -> results/capture/${tag}.jsonl"
+  fi
   while true; do
     local item claimed=""
     for item in $(ls $Q/pending 2>/dev/null | sort); do
@@ -43,16 +50,17 @@ slot() {  # $1 = local gpu index
     local out="results/px/$run/$(basename "$tasks" .txt)"; mkdir -p "$out"
     local extra=(); [[ "$mode" == proxy ]] && extra=(--proxy)
     echo "$(date +%T) slot $i: start $claimed"
+    [[ -n "$cpid" ]] && echo "{\"t\": $(date +%s), \"item\": \"$claimed\", \"run\": \"$run\"}" >> "results/capture/${tag}.items.jsonl"
     local t0=$(date +%s)
     .venv-eval/bin/python -m src.eval.run_eval --submission-dir "$sub" --results-dir "$out" \
-      --task-ids $(cat "$tasks") --concurrency $CONC --api-base "http://127.0.0.1:$port/v1" "${extra[@]}" \
+      --task-ids $(cat "$tasks") --concurrency $CONC --api-base "http://127.0.0.1:$api/v1" "${extra[@]}" \
       > "$out/run_eval.log" 2>&1
     local rc=$? dt=$(( $(date +%s) - t0 ))
     echo "$(date +%T) slot $i: end $claimed rc=$rc ${dt}s $(tail -1 $out/run_eval.log | cut -c1-80)"
     if (( rc == 0 )); then mv "$Q/running/$claimed.$tag" "$Q/done/$claimed"; else mv "$Q/running/$claimed.$tag" "$Q/failed/$claimed"; fi
     kill -0 $vpid 2>/dev/null || { echo "slot $i: vllm died"; return 1; }
   done
-  kill $vpid; wait $vpid 2>/dev/null
+  kill $vpid $cpid 2>/dev/null; wait $vpid 2>/dev/null
   echo "$(date +%T) slot $i: queue empty, exiting"
 }
 ( t=$(mktemp -d) && cd "$t" && git init -q && touch x && git add -A && git commit -qm t && echo "git-commit selftest OK" \
