@@ -44,7 +44,9 @@ def main() -> None:
     ap.add_argument("--tasks-dataset", default="", help="dataset slug with tasks.jsonl + *.tgz (e.g. gemma-rl-proxy)")
     a = ap.parse_args()
 
-    ids = [] if a.tasks_dataset else [l.strip() for l in open(a.ids) if l.strip()]
+    ap_ids_given = a.ids != ap.get_default("ids")
+    # With --tasks-dataset, an explicit --ids file selects a subset of that dataset's tasks (default: all of them).
+    ids = [] if (a.tasks_dataset and not ap_ids_given) else [l.strip() for l in open(a.ids) if l.strip()]
     if a.n:
         random.Random(a.seed).shuffle(ids)
         ids = sorted(ids[: a.n])
