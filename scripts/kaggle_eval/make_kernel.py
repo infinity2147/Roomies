@@ -20,6 +20,8 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+DOCKER_IMAGE = ("gcr.io/kaggle-private-byod/python@sha256:"
+                "37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461")
 USER = "vedantmoghe"
 
 
@@ -90,6 +92,9 @@ def main() -> None:
                             *([f"{USER}/{a.tasks_dataset}"] if a.tasks_dataset else [])],
         "competition_sources": ["gemma-4-developer-agent"], "kernel_sources": [],
         "model_sources": ["google/gemma-4/Other/gemma-4-31b-it-qat-w4a16-ct/2"], "machine_shape": "NvidiaL4",
+        # Kaggle's default image moved to Python 3.13 (2026-10-07) and the cp312 wheelhouse no longer installs;
+        # pin the last image that ran the scorer stack (lora-smoke, COMPLETE).
+        "docker_image_pinning_type": "original", "docker_image": DOCKER_IMAGE,
     }
     (kdir / "kernel-metadata.json").write_text(json.dumps(meta, indent=1))
     print(f"kernel dir: {kdir}  tasks={len(ids)}  size={len(code) / 1024:.0f} KiB")
