@@ -78,3 +78,8 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
 - 2026-10-07 05:30: cycle 042819: harvested the verify job (proxy valid), found the analyzer ctx overflow (D16), built C9e,
   added a 2-GPU a40 worker, px_report.py, provisional RELEASE = C9e.
 - 2026-10-07: autopilot installed (ops/autopilot). First cycles should do backlog items 1–2.
+
+## Note from interactive session (2026-10-07 06:00)
+- Paired proxy vs C8 s1 at 05:58: C9a 36 vs 29 (n=88), C9e 14 vs 8 (n=26). Fixes target different failures
+  (edit malformation vs analyzer context overflow), so built C9ae = C9e + C9a's system.md (submissions/c9ae_combo)
+  and enqueued px_c9ae_s1 at prio 05 (front of queue). Release candidate if it is ≥ both C9a and C9e on paired tasks.
