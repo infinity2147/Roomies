@@ -15,6 +15,24 @@
 ## Champion
 C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB 0.13 (2026-10-06).
 
+## E2 — external SFT data (lead session, 2026-10-08 02:45) — rules §2.6: public/free external data allowed
+- Source: nebius/SWE-rebench-openhands-trajectories (CC-BY-4.0, teacher Qwen3-Coder-480B Apache-2.0; 67k traj, 32,161 resolved,
+  1,823 Python repos) → data/external/nebius/. Excluded repos: httpx (public LB repo) + marshmallow/sqlparse/tenacity (proxy) → eval stays held-out.
+  Ranked alternatives: allenai Sera-4.6-Lite-T2 (36k, GLM-4.6 teacher, soft-verified, license field missing — check before use),
+  nvidia/Nemotron-SWE-v1 (CC-BY-4.0, same teacher/format). SWE-smith trajectories: Claude teacher → terms risk, skip.
+- Converter src/sft/convert_openhands.py: OpenHands → our ADK tools (bash→run_command, view→read_file 150-line, str_replace→edit_file,
+  create→write_file or /tmp heredoc for scratch/test files, think+narration→reasoning channel, finish→submit_patch), our C11t system
+  prompt + scorer user prompt + tools from the deployment capture, scorer-like context windows (≤20k est tokens, 2-pair overlap).
+  Smoke (20 traj): 45 % of resolved trajectories usable (rest edit test files → dropped); 3.2 windows/traj, 15.5k tok/window,
+  ~3.6k trained tok/window, 2/3 of action turns carry teacher reasoning. Spot-check passed (paths, /tmp repro, submit).
+- RUNNING: conversion job 342824 (ap-convert, a40 CPU, 16 shards × 64 traj → data/derived/sft/e2_nebius/shard_*.jsonl);
+  training job 342833 (ap-train-e2, dgx 1×A100, afterok:342824): preflight r=128 @24k (fallback r=64), then 1 epoch on the first
+  64 windows/shard (~1,000 seqs, ~16M tok, ~1.5 days at ~110 tok/s) → runs/lora/e2_nebius_r<R>/.
+- NEXT (autopilot): when TRAIN_DONE, export the adapter (train_lora exporter does the k_proj→v_proj copy on global layers; check
+  with `--verify`), build submissions/c16_e2lora = C15t512 (or the current best base) + adapters/, eval on the full proxy paired vs
+  its base (2 seeds), then L4-time it on Kaggle (LoRA serving overhead). Training throughput (~110 tok/s) is the E2 bottleneck:
+  if the pilot helps, consider shorter windows (12k) or data-parallel training before scaling.
+
 ## D27 (13:05, lead session): why C11t is slow, and the C15 fix under test
 - Capture analysis (results/kaggle/{c11t,c9ae}-t30s capture.jsonl): C11t makes FEWER calls (78 vs 129/task) and less prefill
   (679k vs 1145k prompt tok/task) but generates 13.5k vs 8.2k tokens/task; decode is ~87 % of L4 time. vLLM receives
