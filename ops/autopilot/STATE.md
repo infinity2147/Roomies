@@ -7,11 +7,13 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
 Cadence changed: cycles every 15 min, up to 60 min of work each, 16–20 GPUs busy at all times. P0 order:
 1. Settle the base: seed 2 for C11t / C11n / C13t (paired n ≥ 150 × 2 seeds) and the D25 L4 timing gate; add runtime
    insurance (`eval_config max_time_minutes` ≈ 5) to the 10-08 candidate if its L4 ratio > 1.05.
-2. L2 feasibility spike: ParallelAgent best-of-K (schema allows Sequential/Parallel/Loop). Check: does max_tool_calls
-   count sub-agent calls (swegemma/context.py budget)? can edit_file/read_file touch /tmp? Build K=2 prototype
-   (worktree copies + execution-based selector), run 2 shards paired vs C11t, measure time. Also the cheap variant:
-   parallel planners (2–3 analyzer strategies) + critic.
-3. E1 capture at scale on the C11t base (T=0.8, 4 seeds, proxy+public) → D5 filters → 4 LORO LoRA folds on DGX.
+2. L2 feasibility spike (memo §6b refined design): Sequential[ Parallel[solver_A repro-first, solver_B test-first,
+   test_writer] → selector ]. Budget is ONE shared 100-call counter (context.py:549) → prompt caps 35/35/15/15.
+   Remaining unknowns: can edit_file/read_file touch /tmp worktrees (write_file cannot)? L4 wall time (target ≤ 1.4× C11t).
+   Build the K=2 prototype, run 2 shards paired vs C11t, time it. Cheap variant if isolation fails: parallel planners + critic.
+3. E1 capture at scale on the C11t base: **8–10 rollouts/task** (T≈0.8), proxy+public (+ synthetic), target ≥1–2k resolved
+   trajectories, cap 3/task, mask malformed turns (memo §6a) → `train_lora.py --preflight` at **rank 128** all-linear
+   (fall back to 64 if >75 GiB) → 4 LORO folds on DGX. Check the rules before any non-Gemma teacher distillation.
 4. Rebuild the ACI micro-fixes (repro-must-fail, import check, timebox, anti-loop) on the C11t base; seeds.
 5. Synthetic tasks (SWE-smith-style bug injection) + more Google-style repos for proxy/SFT.
 
