@@ -312,14 +312,16 @@ def rank_defs(src, live):
         key = owner.get(i)
         if key is None:
             continue
-        agg[key[0]][0] += sc
-        agg[key[0]][1].append(i)
-    info = {q: (node, s, e) for q, node, s, e in defs}
+        agg[(key[0], key[2])][0] += sc
+        agg[(key[0], key[2])][1].append(i)
+    info = {(q, s): (node, s, e) for q, node, s, e in defs}  # keyed by start: @overload defs share a qualname
     ranked = []
-    for q, (sc, ls) in agg.items():
-        node, s, e = info[q]
+    for (q, _s0), (sc, ls) in agg.items():
+        node, s, e = info[(q, _s0)]
         name_l = q.rsplit(".", 1)[-1].lower()
         bonus = sum(w * 2 for (t, kind), w in live.items() if kind == "ident" and t == name_l)
+        if any(getattr(d, "id", getattr(d, "attr", "")) == "overload" for d in getattr(node, "decorator_list", [])):
+            sc, bonus = sc * 0.3, bonus * 0.3   # typing stub; prefer the real implementation
         ranked.append((sc + bonus, q, s, e, signature(lines, node), sorted(ls)))
     ranked.sort(key=lambda x: (-x[0], x[2]))
     return ranked
@@ -431,7 +433,7 @@ def main():
         out.append("No source file matches the issue terms. Search manually with grep -rn on key words.")
     for n, rel in enumerate(src_rank[:k], 1):
         h = why[rel]
-        hs = ", ".join(sorted(set(h), key=lambda t: -live.get((t, "ident"), live.get((t, "phrase"), 0)))[:5])
+        hs = ", ".join(sorted(sorted(set(h)), key=lambda t: -live.get((t, "ident"), live.get((t, "phrase"), 0)))[:5])
         out.append(f"{n}. {rel}  (score {scores[rel]:.1f}; matches: {hs})")
         ndefs = 3 if n <= 2 else (2 if n <= 4 else 1)
         for sc, q, s, e, sig, ls in rank_defs(files[rel]["src"], live)[:ndefs]:

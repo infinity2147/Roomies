@@ -16,11 +16,11 @@ C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB
 - If C11t is submitted today, tomorrow's question is C11n (no analyzer, D21) vs C11t, and C12 = C10 changes + thinking.
 - **C10** `submissions/c10_c9ae_plus`: +0.039 vs C9ae (n=77) — weak; fold its changes into C12 = C11t + C10 only if C11n loses.
 - **C11n** `submissions/c11n_think_noanalyzer` queued prio 07 (paired vs C11t, rule in D21).
-- **C13l** `submissions/c13l_c9ae_locskill` (repo-locate skill in the analyzer; built last cycle, not queued). Offline accuracy eval
-  by a subagent this cycle → reports/autopilot/locskill_eval_20261007.md.
+- **C13t** `submissions/c13t_c11t_locskill` = C11t + repo-locate skill in the analyzer (D23; offline top-1 71% vs grep 44%).
+  Queued prio 07 with C11n, paired vs C11t. (c13l = same on C9ae, not queued.)
 
 ## Queue (ops/queue; items sorted by name)
-05 C11t s1 (running, last shards) → 06 C10 s6–s7 → 07 C11n s1 + C8 s7 → 08 anchor/c6a_t5 s1 (D11 calibration) + C11t/C9ae s2 →
+05 C11t s1 (running, last shards) → 06 C10 s6–s7 → 07 C11n s1 + C13t s1 + C8 s7 → 08 anchor/c6a_t5 s1 (D11 calibration) + C11t/C9ae s2 →
 14 C9all → 15 C9c → 20 C9a/C9e s6–s7 → 22 C9b → 25 C9d → 40/41 s2 seeds of old candidates (low value; consider deleting).
 Workers: `sbatch -p <a40|l40|dgx> --qos=<same> --gres=gpu:N --cpus-per-task=$((12*N)) --mem=$((80*N))G ops/slurm/ap_worker.sbatch`
 (QoS caps: a40 ≤2 GPU/job & 3 jobs, l40 ≤4/job & 4 jobs, dgx ≤4/job & 4 jobs). Add work: `ops/queue/enqueue.sh <prio> <sub> <run> proxy`. leak must be 0 (D18).
@@ -66,7 +66,7 @@ Workers: `sbatch -p <a40|l40|dgx> --qos=<same> --gres=gpu:N --cpus-per-task=$((1
 
 ## Journal
 - 2026-10-07 09:45: cycle 092819: no LB; C11t +0.105 vs C9ae (n=105) → D22 conditional switch of today's release to C11t
-  pending L4 timing; packaged C11t zip in today's dir; d9_timing.py; committed last cycle's leftovers (D20/D21, C11n, C13l); locskill eval.
+  pending L4 timing; packaged C11t zip in today's dir; d9_timing.py; committed last cycle's leftovers (D20/D21, C11n, C13l); locskill eval → built + queued C13t (D23).
 - 2026-10-07 08:00: cycle 072819: C9ae confirmed by the rule (n=113, +0.088); found thinking OFF everywhere (D19) → built
   C11t (queued prio 06 with C10); queue reprioritized (C10/C11t, then calibration); Kaggle L4 timing runs C9ae/C10; harness + E1 audits.
 - 2026-10-07 07:05: cycle 062819: deduped the c9ae queue (two identical dirs), forensics -> found the cn17 conftest leak (D18),
