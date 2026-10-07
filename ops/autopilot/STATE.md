@@ -1,3 +1,5 @@
+## 02:40 work cycle (sonnet, frugal): no change. Workers 342384/87/88 running (+342385/86, 338533, 337593 pending); queue 76 pending / 6 running / 135 done / 0 failed. No new LB score. 10-08 release stays C9ae. Next: harvest px results when workers finish; resubmit at end.
+
 # Autopilot STATE (single source of truth between cycles; newest first in Journal)
 
 ## 00:40 work cycle (sonnet, frugal): all workers had ended; returned 10 orphaned running items to pending (84 pending); submitted 342384-86 (a40 2 GPU each), 342387-88 (l40 2 each); 338533 dgx + 337593 still pending. No new LB score. 10-08 release stays C9ae. Next: check workers started; harvest px results.
