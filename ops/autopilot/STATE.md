@@ -37,6 +37,12 @@
 ## Champion
 C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB 0.13 (2026-10-06).
 
+## Research report 2026-10-09: reports/Graph RL LoRA and SWE data.md (graph-RL localization, LoRA methods, external data)
+- E2 next run: 2–3 epochs, effective batch 8–32, mask parse-failed tool-call turns, loss only on non-overlap turns, turn-count curriculum;
+  keep vanilla LoRA r128/α256 all-linear (DoRA/PiSSA/LoRA+ ≈ no gain). Add nvidia/SWE-Hero-openhands-trajectories (CC-BY-4.0), dedupe vs
+  nebius by repo+base_commit, cap 3 traj/task, own rollouts 20–40 % of mix. Prefer one RFT round on own rollouts over RL.
+- Localization: skip LoRA-GRPO policy; build one-call AST+BM25+1–2-hop locate tool (no organizer graphs), test on the 22 non-gold-read failures.
+
 ## D28 (2026-10-08 lead session): C9ae (no cap) RAN 15 h → "Kaggle Error" = runtime overrun. EVERY release now needs a time cap
 - Today's release = submissions/c9ae_t5 (C9ae + eval_config.yaml from C6a_t5: max_time_minutes 5, max_tool_calls 100,
   timeout_seconds 120 — this config completed on the real scorer with C6a_t5). Expected 6.8 h @120 / 8.5 h @150 tasks; worst case 10.6 h @120.
