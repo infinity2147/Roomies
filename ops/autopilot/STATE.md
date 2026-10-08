@@ -1,3 +1,5 @@
+## 08:40 work cycle (sonnet, frugal): no change. E2 train 342833 step 11 (loss 0.47). Workers 342384-88 running (342384 ends ~10:50); 338533/337593 pending. Enqueued anchor+c6a_t5 s2 (16 items, prio 30) for D11 calibration; queue 26 pending / 10 running / 197 done / 0 failed. No new LB score. 10-08 release stays C9ae. Next: resubmit workers when they end; export E2 when TRAIN_DONE.
+
 ## 06:40 work cycle (sonnet, frugal): no change. E2 train 342833 at step 7 (~1,500 s/step, loss 0.41, 63 GiB peak; ~125 steps => ~2 days). Workers 342384-88 running + pending 338533/337593; queue 33 pending / 10 running / 174 done / 0 failed. No new LB score. 10-08 release stays C9ae. Next: resubmit workers when they end; export E2 when TRAIN_DONE.
 
 ## 04:40 work cycle (sonnet, frugal): E2 training 342833 RUNNING (r=128 passed preflight, 57 GiB peak, ~60-70 tok/s, 1.5h in; check runs/lora/e2_nebius_r128/train_log.jsonl, TRAIN_DONE → export/--verify → c16_e2lora). Workers: 3 a40 + 2 l40 running, dgx/l40/a40 workers pending; queue 57 pending / 10 running / 150 done / 0 failed. No new LB score. 10-08 release stays C9ae. Next: harvest px results; E2 export when done.
