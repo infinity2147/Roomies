@@ -21,6 +21,13 @@
 ## Champion
 C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB 0.13 (2026-10-06).
 
+## D28 (2026-10-08 lead session): C9ae (no cap) RAN 15 h → "Kaggle Error" = runtime overrun. EVERY release now needs a time cap
+- Today's release = submissions/c9ae_t5 (C9ae + eval_config.yaml from C6a_t5: max_time_minutes 5, max_tool_calls 100,
+  timeout_seconds 120 — this config completed on the real scorer with C6a_t5). Expected 6.8 h @120 / 8.5 h @150 tasks; worst case 10.6 h @120.
+- Our L4 projection (10.3 h @120) under-estimated the real run by ≥ 45 % (hidden repos slower and/or more tasks) → add a 1.5× safety
+  factor to every projection; gate = 150 tasks × 1.5 × capped mean ≤ 11 h, or a cap that bounds 120 × cap ≤ 10.5 h.
+- Thinking candidates (C11t/C15) must ship WITH the cap; time them capped on Kaggle (make_kernel uses the submission's eval_config).
+
 ## E2 — external SFT data (lead session, 2026-10-08 02:45) — rules §2.6: public/free external data allowed
 - Source: nebius/SWE-rebench-openhands-trajectories (CC-BY-4.0, teacher Qwen3-Coder-480B Apache-2.0; 67k traj, 32,161 resolved,
   1,823 Python repos) → data/external/nebius/. Excluded repos: httpx (public LB repo) + marshmallow/sqlparse/tenacity (proxy) → eval stays held-out.

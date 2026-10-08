@@ -1,4 +1,11 @@
-SUBMIT: submission_2026-10-08_c9ae_editfix_analyzercap.zip
+SUBMIT: submission_2026-10-08_c9ae_t5.zip
+
+# 2026-10-08 (lead session): C9ae + 5-min/task time cap (D28). Yesterday's C9ae (no cap) ran 15 h and ended in
+"Kaggle Error" = runtime overrun of the 12 h limit. The cap (eval_config.yaml copied from C6a_t5, which completed on the
+scorer) bounds the worst case at ~10.6 h for 120 tasks; expected ~6.8 h (120) / ~8.5 h (150) from C9ae's L4 task times.
+Cost: tasks longer than 5 min are cut (10/30 on the L4 timing set; most solves finish in < 4 min).
+
+(previous draft below)
 
 # Release 2026-10-08: DRAFT (rewritten 2026-10-07 10:45 IST; gate updated 11:50 by D25). The default switches to C11t once its L4 timing passes (DECISIONS D24).
 
