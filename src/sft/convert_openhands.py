@@ -34,6 +34,10 @@ from src.sft.build_dataset import render_segment_thinking
 from src.sft.format import MODEL, ROOT
 
 PARQUET = ROOT / "data/external/nebius/trajectories.parquet"
+SOURCES = {  # name -> (parquet glob, has `resolved` column)
+    "nebius": ("data/external/nebius/trajectories.parquet", True),
+    "swe_hero": ("data/external/swe_hero/data/*.parquet", False),  # nvidia/SWE-Hero (CC-BY-4.0); no resolved flag -> tagged unverified
+}
 DEPLOY_CAPTURE = ROOT / "results/kaggle/c11t-t30s/results/c11t-t30s/capture.jsonl"
 PUBLIC_REPOS = {"fastapi/fastapi", "textualize/rich", "psf/requests", "encode/httpx"}
 OBS_LIMIT = 5000
@@ -129,8 +133,19 @@ def convert(row: dict, system: str, tools: list[dict], suffix: str, max_turns: i
     msgs = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     pending: list[str] = []
     drop_ids: set[str] = set()
+    pending_call_id = None
     n_act, n_src_edit, k = 0, 0, 0
     for msg in tr[2:]:
+        msg = dict(msg)
+        if isinstance(msg.get("tool_calls"), str):  # SWE-Hero stores a Python-repr list
+            import ast
+            try:
+                msg["tool_calls"] = ast.literal_eval(msg["tool_calls"])
+            except (ValueError, SyntaxError):
+                return None, "bad_tool_calls"
+        if msg["role"] == "tool" and not msg.get("tool_call_id"):  # SWE-Hero: results pair with the previous call by order
+            prev = msgs[-1].get("tool_calls") if msgs[-1]["role"] == "assistant" else None
+            msg["tool_call_id"] = prev[0].get("_src") if prev else (pending_call_id or "")
         if msg["role"] == "tool":
             if msg["tool_call_id"] in drop_ids:
                 continue
@@ -152,6 +167,7 @@ def convert(row: dict, system: str, tools: list[dict], suffix: str, max_turns: i
         if not calls:
             continue
         tc = calls[0]
+        pending_call_id = tc.get("id")
         for extra in calls[1:]:
             drop_ids.add(extra["id"])
         try:
@@ -248,6 +264,8 @@ def main() -> None:
     ap.add_argument("--max-seq-tokens", type=int, default=32768)
     ap.add_argument("--out", default=str(ROOT / "data/derived/sft/e2_nebius_pilot.jsonl"))
     ap.add_argument("--dump-msgs", default=None, help="also write converted message lists (debug)")
+    ap.add_argument("--source", default="nebius", choices=sorted(SOURCES))
+    ap.add_argument("--per-task", type=int, default=2, help="max trajectories per instance_id")
     ap.add_argument("--shard", type=int, default=0)
     ap.add_argument("--nshards", type=int, default=1, help="process every nshards-th eligible row (parallel SLURM tasks)")
     a = ap.parse_args()
@@ -259,18 +277,28 @@ def main() -> None:
     system, tools, suffix = deploy_template()
     proxy_repos = {json.loads(l)["repo"].lower() for l in open(ROOT / "data/derived/proxy/valid_tasks.jsonl")}
     excluded = PUBLIC_REPOS | proxy_repos
-    pf = pq.ParquetFile(PARQUET)
+    import glob
     import zlib
 
+    pattern, has_resolved = SOURCES[a.source]
+    skip_ids: set[str] = set()
+    if a.source != "nebius":  # dedupe: prefer the test-verified nebius copy of any shared issue
+        nb = pq.read_table(ROOT / SOURCES["nebius"][0], columns=["instance_id", "resolved"])
+        skip_ids = {i for i, r in zip(nb.column("instance_id").to_pylist(), nb.column("resolved").to_pylist()) if r}
+    cols = ["trajectory_id", "repo"] + (["resolved"] if has_resolved else [])
     rows = []  # stream; keep only this shard's eligible rows (memory ~ 1/nshards of the dataset)
-    for rg in range(pf.num_row_groups):
-        meta = pf.read_row_group(rg, columns=["trajectory_id", "repo", "resolved"]).to_pylist()
-        keep = [i for i, r in enumerate(meta) if r["resolved"] and r["repo"].lower() not in excluded
-                and zlib.crc32(f"{a.seed}:{r['trajectory_id']}".encode()) % a.nshards == a.shard]
-        if not keep:
-            continue
-        tb = pf.read_row_group(rg, columns=["instance_id", "repo", "trajectory", "model_patch", "resolved"]).take(keep)
-        rows.extend(tb.to_pylist())
+    for path in sorted(glob.glob(str(ROOT / pattern))):
+        pf = pq.ParquetFile(path)
+        for rg in range(pf.num_row_groups):
+            meta = pf.read_row_group(rg, columns=cols + ["instance_id"]).to_pylist()
+            keep = [i for i, r in enumerate(meta) if (r.get("resolved", 1)) and r["repo"].lower() not in excluded
+                    and r["instance_id"] not in skip_ids
+                    and zlib.crc32(f"{a.seed}:{r['instance_id']}".encode()) % a.nshards == a.shard]  # by issue: per-task cap is global
+            if not keep:
+                continue
+            tb = pf.read_row_group(rg, columns=["instance_id", "repo", "trajectory", "model_patch"]).take(keep)
+            rows.extend(tb.to_pylist())
+    stats_skip = len(skip_ids)
     random.Random(a.seed).shuffle(rows)
     stats, seen_inst = Counter(), Counter()
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
@@ -279,7 +307,7 @@ def main() -> None:
         for r in rows:
             if stats["traj_ok"] >= a.n:
                 break
-            if seen_inst[r["instance_id"]] >= 2:  # cap 2 trajectories per task
+            if seen_inst[r["instance_id"]] >= a.per_task:  # cap trajectories per task
                 stats["cap_per_task"] += 1
                 continue
             msgs, why = convert(r, system, tools, suffix, a.max_turns)
@@ -300,7 +328,7 @@ def main() -> None:
                 stats["tokens"] += len(ids)
                 stats["trained_tokens"] += sum(mask)
                 f.write(json.dumps({"instance_id": r["instance_id"], "repo": r["repo"].split("/")[-1].lower(),
-                                    "source": "nebius", "window": wi, "input_ids": ids, "loss_mask": mask}) + "\n")
+                                    "source": a.source, "verified": has_resolved, "window": wi, "input_ids": ids, "loss_mask": mask}) + "\n")
     print(json.dumps(stats, indent=1))
 
 

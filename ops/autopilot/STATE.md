@@ -39,6 +39,24 @@
 ## Champion
 C8 `submissions/c8_anchorplus` (zip: submission_c8_anchorplus.zip) — public LB 0.13 (2026-10-06).
 
+## E2b — external data mix (lead session 2026-10-09)
+- SWE-Hero (nvidia, CC-BY-4.0, 34,269 traj / 11,766 issues / 1,695 permissive repos, Qwen3-Coder teacher) → data/external/swe_hero.
+  No `resolved` column → tagged verified=false; issues that are resolved in Nebius are skipped (dedupe, prefer verified copy);
+  shards by instance_id so the per-task cap (3) is global. Converter: `--source swe_hero` (handles repr-string tool_calls,
+  order-paired tool results). Conversion job 345526 (16 shards × 64) → data/derived/sft/e2_swe_hero/.
+- CONTAMINATION RULE: own rollouts come from proxy tasks. src/sft/mix_datasets.py splits proxy repos 8/8 (seed 0): own data
+  only from the TRAIN half (click, flask, jinja, sqlmodel, typer, etils, ml_collections, requests-oauthlib); any model trained
+  with own data is evaluated ONLY on ops/queue/shards/proxy_eval_half.txt (85 tasks: sqlparse, fiddle, pyglove, tenacity,
+  marshmallow, werkzeug, attrs, tqdm). Shards for that eval: make 4–8 shards from that file before enqueueing.
+- Own data today is tiny: build_dataset kept 17 trajectories / 27 seqs from capture 339851 (drop_no_submit 119, unresolved 87,
+  ~45 % of calls UNASSIGNED) → (a) investigate the assignment failures; (b) consider accepting resolved runs without an explicit
+  submit_patch (harness auto-submits) — check the patch is clean. Capture at scale queued: ops/queue_cap 40 items
+  (C11t, 6 seeds × proxy train-half 67 tasks + 4 seeds × 107 public tasks), workers 345528 (l40) + 345529 (a40), CAPTURE=1.
+  Then: `.venv-harness/bin/python -m src.sft.build_dataset --capture results/capture --shards-dir <dir> --out data/derived/sft/e1_own_<tag>.jsonl`
+  per shard dir (proxy_trainhalf / public — public mode tasks need --tasks-files data/tasks.jsonl).
+- Training job 345530 (ap-train-mix, afterok 345526): mix_v1 = 1,500 seqs (Nebius + SWE-Hero + own ≤30 %), r128/α256, 1 epoch
+  → runs/lora/mix_v1_r128. Compare against the Nebius-only pilot (342833) on the eval half, paired, 2 seeds.
+
 ## Research report 2026-10-09: reports/Graph RL LoRA and SWE data.md (graph-RL localization, LoRA methods, external data)
 - E2 next run: 2–3 epochs, effective batch 8–32, mask parse-failed tool-call turns, loss only on non-overlap turns, turn-count curriculum;
   keep vanilla LoRA r128/α256 all-linear (DoRA/PiSSA/LoRA+ ≈ no gain). Add nvidia/SWE-Hero-openhands-trajectories (CC-BY-4.0), dedupe vs

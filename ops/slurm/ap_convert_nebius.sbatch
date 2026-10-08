@@ -11,9 +11,9 @@
 cd /home/fmr-group/24b4518/project/Gemma_RL
 N=${N_PER_SHARD:-64}; T=${NSHARDS:-16}
 for K in $(seq 0 $((T-1))); do
-  .venv-harness/bin/python -m src.sft.convert_openhands --n $N --shard $K --nshards $T \
-    --out data/derived/sft/e2_nebius/shard_$K.jsonl > results/slurm/ap_convert_${SLURM_JOB_ID}_$K.log 2>&1 &
+  .venv-harness/bin/python -m src.sft.convert_openhands --source ${SOURCE:-nebius} --per-task ${PER_TASK:-2} --n $N --shard $K --nshards $T \
+    --out data/derived/sft/e2_${SOURCE:-nebius}/shard_$K.jsonl > results/slurm/ap_convert_${SLURM_JOB_ID}_$K.log 2>&1 &
 done
 wait
-cat data/derived/sft/e2_nebius/shard_*.jsonl | wc -l
+cat data/derived/sft/e2_${SOURCE:-nebius}/shard_*.jsonl | wc -l
 echo CONVERT_DONE
