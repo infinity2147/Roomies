@@ -19,7 +19,7 @@ def run(t):
     t0 = time.time()
     try:
         r = subprocess.run([str(ROOT / ".venv/bin/python"), str(SK), "--issue", t["text"][:4000], "--root", str(d), "--k", "10"],
-                           capture_output=True, text=True, timeout=90, cwd=str(d))
+                           capture_output=True, text=True, timeout=40, cwd=str(d), env={"PATH": "/usr/bin:/bin", "PWD": str(d), "SWE_WORKSPACE": str(d)})
     except subprocess.TimeoutExpired:  # counted as a miss (no output)
         r = type("R", (), {"stdout": ""})()
     dt = time.time() - t0
@@ -44,7 +44,7 @@ def run(t):
     if c.gold_files:
         for k in KS:
             out["file_hit@%d" % k] = float(any(x in c.gold_files for x in files[:k]))
-    out["timeout"] = float(dt >= 89)
+    out["timeout"] = float(dt >= 39)
     out["secs"] = dt
     return t["id"], t["split"], t["src"], out
 
@@ -64,7 +64,10 @@ def agg(rows):
 if __name__ == "__main__":
     T = [t for t in tasks() if (CACHE / (t["id"] + ".pkl")).exists()]
     with Pool(4) as p:
-        rows = p.map(run, T)
+        rows = []
+        for r in p.imap(run, T, chunksize=1):
+            rows.append(r)
+            print(len(rows), r[0], round(r[3]['secs'], 1), flush=True)
     res = {"train_pool": agg([r[3] for r in rows if r[1] == "train"]), "test_half": agg([r[3] for r in rows if r[1] == "test"]),
            "public": agg([r[3] for r in rows if r[2] == "public"])}
     json.dump(res, open(ROOT / "results/graph_locate/repo_locate.json", "w"), indent=1)
