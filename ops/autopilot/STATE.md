@@ -1,3 +1,13 @@
+## 14:40 work cycle (sonnet, frugal, 10-09): no new LB score (champion C8 0.13). Main queue had 32 pending (c17 px s1/s2, c16 evalhalf) but ZERO live workers -> submitted workers 345847/48 (a40 x2), 345849/50 (l40 x2). Also pending: lora worker 345761, timing 345837 (l40), 338533 dgx, 337593; mix train 345530 running. NOTE: 10-09 release zip (C9e) has NO eval_config.yaml (charter D28 wants max_time<=5); lead session chose it deliberately (root identical to C8 which ran fine uncapped; analyzer capped) - user decision. Next: harvest px_c17 s1/s2 vs c9e, c16 vs c9e_evalhalf (paired, 85 ids), timing 345837 ratio gate <=1.15; resubmit workers when they end.
+
+## D29b (graph-locate subagent): graph-aware localization skill + C16 candidate
+- Built skills/graph-locate (stdlib-only AST def/call graph + BM25 + exact/traceback seeds + budgeted expansion + learned reranker; ~1-4 s per call).
+  Code src/localize/, results results/graph_locate/*.json, report reports/graph_locate_eval.md. Learned weights in skills/graph-locate/scripts/weights.json.
+- Candidate submissions/c16_c9e_graphlocate = C9e + skill (analyzer prompt calls it once first; nothing else changed). Validated, zip results/zips/c16.zip.
+- Enqueued (prio 03, TEST half only, 4 shards ops/queue/shards/proxy_evalhalf/e0..e3): px_c16_s1, px_c16_s2 and baseline px_c9e_evalhalf_s1/s2.
+  HARVEST: px_report px_c16_s{1,2} vs px_c9e_evalhalf_s{1,2}, paired on the 85 eval-half ids (do not confuse with the older px_c16_e2lora runs).
+- Offline: learned reranker lifts fn Hit@1 over BM25 (see report) but graph expansion itself adds little beyond the learned scorer; expect a small effect.
+
 ## D29 (2026-10-09 lead session): C9ae scored LB 0.10 (C8 0.13) — STRATEGY SHIFT
 - 0.10 vs 0.13 = 2/58 tasks, inside LB noise (SE ≈ 0.04). Our small fixes (C9a/C9e ≈ +3 proxy tasks) are BELOW LB resolution;
   only large effects move the LB. The one large effect we have is THINKING (proxy +0.19, L4 13/30 vs 8/30) — blocked by runtime (1.8×).
