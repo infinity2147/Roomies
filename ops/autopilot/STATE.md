@@ -1,3 +1,7 @@
+## 20:40 work cycle (sonnet, frugal, 10-09): no new LB score (champion C8 0.13). 16 GPUs busy: workers 345847/48 (a40), 345849/50 (a40/l40), 338533 (dgx4), timing 345996 (~2h50 in, both c9e/c17 items still running), trains 345530 mix + 346027 distill. Pending: lora workers 346000/01/346028, 337593. Queue 8 pending/12 running (c16, c9e_evalhalf, c17 s2 s7), queue_lora 16 pending. No enqueue. Next: harvest timing 345996 (ratio<=1.15), px_c17 s2 vs c9e, c16 vs c9e_evalhalf; resubmit a40 workers ~22:30.
+
+## 18:40 work cycle (sonnet, frugal, 10-09): no new LB score (champion C8 0.13). Running: workers 345847/48 (a40), timing 345996 (c9e+c17 serial, ~50 min in), mix train 345530. Pending (Priority): 338533, 345849/50, 346000/01, train 346027 (E3 distill), 346028. Queue 27 pending/4 running. No enqueue. Next: harvest timing 345996 (ratio gate <=1.15), px_c17 s1/s2 vs c9e, c16 and c9ae_evalhalf; resubmit a40 workers when 345847/48 end (~22:30).
+
 ## Lead session 2026-10-09 evening — key results + new chains
 - C17 (C9e + thinking ON in the analyzer only) proxy +0.137 vs C8 (n=161, z 3.67) — biggest non-root-thinking gain. L40/A40 serial
   timing C9e vs C17 (queue ops/queue_time, CONC=1, job 345996 on a40) decides if it ships (ratio ≤ 1.15).
