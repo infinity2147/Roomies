@@ -26,7 +26,7 @@ export GIT_AUTHOR_NAME=swegemma GIT_AUTHOR_EMAIL=swegemma@localhost GIT_COMMITTE
 
 slot() {  # $1 = local gpu index
   local i=$1 port=$((8100 + $1)) tag="${SLURM_JOB_ID}_$1"
-  CUDA_VISIBLE_DEVICES=${GPUS[$i]} PORT=$port scripts/serve_vllm.sh > results/slurm/vllm_$tag.log 2>&1 &
+  CUDA_VISIBLE_DEVICES=${GPUS[$i]} PORT=$port scripts/serve_vllm.sh ${SERVE_SUB:-} > results/slurm/vllm_$tag.log 2>&1 &
   local vpid=$!
   for _ in $(seq 1 120); do curl -sf "http://127.0.0.1:$port/v1/models" >/dev/null && break
     kill -0 $vpid 2>/dev/null || break; sleep 10; done
