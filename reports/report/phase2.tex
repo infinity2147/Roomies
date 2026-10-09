@@ -1,0 +1,147 @@
+%==========================================================================================
+\section{Part II (2--9 October): leaderboard reality, Prajna, and the runtime wall}\label{sec:phase2}
+
+\subsection{What the leaderboard told us}
+\begin{table}[H]\centering\small
+\begin{tabularx}{\linewidth}{llX}\toprule
+Submission & Public LB & What it is / what we learned \\\midrule
+C4 & timeout & projected 14.1\,h serial runtime $\Rightarrow$ ``Notebook Timeout''. Runtime is a hard constraint. \\
+C6a\_t5 & 0.06 & our public-repo-tuned scaffold (thinking off) + 5-min cap: tuning on 4 public repos did \emph{not} transfer. \\
+public anchor & 0.12 & community bundle: read-only \code{code\_analyzer} sub-agent, no eval\_config. \\
+\textbf{C8} & \textbf{0.13} & anchor + 2 hygiene fixes (\code{/tmp} via heredoc; revert test edits). Current champion. \\
+C9ae & 0.10 & C8 + edit-failure fallback + analyzer cap. First attempt ran 15\,h and ended in ``Kaggle Error''; re-scored 0.10. \\
+C9ae\_t5 & pending & C9ae + 5-min cap; still running after $>$24\,h (a capped run cannot need that long: Kaggle-side delay). \\
+C9e & recommended & C8 + analyzer cap only; main agent byte-identical to C8 (runtime-safe by construction). \\\bottomrule
+\end{tabularx}\caption{Leaderboard history. Leader 0.24; a cluster of teams at 0.15.}\end{table}
+\finding{With 58 public tasks the standard error of a pass rate near 0.12 is $\sqrt{p(1-p)/58}\approx 0.04$. 0.10 vs 0.13 is two
+tasks and indistinguishable. Prompt-level fixes worth $\approx$+0.05 on our proxy are \emph{below LB resolution}; to beat the
+0.15 cluster we need effects of $\geq$+0.10.}
+
+\subsection{The hidden set and the proxy benchmark}
+The harness describes ``13 repositories'' of which only 4 are public; the hidden set is mostly private, Google-style Python
+(absl, \code{*\_test.py}). We built a \textbf{proxy benchmark of 152 verified tasks from 16 public repositories the competition does
+not use} (pyglove, ml\_collections, fiddle, etils, click, flask, werkzeug, attrs, tqdm, \dots). On Prajna every task passes with the gold
+patch and fails with an empty patch (152/152, 0/152). Calibration against the LB: anchor 0.327 $>$ C6a\_t5 0.268 on the proxy (3
+seeds each, matches the LB order), but C8 $\approx$ anchor (0.325), so the proxy resolves large differences, not $\pm$1-task ones.
+For fine-tuning we split the 16 repos 8/8: own trajectories may only come from the \emph{train half}; models trained on them are
+evaluated only on the 85 \emph{eval-half} tasks.
+
+\subsection{Infrastructure on IITB Prajna}
+\begin{itemize}
+\item \textbf{Migration}: 55\,GB (data, snapshots, model, Claude session) via rsync; environments rebuilt. DGX nodes (8$\times$A100-80GB,
+Ubuntu) have no internet $\Rightarrow$ wheels staged on the login node and installed offline. A40/L40 nodes run Rocky 8 (glibc 2.28):
+vLLM still runs because its MoE kernel import is optional and \code{cryptography} was swapped for a manylinux\_2\_28 build.
+\item \textbf{Evaluation queue}: one vLLM server per GPU (TP=1, scorer flags, 32k context); every GPU slot pulls
+(candidate, 19-task shard) items from a shared file queue, so A100/A40/L40 GPUs drain one priority queue without reloading.
+Separate queues for LoRA candidates (\code{SERVE\_SUB}), capture runs (all LLM calls recorded for SFT) and serial timing (\code{CONC=1}).
+\item \textbf{Autopilot}: a cron-supervised daemon runs a headless Claude Code (Sonnet) cycle every 2\,h with a budget cap; it harvests
+results, keeps GPUs fed and maintains \code{ops/autopilot/STATE.md}. Found and fixed: a missing git identity on one DGX node leaked
+harness files into patches (D18); LoRA candidates evaluated on base-only servers.
+\item \textbf{Scorer-speed checks}: private Kaggle kernels on the real 4$\times$L4 stack (weekly quota of 30\,GPU-h, exhausted on 9 Oct),
+and serial same-hardware time ratios on Prajna as the fallback.
+\end{itemize}
+
+\subsection{Candidate results on the proxy}
+\begin{table}[H]\centering\footnotesize
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}X rrr>{\raggedright\arraybackslash}p{2.3cm}}\toprule
+Cand. & Change vs C8 & $n$ & pass & $\Delta$ vs C8 & sign-$z$ / note \\\midrule
+C9a & edit fallback (heredoc after a failed \code{edit\_file}) & 304 & 0.352 & +0.043 & 1.98 \\
+C9e & analyzer cap (4k out, 2k think, 20 calls) & 304 & 0.385 & +0.076 & 3.05 \\
+C9ae & C9a + C9e & 304 & 0.362 & +0.053 & 2.26 \\
+C9ae\_t7 / \_t5 & + 7 / 5-min cap & 608/456 & 0.327/0.279 & +0.003/$-$0.046 & caps erase the gain \\
+C11t & C9ae + thinking on the root & 304 & 0.444 & +0.135 & 4.67 \\
+C11n & thinking, no analyzer & 304 & 0.500 & +0.191 & 6.74 \\
+C13t & C11t + BM25 locate skill & 304 & 0.497 & +0.188 & 6.58 \\
+C14b/c/d & C11t + repro-must-fail / timebox / import check & 152--304 & 0.44--0.47 & +0.14--0.16 & 3.8--5.8 \\
+C15n512 & C11n + 512-token thinking cap per call & 304 & 0.507 & +0.197 & 6.88 \\
+\textbf{C17} & C9e + thinking in the analyzer only & 161 & 0.441 & \textbf{+0.137} & 3.67 (in progress) \\
+anchor & -- & 456 & 0.327 & +0.002 & calibration \\\bottomrule
+\end{tabularx}\caption{Paired comparisons (same task and seed) against C8 on the 152-task proxy.}\end{table}
+\finding{Every large effect involves \emph{thinking}. C17 is the first variant that gets a large share of it with the fast,
+non-thinking main agent.}
+
+\subsection{The runtime wall: why thinking does not ship (yet)}
+The scorer runs tasks \textbf{serially} (\code{concurrency=1}) on 4$\times$L4: $\approx$120 tasks in 12\,h is $\approx$5.5\,min per task, and
+decode at batch 1 ($\approx$35\,tok/s) is $\approx$87\% of task time, so a task can afford $\approx$10k generated tokens in total.
+\begin{table}[H]\centering\small
+\begin{tabular}{lrrrl}\toprule
+Run (30 public tasks, serial, Kaggle 4$\times$L4) & min/task & 120 tasks & solved & \\\midrule
+C9ae & 4.92 & 10.3\,h & 8/30 & baseline \\
+C11t (thinking on root) & 7.67 & 15.8\,h & 12/30 & 1.56$\times$ \\
+C11n (thinking, no analyzer) & 8.69 & 17.9\,h & 13/30 & 1.77$\times$ \\
+C15t512 (512-token cap) & 8.97 & 18.4\,h & 13/30 & 1.82$\times$ \\
+C17 (planner thinking; A40, partial 7 tasks) & -- & -- & 3/7 vs 3/7 & 1.36$\times$ vs C9e \\\bottomrule
+\end{tabular}\caption{Measured scorer-hardware speed. Thinking solves $\approx$5 more tasks per 30 but is 1.4--1.8$\times$ slower.}\end{table}
+Captured traffic explains why: with thinking the agent makes \emph{fewer} calls (78 vs 129 per task) and reads less prompt
+(679k vs 1{,}145k tokens per task) but generates 13.5k vs 8.2k tokens per task. Reasoning is heavy-tailed (p50 39 tokens per call,
+p99 1{,}974; 55 calls hold 30\% of all output), so per-call budgets barely help. Per-task time caps bound the runtime but cut the
+slow tasks, which are exactly the ones thinking solves (a 5-min cap keeps 5--7 of 13 solves). Decision D28/D29: every release must be
+runtime-safe; the program now targets \emph{making thinking cheap}.
+
+\subsection{Learned graph traversal for localization}
+We built \code{graph-locate}, a one-call, standard-library tool: function-level BM25 seeds, an AST call/definition graph of the
+repository built at run time (organizer graphs may be empty on hidden repos), budgeted frontier expansion with a linear policy
+trained by REINFORCE on nDCG@10, and a LambdaRank scorer. Held-out proxy half (78 tasks with gold functions):
+\begin{table}[H]\centering\small
+\begin{tabular}{lrrr}\toprule
+Method & fn@1 & fn@5 & fn@10 \\\midrule
+existing BM25 locate skill & 0.321 & 0.615 & 0.654 \\
+function-level BM25 & 0.436 & 0.731 & 0.808 \\
+graph expansion, hand weights & 0.500 & 0.705 & 0.769 \\
+graph + REINFORCE policy + learned linear scorer (shipped) & 0.500 & 0.769 & 0.821 \\
+graph + LambdaRank GBDT & 0.551 & 0.782 & 0.821 \\
+no graph, learned linear scorer & 0.526 & 0.769 & 0.821 \\\bottomrule
+\end{tabular}\end{table}
+\finding{The learned ranker adds +0.06 to +0.12 fn@1 over BM25, but graph expansion and the RL policy add nothing measurable:
+the no-graph ablation matches every graph variant. With the right file in the top 10 for $\approx$94\% of tasks and 149/171 failed
+runs having read the gold file, localization is not the bottleneck. Candidate C16 (C9e + tool) is queued on the held-out half.}
+
+\subsection{Fine-tuning: external data, own data, and thinking distillation}
+\begin{itemize}
+\item \textbf{External trajectories} (rules allow public free data). \code{nebius/SWE-rebench-openhands-trajectories} (CC-BY-4.0,
+Qwen3-Coder-480B teacher, 32{,}161 test-verified of 67k, 1{,}823 repos) and \code{nvidia/SWE-Hero} (CC-BY-4.0, 34k, 1{,}695 permissive
+repos, not verified; dedup against Nebius, cap 3 per task). A converter maps OpenHands actions to our tools
+(\code{execute\_bash}$\to$\code{run\_command}, \code{view}$\to$\code{read\_file}, \code{str\_replace}$\to$\code{edit\_file},
+scratch files$\to$\code{/tmp}, \code{think}$\to$reasoning channel) with our exact system prompt and tools, and cuts long trajectories
+into windows that mimic the scorer's history compaction (15.5k tokens per window). 45\% of resolved trajectories survive (the rest
+edit test files). Competition and proxy repositories are excluded.
+\item \textbf{LoRA on the frozen int4 base}: rank 128, $\alpha$=256, all linear layers; 1 epoch on 1{,}000 Nebius windows took 30\,h on
+one A100 (64\,GiB peak, 60--110 tok/s; loss 0.39$\to$0.32). Its proxy evaluation (C18, adapter on C8 without a cap) is running;
+an earlier attempt was invalid (served without the adapter). A Nebius + SWE-Hero mix run is training.
+\item \textbf{Own trajectories}: fixing two pipeline bugs (unassigned shards; mandatory explicit \code{submit\_patch}) raised usable data
+from 27 to 345 sequences (148 resolved runs).
+\item \textbf{Thinking distillation (C19)}: train the fast, \emph{non-thinking} main agent on resolved \emph{thinking} runs rendered without
+the reasoning (289 sequences, eval-half tasks removed), then compare C9ae+adapter vs C9ae on the 85 held-out tasks. If it works, the
+model gets thinking-quality actions at non-thinking cost, the cleanest route through the runtime wall.
+\end{itemize}
+
+\subsection{What the literature suggests (research synthesis)}
+\begin{itemize}
+\item \textbf{SFT data}: gains scale log-linearly with trajectories and with \emph{number of repositories} (SWE-Gym: 491 trajectories
+lifted a 32B model 7.0$\to$20.6; SWE-smith 5k $\to$ 40.2). Mask malformed tool-call turns, keep failed-but-informative steps masked,
+curriculum by turn count (SWE-Lego: +1--2 points each); LoRA needs high rank on all linear layers (r$\geq$128).
+\item \textbf{Test-time scaling}: parallel samples + execution-based selection (regression tests, then generated reproduction tests)
+gives +5--15 points at N=3--16 (Agentless, Trae-Agent, R2E-Gym). Under serial scoring, intra-task parallelism (ADK
+\code{ParallelAgent}) is the only way to use the nearly-free batched decode; one shared 100-call budget must be split.
+\item \textbf{Localization RL} (RepoNavigator, CodeScout, ToolTrain): +2--6 resolve points at large GPU cost; not our bottleneck.
+\item \textbf{Weak-model failure modes}: loops (a 10-step repeat predicts 89\% failure), tool-format errors, context overflow; prune
+observations rather than summarize.
+\end{itemize}
+
+\subsection{What should be done now (prioritized)}
+\begin{enumerate}
+\item \textbf{Make thinking fit the budget} (largest expected gain, +0.10 or more):
+ (a) finish the C17 timing; if $>$1.15$\times$, bound the planner (analyzer thinking budget 512/1024, fewer analyzer calls);
+ (b) thinking distillation C19, and if it gains $\geq$+0.05 on the held-out half, scale it with more thinking captures (8--10 per
+ task, train half + public tasks); (c) combine: distilled main agent + thinking planner.
+\item \textbf{Fine-tuning at scale}: evaluate C18 (Nebius) and the mix; if positive, train 2--3 epochs with turn masking and
+curriculum, own data 20--40\%, and speed up training (data-parallel LoRA, shorter windows).
+\item \textbf{Intra-task best-of-2} (C14p, +0.26 on only 19 tasks): run full seeds; design a solver + test-writer + selector
+\code{ParallelAgent} under the shared budget.
+\item \textbf{Release discipline}: submit only candidates that are (i) $\geq$+0.10 on the proxy (2 seeds, paired) and (ii) runtime-safe
+(same-hardware serial ratio $\leq$1.15 vs a completed submission, or main agent identical to one). Use the two final-selection slots
+for the best safe candidate and the best high-upside one.
+\item \textbf{Paper track} (deadline 12 November): (a) \emph{Best New Resource}: the LB-calibrated held-out proxy benchmark,
+converter and forensics tooling; (b) \emph{Best Paper}: thinking under a serial budget (cost model, accuracy--time frontier,
+distillation), with the budget-capped localization study and the negative RL-traversal result as supporting sections.
+\end{enumerate}

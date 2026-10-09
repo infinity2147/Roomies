@@ -23,14 +23,14 @@
 \newcommand{\1}{\mathbb{1}}
 \newcommand{\insight}[1]{\par\smallskip\noindent\colorbox{NavyBlue!7}{\parbox{\dimexpr\linewidth-2\fboxsep}{\small\textbf{Intuition.} #1}}\par\smallskip}
 \newcommand{\finding}[1]{\par\smallskip\noindent\colorbox{ForestGreen!8}{\parbox{\dimexpr\linewidth-2\fboxsep}{\small\textbf{Finding.} #1}}\par\smallskip}
-\pagestyle{fancy}\fancyhf{}\rhead{\small Gemma-RL technical report}\lhead{\small 2 Oct 2026}\cfoot{\thepage}
+\pagestyle{fancy}\fancyhf{}\rhead{\small Gemma-RL technical report}\lhead{\small 9 Oct 2026}\cfoot{\thepage}
 \setlength{\headheight}{12pt}
 
 \title{\textbf{Gemma-RL: Technical Report}\\[4pt]
 \large Building a Gemma-4-31B software-engineering agent for the Kaggle \emph{Gemma 4 Developer Agent}
 competition, and researching learned (RL) graph traversal for fault localization}
 \author{Project team \quad (prepared with Claude Code)}
-\date{Status as of 2 October 2026}
+\date{Status as of 9 October 2026 (Part II added: Section~\ref{sec:phase2})}
 
 \sloppy
 \begin{document}
@@ -46,7 +46,7 @@ scorer hardware with failure triage, the measurement protocol, the groundwork fo
 loading, exact-format supervised data rendering, compaction-aware dataset construction), new training
 data (66 verified tasks mined from git history, 1{,}628 synthetic localization bugs with LLM-written issues),
 and the formal design of the reinforcement-learning traverser. Every number in this report comes from
-files in the repository; the methodology is given with both intuition and the underlying mathematics.
+files in the repository; the methodology is given with both intuition and the underlying mathematics. \textbf{Part II (Section~\ref{sec:phase2}, added 9 October)} covers the leaderboard results, the move to the IITB Prajna cluster, the 152-task held-out proxy benchmark, the decode-bound runtime analysis that limits ``thinking'', the graph-locate study, external-data fine-tuning, thinking distillation, and a prioritized plan.
 \end{abstract}
 
 \tableofcontents
@@ -54,6 +54,11 @@ files in the repository; the methodology is given with both intuition and the un
 
 %==========================================================================================
 \section{Executive summary}
+\finding{\textbf{Update, 9 October (details in Section~\ref{sec:phase2}).} Public LB: C8 \textbf{0.13} (best), anchor 0.12,
+C9ae 0.10, C6a\_t5 0.06, C4 timeout; leader 0.24, cluster at 0.15. LB noise is $\pm$0.04 (58 tasks), so only large effects are visible.
+On our 152-task held-out proxy, \emph{thinking} is the only large effect (+0.14 to +0.20 over C8, $z\approx 4$--7), but on the scorer's
+L4 GPUs it is 1.4--1.8$\times$ slower and does not fit the 12-hour budget; making thinking cheap (planner-only thinking C17, thinking
+distillation C19) is now the main line of work. Learned graph traversal (RL) gave no measurable gain over a learned lexical ranker.}
 \begin{table}[H]\centering\small
 \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{4.2cm}X}
 \toprule
@@ -566,6 +571,8 @@ supervised ranker does not beat BM25, so RL waits for the synthetic/external dat
 \code{/workspace} with our builder (the organizers' graphs are not reachable from the sandbox).
 
 %==========================================================================================
+\input{phase2}
+
 \section{Lessons learned}
 \begin{itemize}
 \item \textbf{Measure the harness, not your assumptions.} The test-patch trap, malformed tool calls and context compaction were all invisible until we read raw logs and captured requests.
@@ -573,16 +580,22 @@ supervised ranker does not beat BM25, so RL waits for the synthetic/external dat
 \item \textbf{Time is a first-class metric.} Thinking budget, tool budget and per-task time interact; the fastest configuration with equal accuracy (C6a) is the safest under a 12-hour cap.
 \item \textbf{Prompt formatting is part of the model interface.} Markdown in instructions leaked into structured tool calls.
 \item \textbf{Learned components need diverse data.} Three repositories are not enough to beat BM25; mined and synthetic data are prerequisites, not extras.
+\item \textbf{Public-repo tuning does not transfer} (C6a\_t5 0.06): evaluate on held-out repositories that resemble the hidden set.
+\item \textbf{Know the leaderboard's resolution}: $\pm$0.04 on 58 tasks; chase large effects, verify small ones offline with paired seeds.
+\item \textbf{Runtime is the binding constraint under serial scoring}: measure time on the scorer's hardware before shipping.
 \item \textbf{Shared infrastructure needs defensive engineering}: uneven pipeline splits, per-rank memory budgets, port collisions with other users' services, and self-matching \code{pkill} patterns all cost real time.
 \end{itemize}
 
 \section{Status and next steps}
 \begin{table}[H]\centering\small
 \begin{tabularx}{\linewidth}{lX}\toprule
-Done & Data audit; local harness (107 valid); serving; Kaggle pipeline with capture; B1; B2; locator skill; C1--C6; freeze of C6a; rules; LoRA smoke (local); scoreboard; E0 formatting; B4 mining; graph builder; B5 injection; Option A/B memo. \\
-Running / queued & Kaggle: LoRA smoke, C6a$\times$4, B0$\times$2 (reference measurement and first SFT data); synthetic issue generation. \\
-Next & P5 triage of stochastic tasks (decides whether localization matters for the competition); B5 distribution check (Gate B); E1 rejection-sampling SFT on captured successes + mined tasks, LORO, on rented 80\,GB GPU; E2 expert iteration; C6a submission. \\
-Risks & Kaggle GPU availability; QAT+LoRA quality; 12-hour runtime if the scorer runs tasks serially; synthetic-issue distribution shift. \\\bottomrule
+Done (to 9 Oct) & Prajna migration and multi-GPU eval queue; 152-task proxy benchmark (gold/empty verified); 20+ candidates evaluated
+with paired seeds; L4 timing of 6 candidates; LB: C8 0.13, C9ae 0.10; graph-locate tool + RL/LambdaRank study; external-data
+converter (Nebius, SWE-Hero); first LoRA SFT (Nebius, 30\,h); autopilot. \\
+Running & C17 serial timing; C18 (Nebius LoRA) and C16 (graph-locate) proxy evals; Nebius+SWE-Hero mix training; thinking
+distillation C19 (train $\to$ package $\to$ held-out eval); capture runs for own data. \\
+Next & Bounded-planner C17 variants; scale distillation; best-of-2 \code{ParallelAgent}; fine-tuning at scale; paper writeups. \\
+Risks & Thinking does not fit even when cheaper; Kaggle-side scoring delays; Kaggle GPU quota; LoRA serving overhead on L4. \\\bottomrule
 \end{tabularx}\end{table}
 
 \appendix
