@@ -1,3 +1,15 @@
+## D29 (2026-10-09 lead session): C9ae scored LB 0.10 (C8 0.13) — STRATEGY SHIFT
+- 0.10 vs 0.13 = 2/58 tasks, inside LB noise (SE ≈ 0.04). Our small fixes (C9a/C9e ≈ +3 proxy tasks) are BELOW LB resolution;
+  only large effects move the LB. The one large effect we have is THINKING (proxy +0.19, L4 13/30 vs 8/30) — blocked by runtime (1.8×).
+- Program priority is now: make thinking fit the 12 h budget.
+  (1) C17 = C9e + thinking ON in the analyzer sub-agent only (think once, deeply; root executes without thinking). Proxy px_c17_s1/s2
+      at prio 02; serial timing vs C9e on L40 (job 345837, queue ops/queue_time, CONC=1, same 30 ids) → ratio gate ≤ 1.15.
+  (2) Thinking distillation: SFT the NON-thinking root on resolved trajectories from thinking runs (C11n/C15n512 captures) with the
+      reasoning stripped (build_dataset --no-inject-reasoning, render thinking-off) → better actions at zero thinking cost.
+  (3) Best-of-2 parallel (C14p: +0.263 on n=19, tiny) — run seeds before believing it.
+- KAGGLE WEEKLY GPU QUOTA (30 h) EXHAUSTED on 2026-10-09 → no Kaggle eval kernels until it resets; use L40 serial timing ratios.
+- Today's slot (user): submission_2026-10-09_c9e_analyzercap.zip (C9e; root identical to C8).
+
 ## 12:40 work cycle (sonnet, frugal, 10-09): no new LB score (champion C8 0.13). FOUND: px_c16_e2lora_s1 (10:40) ran on base-only vLLM workers -> all 0/152 in ~20 s (invalid, moved to results/px/_bad_px_c16_nolora). Fix: ap_worker.sbatch now passes ${SERVE_SUB} to serve_vllm.sh (enables LoRA); new queue ops/queue_lora (8 c16 items); lora workers 345760 (a40x2), 345761 (l40x2) submitted with APQ=ops/queue_lora SERVE_SUB=submissions/c16_e2lora. Main queue empty (proxy saturated), cap workers 345528/29 + mix train 345530 (step 11) running; 338533/337593 pending. Next: check lora workers started (VLLM_FAILED? adapter name 'e2' routing via run_eval), px_report c16 vs c8 0.325 (>= +0.03 -> seed 2 + Kaggle L4 timing). 10-09 release unchanged (C9ae_t5, capped).
 
 ## 10:40 work cycle (sonnet, frugal, 10-09): no new LB score (champion C8 0.13). E2 train 342833 DONE+exported+verified (runs/lora/e2_nebius_r128/adapter, rank128). Built submissions/c16_e2lora (C8 config + adapter e2, max_time_minutes 5), packaging/validate run started (check results/c16_e2lora_submission.zip). Enqueued px_c16_e2lora_s1 (prio 10, 8 items; needs adapter-capable worker). Mix train 345530 running; 338533/337593 pending. Next: harvest c16 px_report vs c8 (0.325); seed 2 if >= +0.03; L4 timing via Kaggle if promising. 10-09 release unchanged (C9ae_t5, capped).
