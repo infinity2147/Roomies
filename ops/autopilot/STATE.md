@@ -1,3 +1,16 @@
+## Lead session 2026-10-09 evening — key results + new chains
+- C17 (C9e + thinking ON in the analyzer only) proxy +0.137 vs C8 (n=161, z 3.67) — biggest non-root-thinking gain. L40/A40 serial
+  timing C9e vs C17 (queue ops/queue_time, CONC=1, job 345996 on a40) decides if it ships (ratio ≤ 1.15).
+- c16_e2lora was invalid (base-only workers + 5-min cap confound). Rebuilt as submissions/c18_c8_e2lora_nocap (C8 + E2 adapter, no cap);
+  ops/queue_lora 16 items (px_c18_e2lora_s1/s2, full proxy — external data excludes all proxy repos); workers 346000 (l40) + 346001 (dgx)
+  with SERVE_SUB=c18. Baseline = existing px_c8 s1–s4.
+- E3 THINKING DISTILLATION started: build_dataset fixes (ITEM_RE accepts t*/p*/e* shards — new captures were 100 % UNASSIGNED before;
+  --allow-no-submit: harness grades the diff anyway; --distill-thinking-off renders thinking runs without reasoning). Data
+  data/derived/sft/e3_distill_all.jsonl = 289 seqs / 2.88M tok from 148 resolved C11t runs, eval-half tasks removed.
+  Chain: train 346027 (r128, 2 epochs) → packages submissions/c19_c9ae_distill (C9ae + adapter d1) and enqueues ops/queue_lora_d1
+  (px_c19_distill_s1/s2 on the 85 eval-half ids) → LoRA worker 346028 (afterok). Baseline px_c9ae_evalhalf_s1/s2 queued (main, prio 04).
+  Compare px_c19_distill vs px_c9ae_evalhalf paired; if ≥ +0.05, distillation works → scale captures (thinking runs on more tasks).
+
 ## 16:40 work cycle (sonnet, frugal, 10-09): no new LB score (champion C8 0.13). Workers 345847/48 (a40) running, 345849/50 (l40), lora 345761, timing 345837, 338533 pending; mix train 345530 running (6 h). Queue 25 pending/4 running; c17 s1 (s0,s1) and s2 (s1) done, rest in flight, c16 evalhalf not started. No enqueue (>2 h work). Next: harvest px_c17 s1/s2 vs c9e once all 8 shards finish; then c16 vs c9e_evalhalf; timing 345837 gate <=1.15.
 
 ## 14:40 work cycle (sonnet, frugal, 10-09): no new LB score (champion C8 0.13). Main queue had 32 pending (c17 px s1/s2, c16 evalhalf) but ZERO live workers -> submitted workers 345847/48 (a40 x2), 345849/50 (l40 x2). Also pending: lora worker 345761, timing 345837 (l40), 338533 dgx, 337593; mix train 345530 running. NOTE: 10-09 release zip (C9e) has NO eval_config.yaml (charter D28 wants max_time<=5); lead session chose it deliberately (root identical to C8 which ran fine uncapped; analyzer capped) - user decision. Next: harvest px_c17 s1/s2 vs c9e, c16 vs c9e_evalhalf (paired, 85 ids), timing 345837 ratio gate <=1.15; resubmit workers when they end.

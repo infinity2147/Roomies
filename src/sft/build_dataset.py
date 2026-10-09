@@ -139,7 +139,7 @@ TEST_CFG_RE = re.compile(r"(^|/)(tests?|testing)(/|$)|(^|/)(test_[^/]*|[^/]*_tes
                          r"|(^|/)\.github/|(^|/)(repro|reproduce|scratch|tmp|debug)[^/]*\.py$")
 EDIT_TOOLS = {"edit_file", "write_file"}
 ANALYZER_TOOL = "code_analyzer"
-ITEM_RE = re.compile(r"^\d+_(s\d+)_(.+)$")  # 08_s3_px_c11t_s2 -> shard s3, run px_c11t_s2
+ITEM_RE = re.compile(r"^\d+_([a-z]+\d+)_(.+)$")  # 08_s3_px_c11t_s2 -> shard s3, run px_c11t_s2
 
 
 def repo_of_iid(iid: str) -> str | None:
@@ -361,6 +361,9 @@ def malformed(call: dict) -> bool:
     return not m.get("tool_calls") and ("<|tool_call>" in content or content.lstrip().startswith("call:"))
 
 
+REQUIRE_SUBMIT = True  # --allow-no-submit: the harness grades the final diff whether or not submit_patch was called
+
+
 def d5_root_filter(calls: list[dict], resolved: bool, patch_text: str | None) -> tuple[list[str], set[int]]:
     """-> (reasons to drop, turn indices to mask). Empty reasons = keep."""
     reasons = []
@@ -372,7 +375,7 @@ def d5_root_filter(calls: list[dict], resolved: bool, patch_text: str | None) ->
         reasons.append("dirty_patch")
     if any(TEST_CFG_RE.search(p) for p in edited_paths(calls)):
         reasons.append("test_edit")
-    if not any(tc["function"]["name"] == "submit_patch" for c in calls for tc in resp_tool_calls(c)):
+    if REQUIRE_SUBMIT and not any(tc["function"]["name"] == "submit_patch" for c in calls for tc in resp_tool_calls(c)):
         reasons.append("no_submit")
     return reasons, {i for i, c in enumerate(calls) if malformed(c)}
 
@@ -517,7 +520,11 @@ def build_capture(a, tokenizer) -> dict:
                         # masked indices are relative to gcs; map to this segment
                         off = gcs.index(seg[0])
                         seg_mask = {i - off for i in gmask if off <= i < off + len(seg)}
-                        ids, mask, info = render_segment_thinking(seg, tokenizer, seg_mask, inject=not a.no_inject_reasoning)
+                        if a.distill_thinking_off:  # thinking distillation: teacher = thinking run, student = thinking-off root
+                            ids, mask = render_segment(seg, tokenizer)
+                            info = Counter(turns=1)
+                        else:
+                            ids, mask, info = render_segment_thinking(seg, tokenizer, seg_mask, inject=not a.no_inject_reasoning)
                         for kk, v in info.items():
                             stats[kk] += v
                         if not ids or sum(mask) == 0:
@@ -553,9 +560,14 @@ def main() -> None:
     ap.add_argument("--loop-policy", choices=["drop", "mask"], default="drop", help="D5 repetition loop: strict drop or lenient mask")
     ap.add_argument("--max-per-task", type=int, default=2)
     ap.add_argument("--no-inject-reasoning", action="store_true", help="keep history exactly as captured (no thinking re-attached)")
+    ap.add_argument("--allow-no-submit", action="store_true", help="keep resolved runs that never called submit_patch")
+    ap.add_argument("--distill-thinking-off", action="store_true",
+                    help="render captured THINKING runs in thinking-OFF format without reasoning (distil actions into a fast root)")
     ap.add_argument("--no-strict", dest="strict", action="store_false", help="continue when some calls cannot be assigned")
     ap.add_argument("--stats-json")
     a = ap.parse_args()
+    global REQUIRE_SUBMIT
+    REQUIRE_SUBMIT = not a.allow_no_submit
     from transformers import AutoTokenizer
 
     tok = AutoTokenizer.from_pretrained(MODEL)

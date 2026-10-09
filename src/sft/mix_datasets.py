@@ -60,7 +60,7 @@ def main() -> None:
     own, dropped = [], 0
     for l in own_all:
         iid = json.loads(l)["instance_id"]
-        if task_repo.get(iid) in train_repos:
+        if iid not in task_repo or task_repo[iid] in train_repos:  # public-repo tasks are not in the proxy -> safe
             own.append(l)
         else:
             dropped += 1
