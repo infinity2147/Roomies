@@ -42,6 +42,13 @@ slot() {  # $1 = local gpu index
   fi
   while true; do
     local item claimed=""
+    if [[ -n "${SLURM_JOB_ID:-}" ]]; then  # do not start an item the job cannot finish (gpu_filler returns orphans anyway)
+      local left; left=$(squeue -h -j "$SLURM_JOB_ID" -o %L 2>/dev/null)
+      if [[ "$left" =~ ^(([0-9]+)-)?(([0-9]+):)?([0-9]+):([0-9]+)$ ]]; then
+        local lm=$(( ${BASH_REMATCH[2]:-0}*1440 + 10#${BASH_REMATCH[4]:-0}*60 + 10#${BASH_REMATCH[5]} ))
+        (( lm < ${MIN_LEFT_MIN:-90} )) && { echo "$(date +%T) slot $i: only ${lm} min left, not claiming"; break; }
+      fi
+    fi
     for item in $(ls $Q/pending 2>/dev/null | sort); do
       mv "$Q/pending/$item" "$Q/running/$item.$tag" 2>/dev/null && { claimed=$item; break; }
     done

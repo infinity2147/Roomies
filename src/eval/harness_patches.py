@@ -64,3 +64,11 @@ def install_test_dependencies(docker, container_id, repo="", *, fast_path=True, 
 for mod in (container_setup, verification, agent_runner):
     if hasattr(mod, "install_test_dependencies"):
         mod.install_test_dependencies = install_test_dependencies
+
+# D18b: the subprocess sandbox whitelists env vars (adk_eval_core build_sanitized_env) and sets HOME to a tmp dir, so the
+# worker's GIT_* identity never reaches `git commit`. On hosts without an FQDN (DGX nodes) git cannot auto-detect an email,
+# the baseline commit fails silently, and harness conftest.py/pytest.ini leak into every patch. Pass the identity through.
+from adk_eval_core.sandbox import subprocess_sandbox as _ss  # noqa: E402
+
+_ss._SAFE_ENV_KEYS = tuple(_ss._SAFE_ENV_KEYS) + (
+    "GIT_AUTHOR_NAME", "GIT_AUTHOR_EMAIL", "GIT_COMMITTER_NAME", "GIT_COMMITTER_EMAIL")

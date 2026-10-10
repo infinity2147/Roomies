@@ -23,7 +23,10 @@ if [[ -n "$SUB" && -d "$SUB/adapters" ]]; then
   for d in "$SUB"/adapters/*/; do
     [[ -f "$d/adapter_config.json" ]] && mods+=("$(basename "$d")=$(realpath "$d")")
   done
-  ((${#mods[@]})) && LORA_ARGS=(--enable-lora --max-loras "${MAX_LORAS:-8}" --max-lora-rank "${MAX_LORA_RANK:-128}"
+  # MAX_LORAS defaults to the number of adapters actually served: every slot pre-allocates a full rank-128 all-linear
+  # buffer (~1.9 GiB each); the old default of 8 left 5.5 GiB KV (6k tokens) on an A40 at TP=1 and made LoRA evals
+  # queue/preempt into 60-min timeouts (reports/lora_forensics_20261010.md).
+  ((${#mods[@]})) && LORA_ARGS=(--enable-lora --max-loras "${MAX_LORAS:-${#mods[@]}}" --max-lora-rank "${MAX_LORA_RANK:-128}"
                                   --lora-modules "${mods[@]}")
 fi
 

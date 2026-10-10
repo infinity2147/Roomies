@@ -517,6 +517,25 @@ def why(st, nid, score):
     return ", ".join(r)
 
 
+def _find_root():
+    # Kaggle scorer (docker): /workspace. Local subprocess sandbox: the skill runner chdirs to a temp dir, but bash's
+    # $PWD and $PYTHONPATH still point at the repo. Prefer a candidate that is a git checkout.
+    cands = [os.environ.get("SWE_WORKSPACE"), "/workspace", os.environ.get("PWD")]
+    cands += os.environ.get("PYTHONPATH", "").split(os.pathsep) + [os.getcwd()]
+    cands = [c for c in cands if c and os.path.isdir(c)]
+    for c in cands:
+        if os.path.isdir(os.path.join(c, ".git")):
+            return os.path.abspath(c)
+    return os.path.abspath(cands[0]) if cands else "."
+
+
+def _tmp(path):
+    # "/tmp/x" as the agent's shell sees it: real /tmp in the scorer container, $TMPDIR in the local sandbox.
+    if os.path.isdir("/workspace") or not path.startswith("/tmp"):
+        return path
+    return os.path.join(os.environ.get("TMPDIR") or "/tmp", path[len("/tmp"):].lstrip("/"))
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser()
@@ -533,7 +552,7 @@ def main(argv=None):
         text = sys.stdin.read()
     else:
         text = open(a.issue_file, encoding="utf-8", errors="replace").read()
-    root = a.root or next((c for c in (os.environ.get("SWE_WORKSPACE"), "/workspace", os.getcwd()) if c and os.path.isdir(c)), ".")
+    root = a.root or _find_root()
     ix = build_index(root)
     if not ix.nodes:
         print("graph-locate: no python functions indexed under %s" % root)

@@ -18,7 +18,7 @@ a = ap.parse_args()
 done = {p.name for p in (ROOT / "ops/queue/done").iterdir()}
 res = defaultdict(dict)  # (cand, seed) -> {task: row}
 leak = defaultdict(int)  # (cand, seed) -> patches containing harness conftest.py/pytest.ini (D18: broken worker)
-for f in sorted((ROOT / "results/px").glob("px_*/s*/task_results.jsonl")):
+for f in sorted((ROOT / "results/px").glob("px_*/[set]*/task_results.jsonl")):
     run, shard = f.parent.parent.name, f.parent.name
     m = re.match(r"px_(.+)_s(\d+)$", run)
     if not m:

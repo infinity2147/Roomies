@@ -15,8 +15,11 @@ records the public-LB score in ops/autopilot/lb_scores.tsv.
   transfer: the hidden set is ~13 repos, ~9 of them private/Google-style. Avoid overfitting the 4 public repos.
 - Offline metric: proxy benchmark data/derived/proxy/ (152 tasks, 16 unseen repos). It must first be
   calibrated (rank anchor > C6a_t5, C8 ≥ anchor) before it may select releases (DECISIONS D11).
-- Runtime safety (D28 supersedes D9): EVERY release must contain eval_config.yaml with max_time_minutes ≤ 5 (C9ae without a cap
-  ran 15 h on the scorer = Kaggle Error). Old rule, kept as a second check (D9): every release must satisfy 150 × mean task time (scorer: 4×L4 TP=4, serial) + 0.5 h ≤ 11 h.
+- Runtime safety (D31 supersedes D28, lead session 2026-10-11): releases carry eval_config.yaml with max_time_minutes = 15
+  (NOT 5). Evidence: L4 serial C9ae uncapped = 4.92 min/task mean, p90 12.1, max 17.3 (120 tasks -> 10.3 h); a 5-min cap cuts
+  12/30 L4 tasks and cost ~0.09 on proxy and 0.13 -> 0.08 on LB (c9ae_t5). 15 min touches ~1/30 tasks but bounds runaway tasks.
+  Proxy min/task (concurrent workers, ~2.5x slower than L4) must NOT be used to choose caps. Never ship a cap below 12 min
+  without new L4 evidence. Second check (D9): 120 x L4 mean task time + 0.5 h <= 11.5 h.
   A100 timings underestimate L4 timings; use Kaggle runs (vedantmoghe, ≤2 GPU sessions, weekly GPU quota)
   for scorer-speed checks.
 - LoRA adapters work on the scorer stack; training recipe in src/sft/train_lora.py (frozen int4 base,

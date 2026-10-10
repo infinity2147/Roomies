@@ -86,9 +86,12 @@ def segments(calls: list[dict]) -> list[list[dict]]:
     return segs
 
 
-def render_segment(seg: list[dict], tokenizer) -> tuple[list[int], list[int]]:
+def render_segment(seg: list[dict], tokenizer, strip_reasoning: bool = False) -> tuple[list[int], list[int]]:
     last = seg[-1]
     msgs = to_template_msgs(last["request"]["messages"] + [resp_to_msg(last["response"])])
+    if strip_reasoning:  # distillation: ADK echoes reasoning_content in history and the template renders it even with
+        # enable_thinking=False, so 57% of v1 targets started with a thought block (reports/lora_forensics_20261010.md §4)
+        msgs = [{k: v for k, v in m.items() if k not in ("reasoning_content", "reasoning")} for m in msgs]
     tools = last["request"].get("tools")
     first_gen = len(seg[0]["request"]["messages"])  # assistant turns at index >= this are trained
     ids: list[int] = []
@@ -521,7 +524,7 @@ def build_capture(a, tokenizer) -> dict:
                         off = gcs.index(seg[0])
                         seg_mask = {i - off for i in gmask if off <= i < off + len(seg)}
                         if a.distill_thinking_off:  # thinking distillation: teacher = thinking run, student = thinking-off root
-                            ids, mask = render_segment(seg, tokenizer)
+                            ids, mask = render_segment(seg, tokenizer, strip_reasoning=True)
                             info = Counter(turns=1)
                         else:
                             ids, mask, info = render_segment_thinking(seg, tokenizer, seg_mask, inject=not a.no_inject_reasoning)

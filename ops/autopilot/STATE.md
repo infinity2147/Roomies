@@ -1,3 +1,26 @@
+## GPU FILLER (lead session 2026-10-11 02:45) — cron */10 ops/slurm/gpu_filler.sh, log results/slurm/gpu_filler.log
+- Submits ap-fill-<queue> jobs sized to GPUs+CPUs free RIGHT NOW (sbatch -w node), QoS caps (dgx/l40 4 jobs, a40 3), ceiling
+  MAX_GPUS=16 for all our ap-* jobs; one pending job per partition; cancels its own jobs pending > 20 min; returns orphaned
+  running items (dead job per sacct) to pending. LoRA queues get SERVE_SUB from their items. Workers stop claiming with < 90 min left.
+- Autopilot: do NOT sbatch ap_worker for queues yourself any more (except special env like CAPTURE/CONC/MAX_LORAS); just enqueue.
+  Disable with `touch ops/slurm/FILLER_STOP`.
+
+## SUBMITTED 2026-10-11 02:29 IST (lead, via CLI, user-approved): C19 distill t15 -> Kaggle ref 57052590 (PENDING).
+- Lesson: Kaggle CreateSubmission returned 400 when the uploaded file was not named submission.zip; hard-link it as submission.zip.
+- When scored: ctl.sh lb submission_2026-10-11_c19_distill_t15.zip <score>. If it errors on time -> LoRA too slow on L4.
+
+## LEAD SESSION 2026-10-11 01:30 (Opus)
+- D31 (CHARTER updated): release cap is max_time_minutes 15, NOT 5. L4 serial C9ae: mean 4.92, p90 12.1, max 17.3 min/task -> 120
+  tasks = 10.3 h. 5-min cap cut 12/30 L4 tasks (LB 0.08). Proxy min/task is concurrency-inflated: never pick caps from it.
+  10-11 release replaced: submissions/daily/2026-10-11/submission_2026-10-11_c9e_t15.zip (c9e_t5 draft marked NOT recommended).
+  Any C20/C21 release must also get the 15-min eval_config (copy submissions/c9e_t15/eval_config.yaml).
+- C9e 10-10 was submitted from a teammate account: NOT visible via our Kaggle token. Wait for the user to report its score.
+- Workers 347134/59/86 had exited (queue momentarily empty) before C20/C21 items were enqueued -> only 347135 serves the main
+  queue; dgx/l40 workers pending on fairshare priority; added 1-GPU backfill workers 347346/47 (dgx), 347348 (l40), 6 h.
+  Seed-3 items moved to prio 05 (s1/s2 first).
+- Distill v2 BUILT: data/derived/sft/e3_distill_v2.jsonl = 571 seqs / 95 tasks / 4.8M tok (567k trained), 0/6746 spans start with a thought block, eval-half dropped (56). Build script /tmp/claude-10938/build_e3v2.sh (cmd in STATE git history).
+  Retrain ONLY if the valid C19 re-eval (px_c19_ml1 vs c9ae_evalhalf) is within noise or better; needs user approval (~6 h dgx).
+
 ## 00:40 work cycle (sonnet, frugal, 10-11): no new LB score (champion C8 0.13; C9e pending). Live: 347135/347180/347181 (a40), pending 347223/24 dgx, 347225/337593 l40. Queues >2 h work, no enqueue. FOUND: C9e zip of 10-10 had NO eval_config.yaml (D28 violation) -> built submissions/c9e_t5 (C9e + max_time 5) and 10-11 release submission_2026-10-11_c9e_t5.zip. Next: harvest px_c20ae/px_c21 s1-3 (px_report --base c9e), c19/c20 ml1 vs c9ae_evalhalf; check C9e LB result.
 
 ## 22:40 work cycle (sonnet, frugal, 10-10): no new LB score (champion C8 0.13; C9e submitted 10-10, pending). Nothing finished since lead session. Live: 347135 (a40x2 main), 347180 (c19fix lora), 347181 (c20fix lora); pending 347223/24 (dgx), 347225 (l40), 337593. Queues: main 57 pending/2 running, lora_fix_c19 6/2, lora_fix_c20 8/0 -> >2 h work, no enqueue. 10-10 release = C9e unchanged. Next: when px_c20ae/px_c21 s1-3 finish, px_report --base c9e (rule: >= +0.03, sign-z >= 2, min/task <= 1.15x); harvest c19/c20 ml1 vs c9ae_evalhalf; add eval_config max_time<=5 decision for release.
