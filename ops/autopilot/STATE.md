@@ -1,3 +1,33 @@
+## 22:40 work cycle (sonnet, frugal, 10-10): no new LB score (champion C8 0.13; C9e submitted 10-10, pending). Nothing finished since lead session. Live: 347135 (a40x2 main), 347180 (c19fix lora), 347181 (c20fix lora); pending 347223/24 (dgx), 347225 (l40), 337593. Queues: main 57 pending/2 running, lora_fix_c19 6/2, lora_fix_c20 8/0 -> >2 h work, no enqueue. 10-10 release = C9e unchanged. Next: when px_c20ae/px_c21 s1-3 finish, px_report --base c9e (rule: >= +0.03, sign-z >= 2, min/task <= 1.15x); harvest c19/c20 ml1 vs c9ae_evalhalf; add eval_config max_time<=5 decision for release.
+
+## LEAD SESSION 2026-10-10 21:00 (Opus, prompt.md execution) — autopilot: do NOT touch LoRA queues/adapters; do not re-enqueue C19/C18/mix evals
+- LB: C9ae_t5 scored 0.08 (logged). C9e (submission_2026-10-09_c9e_analyzercap.zip) SUBMITTED by user 2026-10-10 ~21:30, running. Quota per rules + CLI = 1/day (not 3).
+- BUG FIXED: ops/queue/px_report.py only globbed s* shards -> all eval-half (e0..e3) runs were silently excluded. Now [set]*.
+  Held-out (85 ids, paired): C9e_evalhalf +0.065 vs C9ae_evalhalf (z 2.0); C16 graph-locate -0.024 vs C9e_evalhalf (no gain -> drop).
+- LoRA evals SUSPECT (not valid negatives yet): C19 0.094 vs 0.328 but 20/22 tasks hit the 60-min session timeout; C18 ~49 min/task,
+  budget/timeouts. Forensics subagent running (reports/lora_forensics_20261010.md). Cancelled 346962; C19 e3 items parked in
+  ops/queue_lora_d1/parked. D30 (C18 rejection) is on hold until forensics.
+- Enqueued px_c9e_s3 (prio 03, full proxy) as parent baseline for repair experiments; workers 347134/347135 (a40x2).
+- LORA FORENSICS (reports/lora_forensics_20261010.md): C18/C19 bad scores were a SERVING bug: serve_vllm.sh --max-loras 8 (rank 128)
+  left 5.5 GiB KV on A40 TP=1 -> requests queued minutes -> 60-min timeouts. FIXED (MAX_LORAS = #adapters). C19 eval INVALID;
+  C18 dgx-only shards (n=190) mild negative 0.242 vs 0.268 + ~2x calls -> reject on cost. Re-evals running: queues
+  ops/queue_lora_fix_c19 (px_c19_ml1_s1/s2) + ops/queue_lora_fix_c20 (px_c20_mix_ml1_s1/s2, bundle submissions/c20_c9ae_mix), workers 347180/347181.
+  Data bug (minor): 57% of e3 distill trained spans contain thought blocks (history reasoning_content rendered) - fix in report, not retrained.
+  NOTE naming: "c20_mix_ml1" = mix adapter; "c20smoke"/"c20ae" = apply-edit skill (submissions/c20_c9e_applyedit).
+- FAILURE ANALYSIS (reports/failure_analysis_20261010.md): C9e failures = wrong/incomplete fix in right function ~54%; malformed
+  edit_file (84% of edit calls rejected: stray backtick swallows old_string) + loops ~18%; hidden reqs ~12%; localization ~3%.
+- SKILL ROOT BUG: ADK runs skill scripts in a temp cwd; locally /workspace does not exist -> skills used the wrong root.
+  C16 graph-locate local eval INVALID (moved to results/px/_bad_px_c16_*). Fixed in skills/*/ (PWD/PYTHONPATH + .git; $TMPDIR for /tmp).
+- New candidates: C20 = C9e + apply-edit skill replacing edit_file (submissions/c20_c9e_applyedit); C21 = C9e + patch-check
+  pre-submit skill (submissions/c21_c9e_patchcheck). Smokes re-running (px_c20smoke_s2, px_c21smoke_s2, prio 00); then full
+  proxy s1-s3 each vs c9e s1-s3. DGX git leak fixed in src/eval/harness_patches.py (D18b).
+- 22:40 ENQUEUED (lead): px_c20ae_s1-3 (C20 apply-edit, prio 02), px_c21_s1-3 (C21 patch-check, prio 02), px_c16_s1/s2 re-run
+  with fixed skill (prio 06, eval half), px_c9e_s1 shard s3 re-run (stalls; old dir results/px/_bad_px_c9e_s1_s3_stalls).
+  Smokes OK (skills execute in sandbox). apply-edit got unescape fallback + closest-lines hint + identical-resend guard after smoke.
+  Workers: a40 347134/35, dgx 347159/86/223/224, l40 347225. HARVEST: px_report --base c9e (pairs s1-s3).
+  Decision rule: keep a candidate if paired diff >= +0.03 with sign-z >= 2 and min/task not > 1.15x c9e.
+- Subagents writing: reports/failure_analysis_20261010.md, reports/harness_capabilities_20261010.md, reports/scoreboard.md.
+
 ## 20:40 work cycle (sonnet, frugal, 10-10): no new LB score (champion C8 0.13). Mix train 345530 DONE (adapter exported+verified; E2 rejected -> not packaged). Cancelled 346759 (c18 dead branch). Live: 346962 (c19 d1: e0/e1 done s1+s2, e2 running, e3 pending ~4 h) + 337593 pending; only 2 GPUs busy, no candidate worth seeds. 10-10 release = C9e unchanged. Next: when e0-e3 done, px_report px_c19_distill vs px_c9ae_evalhalf (check run time >> 30 s); >= +0.05 -> more thinking captures + distill v2, else pivot to Best-of-2/C9e.
 
 ## 18:40 work cycle (sonnet, frugal, 10-10): no new LB score (champion C8 0.13). Live: 346962 (a40x2, c19 d1: e0/e1 done for s1+s2, e2 running, e3 pending), 346759 (c18 s7 last item, dead branch), 345530 mix train (32 h). Nothing to harvest yet; no enqueue. 10-10 release = C9e unchanged. Next: when e0-e3 done for both seeds, px_report px_c19_distill vs px_c9ae_evalhalf (verify run time >> 30 s); >= +0.05 -> more thinking captures + distill v2, else pivot to Best-of-2/C9e release.
