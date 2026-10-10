@@ -134,3 +134,7 @@ c11n 1.77x and c15t512 1.82x of c9ae total time on the same 30 L4 tasks (c11t wa
 px_c18_e2lora s1+s2 (n=297, full proxy) 0.175 vs C8 0.310: -0.135, wins 15 / losses 55, sign-z -4.8; 47 min/task, high err/empty/leak
 counts. The Nebius-SFT adapter (trained, as-is) hurts the scorer-stack agent badly. Do not ship E2; mix_v1 (SWE-Hero+Nebius) is
 unlikely to differ unless the failure mode (err/leak) is understood. Remaining hope = E3 thinking distillation (C19, own resolved trajectories).
+
+## D32 (autopilot 2026-10-11 04:40): C20 apply-edit REJECTED; C21 patch-check not releasable
+px_report --base c9e: c20ae n=219 -0.128 (wins 11/losses 39, z -3.96) -> reject; remaining c20ae items parked (ops/queue/parked_c20ae).
+c21 n=166 +0.018 (19/16, z 0.5) -> below +0.03/z>=2 rule; finish s3 only for completeness, no release. c19_ml1 vs c9e -0.042 (z -1.2), c20_mix_ml1 -0.029 (n=68): LoRA adds nothing over C9e. c19_distill (60 min timeouts, invalid) -0.336.
