@@ -129,3 +129,8 @@ New gate (replaces D9's 150-task rule and D22's 1.05): a candidate ships if its 
 
 ## D28 (2026-10-07 20:40, autopilot): thinking variants fail the L4 runtime gate
 c11n 1.77x and c15t512 1.82x of c9ae total time on the same 30 L4 tasks (c11t was 1.56x). Budget 512 did not help. No thinking variant is releasable; release stays C9ae unless a non-thinking gain is found.
+
+## D30 (2026-10-10 autopilot): C18 (C8 + E2 Nebius LoRA r128) REJECTED
+px_c18_e2lora s1+s2 (n=297, full proxy) 0.175 vs C8 0.310: -0.135, wins 15 / losses 55, sign-z -4.8; 47 min/task, high err/empty/leak
+counts. The Nebius-SFT adapter (trained, as-is) hurts the scorer-stack agent badly. Do not ship E2; mix_v1 (SWE-Hero+Nebius) is
+unlikely to differ unless the failure mode (err/leak) is understood. Remaining hope = E3 thinking distillation (C19, own resolved trajectories).
