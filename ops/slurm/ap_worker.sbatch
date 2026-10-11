@@ -70,6 +70,8 @@ slot() {  # $1 = local gpu index
   kill $vpid $cpid 2>/dev/null; wait $vpid 2>/dev/null
   echo "$(date +%T) slot $i: queue empty, exiting"
 }
+FREE_GB=$(df -P -BG /tmp | awk 'NR==2{gsub("G","",$4); print $4}')
+if (( FREE_GB < ${MIN_TMP_GB:-30} )); then echo "$(date +%T) DISK_FULL: /tmp has ${FREE_GB} GB free on $(hostname -s); exiting"; echo "$(hostname -s)" >> ops/slurm/bad_nodes.txt; exit 3; fi
 ( t=$(mktemp -d) && cd "$t" && git init -q && touch x && git add -A && git commit -qm t && echo "git-commit selftest OK" \
   || echo "git-commit selftest FAILED"; rm -rf "$t" )
 .venv-harness/bin/python scripts/patch_vllm_gemma4_pp.py >/dev/null

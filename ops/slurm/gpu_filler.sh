@@ -63,6 +63,7 @@ headroom=$(( MAX_GPUS - ours ))
 declare -a HOLES=()   # "part node free_gpus free_cpus"
 while read -r node part state gres used cpus; do
   case $state in mix*|idle*) ;; *) continue ;; esac
+  grep -qx "$node" ops/slurm/bad_nodes.txt 2>/dev/null && continue   # disk-full or otherwise broken nodes
   tot=${gres##*:}; tot=${tot%%(*}; u=${used#gpu:}; u=${u%%(*}; u=${u##*:}
   [[ $tot =~ ^[0-9]+$ && $u =~ ^[0-9]+$ ]] || continue
   IFS=/ read -r _ cidle _ _ <<<"$cpus"

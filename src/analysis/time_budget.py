@@ -54,6 +54,7 @@ TRACE_SETS = {
     "c9e_px": (["results/px/px_c9e_s%d/s*" % i for i in range(1, 6)], "c9ae-t30s"),
     "c15n512_px": (["results/px/px_c15n512_s%d/s*" % i for i in range(1, 4)], "c15t512-t30s"),
     "c8_px": (["results/px/px_c8_s%d/s*" % i for i in range(1, 5)], "c9ae-t30s"),
+    "c23_px": (["results/px/px_c23_s%d/s*" % i for i in range(1, 3)], "c9ae-t30s"),
     "c9ae_L4": ([], "c9ae-t30s"),  # capture only (no traces)
     "c11n_L4": (["results/kaggle/c11n-t30s/results/c11n-t30s"], "c11n-t30s"),
     "c15t512_L4": (["results/kaggle/c15t512-t30s/results/c15t512-t30s"], "c15t512-t30s"),
