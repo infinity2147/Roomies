@@ -1,3 +1,26 @@
+## PROGRAM (user directive 2026-10-11 17:30): ONE PROBLEM AT A TIME, then combine. Autopilot: do NOT build or enqueue new
+## candidates on your own; only harvest results of the CURRENT step, keep GPUs serving its queue, and report.
+- Step 1 (CURRENT) SPEED: make C9e finish reliably. Target >=30% less time/task, accuracy not lower (paired vs c9e s1-4,
+  then serial timing vs c9e on queue_time). Analysis: reports/time_budget_20261011.md (subagent running).
+- Step 2 EDIT RELIABILITY (84% edit_file calls rejected; C20 apply-edit made it worse: understand why first).
+- Step 3 FIX QUALITY: thinking where it pays, funded by Step 1's time savings.
+- Step 4 COMBINE 1-3 -> full serial timing < 11 h -> one submission.
+- Step 1 FINDINGS (17:00-18:30): rejected edit_file = 27% of C9e time. Mechanism: thinking-off model writes escaped \n and closes
+  a string arg with a backtick -> the NEXT argument is swallowed (edit_file loses old_string; C20's run_skill_script lost skill_name ->
+  budget burn, 47% empty patches = why C20 was -0.14). After one rejection the model repeats it 97.5% (replay set). run_command
+  (single arg) is clean: 1/13059 malformed. No callbacks are possible (closed registry is empty).
+- Step 1 CANDIDATE C23 (submissions/c23_c9e_editengine) = C9e - edit_file + skill edit-engine (installs /tmp/ae.py once; edits via
+  run_command heredoc SEARCH/REPLACE; rules: fuzzy/unescape match, refuse syntax-breaking edits, closest-lines hint, no identical resend).
+  Smoke px_c23smoke_s1 queued; then px_c23_s1/s2 full proxy vs c9e (accuracy + time + rejected calls).
+- Replay micro-benchmark (prompt variants for edit_file): job 348014, src/analysis/edit_replay.py, results/edit_replay/.
+- ROOT CAUSE (verified): Gemma-4 chat_template.jinja renders tool args with |dictsort (lines 4,126,249) -> edit_file always
+  emitted as filepath,new_string,old_string; a badly closed long string swallows every later arg. Single-arg run_command immune.
+  Research: reports/claude_code_architecture_20261011.md. Queue of next one-at-a-time changes AFTER C23 is validated:
+  (a) finalizer: Sequential[solver w/o submit_patch -> finalizer: checks + submit once] (kills submit loops/after-fix waste);
+  (b) repro A/B tool (original vs patched); (c) sibling/twin listing on edit; (d) one no-tool thinking planner call;
+  (e) Agentless-style candidate sampling only when repro still fails.
+- Parked: C22 (rejected), c19/mix retrain (needs approval), best-of-2.
+
 ## 16:40 work cycle (sonnet, frugal, 10-11): no new LB score (champion C8 0.13; C19 t15 + C9e pending). HARVEST px_report --base c9e: c22 (think256) n=456 -0.048 (z -2.2, wins 39/losses 61) -> REJECT (small thinking budget hurts; only full thinking c17 +0.062 helps but 2.11x time). Queues were empty, no live jobs. ENQUEUED px_c9et15_s1 (c9e_t15 = release config, 8 shards, prio 05) to validate that the 15-min cap does not hurt on proxy + keep GPUs busy. 10-11 release unchanged = c9e_t15. Next: await LB; harvest px_c9et15_s1 vs c9e (expect ~0 diff); need a new idea (time-bounded thinking only on failed first pass).
 
 ## 14:40 work cycle (sonnet, frugal, 10-11): no new LB score (champion C8 0.13; C19 t15 + C9e pending). px_c22 s1/s2: 8 shards done/16, 7 running (347576/579/719/720/721/743/744), 1 pending. px_report timed out on login node (>120 s) -> harvest next cycle when c22 s1/s2 complete (px_report --base c9e; rule >= +0.03, z>=2; then timing run vs c9e, 15-min eval_config). ENQUEUED px_c22_s3 (8 shards, prio 03) to keep GPUs full. 10-11 release unchanged = c9e_t15. Next: await LB; harvest c22.
