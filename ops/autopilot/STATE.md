@@ -403,3 +403,5 @@ Workers: `sbatch -p <a40|l40|dgx> --qos=<same> --gres=gpu:N --cpus-per-task=$((1
 - Paired proxy vs C8 s1 at 05:58: C9a 36 vs 29 (n=88), C9e 14 vs 8 (n=26). Fixes target different failures
   (edit malformation vs analyzer context overflow), so built C9ae = C9e + C9a's system.md (submissions/c9ae_combo)
   and enqueued px_c9ae_s1 at prio 05 (front of queue). Release candidate if it is ≥ both C9a and C9e on paired tasks.
+
+## 22:40 work cycle (sonnet, frugal, 10-11): no new LB score (champion C8 0.13). Step 3: C24 (C23 + thinking planner) smoke px_c24smoke_s1 running on filler worker 348264 (a40, started 22:22). Enqueued px_c24_s1 + px_c24_s2 (prio 01, 16 shards) for the filler/queue workers. Release draft unchanged (c9e_t8). Next cycle: check smoke result (empties/errors; if broken, move px_c24_* pending to parked and fix); when shards done px_report --base c23 (accuracy, time min/task via src/analysis/time_budget.py, planner call overhead); accept only if >= C23+0.03 and L4 120-task time x1.45 <= 11.5 h.
