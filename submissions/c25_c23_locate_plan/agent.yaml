@@ -1,0 +1,9 @@
+# C25 = C23 restructured as locate -> think once -> solve (Step 3: fix quality).
+# Root = Sequential[code_analyzer (no thinking, read-only tools) -> fix_planner (thinking, NO tools = exactly one call) -> swe_coder (C23)].
+name: c25_root
+agent_class: SequentialAgent
+description: Localize without thinking, plan the fix with one thinking call, then implement, verify and submit.
+sub_agents:
+  - config_path: sub_agents/code_analyzer.yaml
+  - config_path: sub_agents/fix_planner.yaml
+  - config_path: sub_agents/swe_coder.yaml
