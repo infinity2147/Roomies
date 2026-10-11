@@ -1,6 +1,6 @@
 ## PROGRAM (user directive 2026-10-11 17:30): ONE PROBLEM AT A TIME, then combine. Autopilot: do NOT build or enqueue new
 ## candidates on your own; only harvest results of the CURRENT step, keep GPUs serving its queue, and report.
-- Step 1 (CURRENT) SPEED: make C9e finish reliably. Target >=30% less time/task, accuracy not lower (paired vs c9e s1-4,
+- Step 1 DONE (22:15 10-11) SPEED -> C23 is the new base: make C9e finish reliably. Target >=30% less time/task, accuracy not lower (paired vs c9e s1-4,
   then serial timing vs c9e on queue_time). Analysis: reports/time_budget_20261011.md (subagent running).
 - Step 2 EDIT RELIABILITY (84% edit_file calls rejected; C20 apply-edit made it worse: understand why first).
 - Step 3 FIX QUALITY: thinking where it pays, funded by Step 1's time savings.
@@ -24,6 +24,9 @@
   C23 0.415 vs C9e 0.392 (+0.023, 19W/15L, z 0.7), LLM calls -17%, empties equal. L4 latency model (src/analysis/time_budget.py,
   set c23_px), 114 common tasks: C23 3.80 vs C9e 4.86 min/task (-22%) -> 120 tasks 7.6 h vs 9.7 h; x1.3-1.45 hidden slowdown:
   9.9-11.0 h vs 12.6-14.1 h (C9e = timeout, as observed). Final verdict after re-run shards complete (px_report --base c9e).
+- C23 FINAL (n=304 pairs vs c9e s1-2): 0.385 vs 0.391 (-0.007, 31W/33L, z -0.25) = accuracy equal; LLM calls 88 vs 105;
+  L4 model 3.83 vs 4.92 min/task (-22%), p90 7.5 vs 9.3; 120 tasks 7.7 h (x1.3-1.45: 10.0-11.1 h FITS) vs C9e 9.8 h (12.8-14.3 = timeout).
+  Edit-reliability step folded in (0 rejected edit calls). NEXT = Step 3 fix quality on top of C23: one thinking planner call.
 - Parked: C22 (rejected), c19/mix retrain (needs approval), best-of-2.
 
 ## 20:40 work cycle (sonnet, frugal, 10-11): no new LB score (champion C8 0.13). Step 1: px_c23 s1+s2 15/16 shards done; only 01_s7_px_c23_s1 still running (worker 348060 l40, ~2 h in). Other workers exited; queue empty (no enqueue per one-problem-at-a-time directive). Release draft unchanged (c9e_t8). Next cycle: when s7 s1 finishes run px_report --base c9e for c23 (accuracy, time, rejected edit calls; run it via sbatch if >120 s on login); if acc >= c9e-0.02 and time lower, enqueue serial timing vs c9e (queue_time) and write DECISIONS entry.

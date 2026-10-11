@@ -1,0 +1,7 @@
+# C24 = C23 + one thinking planner stage before the solver (Step 3: fix quality). Root = Sequential[fix_planner -> swe_coder].
+name: c24_root
+agent_class: SequentialAgent
+description: A thinking planner analyses the issue once, then the C23 solver implements and submits the fix.
+sub_agents:
+  - config_path: sub_agents/fix_planner.yaml
+  - config_path: sub_agents/swe_coder.yaml
