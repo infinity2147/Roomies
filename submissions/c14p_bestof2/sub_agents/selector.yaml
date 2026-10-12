@@ -1,0 +1,12 @@
+name: selector
+model: gemma-4-31b-it-qat-w4a16-ct
+description: Execution-based selector. Applies each candidate diff to /workspace, runs repro + nearest tests, keeps the best, submits.
+instruction: !include ../prompts/selector.md
+generate_content_config: !include ../configs/sampling.yaml
+# 'none' = this agent does not receive the two solver transcripts (they would be ~2x40 tool outputs rendered as
+# "For context: [solver_x] called tool ..." user messages). It gets the solver reports via output_key templating instead.
+include_contents: none
+tools:
+  - run_command
+  - get_status
+  - submit_patch

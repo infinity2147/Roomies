@@ -1,0 +1,9 @@
+name: solver_b
+model: gemma-4-31b-it-qat-w4a16-ct
+description: Test-first solver working in a private copy /tmp/ws_b (shell only). Produces /tmp/patch_b.diff; never submits.
+instruction: !include ../prompts/solver_b.md
+generate_content_config: !include ../configs/sampling.yaml
+output_key: solver_b_report
+tools:
+  - run_command
+  - get_status

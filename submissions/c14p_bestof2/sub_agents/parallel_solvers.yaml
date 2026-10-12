@@ -1,0 +1,6 @@
+name: parallel_solvers
+agent_class: ParallelAgent
+description: Two solvers with different strategies, run concurrently in isolated branches.
+sub_agents:
+  - config_path: solver_a.yaml
+  - config_path: solver_b.yaml

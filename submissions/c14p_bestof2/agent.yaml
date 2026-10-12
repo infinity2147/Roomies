@@ -1,0 +1,8 @@
+# C14p: intra-task best-of-2 (L2 spike). Root = Sequential[ Parallel[solver_a, solver_b] -> selector ].
+# Workflow agents carry no model/instruction/tools; every LlmAgent below declares the same model.
+name: bestof2_root
+agent_class: SequentialAgent
+description: Runs two independent solvers in parallel, then an execution-based selector that submits the best patch.
+sub_agents:
+  - config_path: sub_agents/parallel_solvers.yaml
+  - config_path: sub_agents/selector.yaml

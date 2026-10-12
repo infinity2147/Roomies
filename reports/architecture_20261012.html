@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gemma_RL Autopilot Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (~920px) with full-width diagram figures; lanes in diagrams = where code runs. */
+:root {
+  --bg: #f5f7f9; --surface: #ffffff; --fg: #16202b; --muted: #576476; --line: #cfd6df;
+  --accent: #0b7a70; --accent-soft: #ddf2ee; --warn: #a75a06; --warn-soft: #fcefdc; --bad: #b42318; --bad-soft: #fde8e6;
+  --lane-a: #ebf1fa; --lane-b: #eff1f4; --lane-c: #eaf5ef; --box: #ffffff; --box-line: #93a1b2; --edge: #3d4a5a;
+  --f-display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", Roboto, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e1318; --surface: #151c24; --fg: #e3e8ee; --muted: #94a1b1; --line: #2b3644;
+  --accent: #4fd0bf; --accent-soft: #123834; --warn: #f2a74c; --warn-soft: #3a2a12; --bad: #f7776c; --bad-soft: #3b1715;
+  --lane-a: #132031; --lane-b: #161c23; --lane-c: #12221a; --box: #1b232d; --box-line: #4c5a6b; --edge: #aab6c4; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e1318; --surface: #151c24; --fg: #e3e8ee; --muted: #94a1b1; --line: #2b3644;
+  --accent: #4fd0bf; --accent-soft: #123834; --warn: #f2a74c; --warn-soft: #3a2a12; --bad: #f7776c; --bad-soft: #3b1715;
+  --lane-a: #132031; --lane-b: #161c23; --lane-c: #12221a; --box: #1b232d; --box-line: #4c5a6b; --edge: #aab6c4; color-scheme: dark }
+
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--f-body); padding-inline: 16px; padding-block: 32px 64px; }
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 48px; }
+.col { max-width: 760px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.2; }
+h1 { font-size: 2.1rem; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.4rem; font-weight: 600; }
+h3 { font-size: 1.02rem; font-weight: 600; }
+p { margin: 0; }
+code, .mono { font-family: var(--f-mono); font-size: 0.86em; }
+code { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+.eyebrow { font: 600 12px/1 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.lede { color: var(--muted); font-size: 1.08rem; max-width: 68ch; }
+section { display: grid; gap: 16px; }
+header { display: grid; gap: 14px; }
+
+.facts { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.facts div { flex: 1 1 200px; padding: 14px 18px; border-right: 1px solid var(--line); min-width: 0; }
+.facts div:last-child { border-right: 0; }
+.facts dt { font: 600 11px/1.3 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 6px 0 0; font-family: var(--f-display); font-weight: 600; font-size: 1.05rem; }
+.facts dd small { display: block; font: 400 13px/1.4 var(--f-body); color: var(--muted); }
+
+figure { margin: 0; display: grid; gap: 10px; }
+.scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+figcaption { color: var(--muted); font-size: 0.95rem; max-width: 80ch; }
+svg.d { display: block; width: 100%; height: auto; color: var(--edge); }
+svg.d.big { min-width: 880px; }
+svg.d.mid { min-width: 760px; }
+.d text { fill: var(--fg); font-family: var(--f-body); }
+.d .t { font: 600 13.5px var(--f-display); }
+.d .s { font: 11px var(--f-mono); fill: var(--muted); }
+.d .el { font: italic 11.5px var(--f-body); fill: var(--muted); }
+.d .lt { font: 600 11px var(--f-mono); letter-spacing: 0.08em; fill: var(--fg); }
+.d .ls { font: 11px var(--f-body); fill: var(--muted); }
+.d .acc-t { font: 600 12px var(--f-display); fill: var(--accent); }
+.d .lane-a { fill: var(--lane-a); } .d .lane-b { fill: var(--lane-b); } .d .lane-c { fill: var(--lane-c); }
+.d .panel { fill: none; stroke: var(--line); stroke-width: 1.2; }
+.d .box { fill: var(--box); stroke: var(--box-line); stroke-width: 1.2; }
+.d .box.acc { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 2; }
+.d .box.warn { fill: var(--warn-soft); stroke: var(--warn); }
+.d .box.bad { fill: var(--bad-soft); stroke: var(--bad); }
+.d .group { fill: none; stroke: var(--box-line); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.d .gate { fill: var(--box); stroke: var(--fg); stroke-width: 1.4; }
+.d .edge { stroke: currentColor; stroke-width: 1.5; fill: none; }
+.d .edge.dash { stroke-dasharray: 5 4; }
+.d .edge.acc { stroke: var(--accent); stroke-width: 2; }
+.d .ah { fill: currentColor; }
+.d .ah-acc { fill: var(--accent); }
+
+ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 10px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: baseline; }
+ol.steps li::before { content: counter(s); font: 600 13px/1 var(--f-mono); color: var(--accent); border: 1.5px solid var(--accent); border-radius: 50%; width: 24px; height: 24px; display: grid; place-items: center; }
+ol.steps li > div { min-width: 0; }
+
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { font: 600 11px/1.3 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--bg); }
+td.num { font-variant-numeric: tabular-nums; font-family: var(--f-mono); font-size: 0.88em; white-space: nowrap; }
+.pill { display: inline-block; font: 600 11px/1 var(--f-mono); letter-spacing: 0.04em; padding: 4px 8px; border-radius: 999px; white-space: nowrap; }
+.pill.done { color: var(--accent); background: var(--accent-soft); }
+.pill.wip { color: var(--warn); background: var(--warn-soft); }
+.pill.todo { color: var(--muted); background: var(--bg); border: 1px solid var(--line); }
+.pill.bad { color: var(--bad); background: var(--bad-soft); }
+
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.card p, .card li { color: var(--muted); font-size: 0.95rem; }
+.card ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.note { border-left: 3px solid var(--warn); background: var(--warn-soft); padding: 12px 16px; border-radius: 0 6px 6px 0; font-size: 0.95rem; max-width: 80ch; }
+</style>
+</head><body>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">Gemma_RL · map as of 2026-10-12</span>
+  <h1>How Gemma_RL runs</h1>
+  <p class="lede">We compete in Kaggle's <b>Gemma 4 Developer Agent</b> challenge. The model is fixed: Gemma-4-31B, int4. What we submit is an <i>agent configuration</i>: YAML, prompts and small skill scripts that tell the model how to fix a bug in a repository. Kaggle runs it on about 120 hidden tasks and scores how many fixes pass the tests. Everything in this repo exists to find a better configuration and hand you one zip a day.</p>
+  <dl class="facts">
+    <div><dt>Champion on the LB</dt><dd>C8 · 0.13<small>public LB, 58 tasks (1 task ≈ 1.7 pts)</small></dd></div>
+    <div><dt>Today's release</dt><dd>C23_t12<small>speed fix plus a 12-min per-task cap</small></dd></div>
+    <div><dt>Under test</dt><dd>C25<small>16 of 16 shards done, report not run yet</small></dd></div>
+    <div><dt>Deadline</dt><dd>2026-12-02<small>paper track: 2026-11-12</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <h2>1 · The autopilot loop</h2>
+  <p class="col">There are three places where code runs. You and Kaggle are at the top. In the middle is the cluster's login node: CPU only, but it has internet, and the Claude "brain" runs there. At the bottom are GPU nodes rented through SLURM, which do the heavy evaluation. Nothing in the loop needs you except the upload.</p>
+  <figure>
+    <div class="scroll">
+    <svg class="d big" viewBox="0 0 1120 630" role="img" aria-label="Autopilot loop: a daemon on the login node starts a Claude cycle every two hours; the cycle builds candidate agents and queues evaluation jobs; GPU workers run them and write results; reports gate a daily release that you upload to Kaggle.">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <!-- lanes -->
+      <rect class="lane-a" x="8" y="12" width="1104" height="118" rx="10"/>
+      <text class="lt" x="24" y="40">YOU + KAGGLE</text>
+      <rect class="lane-b" x="8" y="142" width="1104" height="222" rx="10"/>
+      <text class="lt" x="24" y="170">LOGIN NODE</text>
+      <text class="ls" x="24" y="188">login2 · CPU only</text>
+      <text class="ls" x="24" y="204">has internet</text>
+      <rect class="lane-c" x="8" y="376" width="1104" height="242" rx="10"/>
+      <text class="lt" x="24" y="404">GPU NODES</text>
+      <text class="ls" x="24" y="422">SLURM: dgx A100,</text>
+      <text class="ls" x="24" y="438">l40, a40</text>
+      <text class="ls" x="24" y="454">max 16 GPUs</text>
+
+      <!-- lane A -->
+      <rect class="box" x="140" y="44" width="140" height="60" rx="6"/>
+      <text class="t" x="210" y="69" text-anchor="middle">You</text>
+      <text class="s" x="210" y="88" text-anchor="middle">upload · log score</text>
+      <rect class="box" x="400" y="44" width="240" height="60" rx="6"/>
+      <text class="t" x="520" y="69" text-anchor="middle">Kaggle competition</text>
+      <text class="s" x="520" y="88" text-anchor="middle">~120 hidden tasks · 4×L4 · 12 h</text>
+      <rect class="box" x="840" y="44" width="240" height="60" rx="6"/>
+      <text class="t" x="960" y="69" text-anchor="middle">Kaggle eval kernels</text>
+      <text class="s" x="960" y="88" text-anchor="middle">private 4×L4 · speed checks</text>
+      <line class="edge" x1="280" y1="62" x2="398" y2="62" marker-end="url(#ah)"/>
+      <text class="el" x="340" y="55" text-anchor="middle">submission.zip</text>
+      <line class="edge" x1="400" y1="88" x2="282" y2="88" marker-end="url(#ah)"/>
+      <text class="el" x="340" y="104" text-anchor="middle">public LB score</text>
+
+      <!-- lane B row 1 -->
+      <rect class="box" x="340" y="176" width="160" height="60" rx="6"/>
+      <text class="t" x="420" y="201" text-anchor="middle">daemon.sh</text>
+      <text class="s" x="420" y="220" text-anchor="middle">cron keeps it alive</text>
+      <rect class="box acc" x="560" y="176" width="220" height="60" rx="6"/>
+      <text class="t" x="670" y="201" text-anchor="middle">Claude cycle</text>
+      <text class="s" x="670" y="220" text-anchor="middle">claude -p · ≤30 min</text>
+      <rect class="box" x="840" y="176" width="240" height="60" rx="6"/>
+      <text class="t" x="960" y="201" text-anchor="middle">Project memory</text>
+      <text class="s" x="960" y="220" text-anchor="middle">STATE · DECISIONS · lb_scores</text>
+      <line class="edge acc" x1="500" y1="206" x2="558" y2="206" marker-end="url(#aha)"/>
+      <text class="el" x="530" y="199" text-anchor="middle">every 2 h</text>
+      <line class="edge" x1="780" y1="196" x2="838" y2="196" marker-start="url(#ah)" marker-end="url(#ah)"/>
+      <text class="el" x="810" y="189" text-anchor="middle">reads</text>
+      <text class="el" x="810" y="214" text-anchor="middle">writes</text>
+      <path class="edge dash" d="M740,176 L860,106" marker-end="url(#ah)"/>
+      <text class="el" x="812" y="150">timing runs</text>
+
+      <!-- lane B row 2 -->
+      <rect class="box" x="140" y="286" width="140" height="60" rx="6"/>
+      <text class="t" x="210" y="311" text-anchor="middle">Daily release</text>
+      <text class="s" x="210" y="330" text-anchor="middle">submissions/daily/</text>
+      <rect class="box" x="340" y="286" width="160" height="60" rx="6"/>
+      <text class="t" x="420" y="311" text-anchor="middle">Score + time report</text>
+      <text class="s" x="420" y="330" text-anchor="middle">px_report.py</text>
+      <rect class="box" x="560" y="286" width="220" height="60" rx="6"/>
+      <text class="t" x="670" y="311" text-anchor="middle">Candidate agents</text>
+      <text class="s" x="670" y="330" text-anchor="middle">submissions/cXX/</text>
+      <rect class="box" x="840" y="286" width="240" height="60" rx="6"/>
+      <text class="t" x="960" y="311" text-anchor="middle">Job queue (files)</text>
+      <text class="s" x="960" y="330" text-anchor="middle">ops/queue/pending/</text>
+      <line class="edge acc" x1="670" y1="236" x2="670" y2="284" marker-end="url(#aha)"/>
+      <text class="el" x="678" y="265">builds</text>
+      <line class="edge acc" x1="780" y1="316" x2="838" y2="316" marker-end="url(#aha)"/>
+      <text class="el" x="810" y="309" text-anchor="middle">enqueue</text>
+      <line class="edge" x1="470" y1="286" x2="588" y2="238" marker-end="url(#ah)"/>
+      <text class="el" x="518" y="252" text-anchor="end">verdict</text>
+      <line class="edge" x1="340" y1="316" x2="282" y2="316" marker-end="url(#ah)"/>
+      <text class="el" x="311" y="309" text-anchor="middle">if pass</text>
+      <line class="edge acc" x1="210" y1="286" x2="210" y2="106" marker-end="url(#aha)"/>
+      <text class="el" x="218" y="204">SUBMIT: zip</text>
+
+      <!-- lane C -->
+      <rect class="box" x="340" y="420" width="160" height="60" rx="6"/>
+      <text class="t" x="420" y="445" text-anchor="middle">Results</text>
+      <text class="s" x="420" y="464" text-anchor="middle">results/px/&lt;run&gt;/</text>
+      <rect class="box" x="140" y="520" width="140" height="60" rx="6"/>
+      <text class="t" x="210" y="545" text-anchor="middle">gpu_filler.sh</text>
+      <text class="s" x="210" y="564" text-anchor="middle">cron · every 10 min</text>
+      <rect class="group" x="560" y="400" width="520" height="204" rx="8"/>
+      <text class="t" x="578" y="424">ap_worker job</text>
+      <text class="s" x="578" y="442">one per node · one slot per GPU</text>
+      <rect class="box" x="580" y="470" width="200" height="60" rx="6"/>
+      <text class="t" x="680" y="495" text-anchor="middle">vLLM server</text>
+      <text class="s" x="680" y="514" text-anchor="middle">Gemma-4-31B int4</text>
+      <rect class="box" x="860" y="470" width="200" height="60" rx="6"/>
+      <text class="t" x="960" y="495" text-anchor="middle">run_eval.py</text>
+      <text class="s" x="960" y="514" text-anchor="middle">ADK agent · scorer copy</text>
+      <line class="edge" x1="860" y1="500" x2="782" y2="500" marker-end="url(#ah)"/>
+      <text class="el" x="821" y="493" text-anchor="middle">LLM calls</text>
+      <text class="s" x="580" y="562">6–10 tasks in parallel per GPU · proxy set: 152 tasks, 16 repos</text>
+      <text class="s" x="580" y="580">each task: fresh repo sandbox, patch checked by its tests</text>
+      <line class="edge acc" x1="960" y1="346" x2="960" y2="468" marker-end="url(#aha)"/>
+      <text class="el" x="968" y="392">claims item</text>
+      <line class="edge" x1="560" y1="450" x2="502" y2="450" marker-end="url(#ah)"/>
+      <text class="el" x="531" y="443" text-anchor="middle">writes</text>
+      <line class="edge acc" x1="420" y1="420" x2="420" y2="348" marker-end="url(#aha)"/>
+      <text class="el" x="428" y="390">read</text>
+      <line class="edge" x1="280" y1="550" x2="558" y2="550" marker-end="url(#ah)"/>
+      <text class="el" x="420" y="543" text-anchor="middle">sbatch when GPUs are free</text>
+    </svg>
+    </div>
+    <figcaption>Teal arrows trace one experiment end to end. Claude builds a candidate, puts it in the queue, a GPU worker runs it, and the results go into a report. The report's verdict either feeds the daily release or goes back to Claude. Dashed: occasional speed checks on Kaggle's own hardware.</figcaption>
+  </figure>
+
+  <ol class="steps col">
+    <li><div><b>Watchdog and daemon.</b> A cron job on <code>login2</code> restarts <code>ops/autopilot/daemon.sh</code> whenever it is not running. The daemon starts a headless <code>claude -p</code> cycle every 2 hours (Sonnet, 30-minute hard cap). The first cycle after 09:00 each day is a <i>release</i> cycle. All others are <i>work</i> cycles.</div></li>
+    <li><div><b>The Claude cycle reads its brief and memory.</b> Its prompt is <code>CHARTER.md</code> (mission, hard rules, compute limits) plus <code>prompts/work.md</code> or <code>prompts/release.md</code>. It reads <code>STATE.md</code> first and updates it last. Nothing else carries over between cycles.</div></li>
+    <li><div><b>Build a candidate.</b> Each idea becomes a new folder <code>submissions/cXX_…</code> that changes one thing compared with the current base. <code>scripts/package_submission.sh</code> validates it with the organizers' compiler.</div></li>
+    <li><div><b>Queue it.</b> <code>ops/queue/enqueue.sh</code> writes one small text file per shard × seed into <code>ops/queue/pending/</code>. The queue is just files that move between <code>pending/</code>, <code>running/</code>, <code>done/</code> and <code>failed/</code>.</div></li>
+    <li><div><b>GPUs pick it up.</b> Every 10 minutes, <code>ops/slurm/gpu_filler.sh</code> submits <code>ap_worker</code> jobs onto GPUs that are free right now. It holds at most 16 GPUs so teammates keep their headroom. Each GPU starts its own vLLM server, claims items by an atomic <code>mv</code>, and runs <code>src/eval/run_eval.py</code>, our copy of the Kaggle scorer.</div></li>
+    <li><div><b>Report and decide.</b> <code>ops/queue/px_report.py</code> compares the candidate with the base on the same tasks and seeds. <code>src/analysis/time_budget.py</code> estimates the time on Kaggle's L4 GPUs. The cycle writes the verdict to <code>STATE.md</code> and <code>reports/council/DECISIONS.md</code>, then commits.</div></li>
+    <li><div><b>Release.</b> If a candidate passes both gates, the release cycle builds <code>submissions/daily/&lt;date&gt;/submission_….zip</code>. Line 1 of <code>RELEASE.md</code> says which zip to upload. You upload it and log the score with <code>ops/autopilot/ctl.sh lb &lt;zip&gt; &lt;score&gt;</code>.</div></li>
+  </ol>
+</section>
+
+<section>
+  <h2>2 · What a submission actually is</h2>
+  <p class="col">A submission is a declarative Google ADK agent. Kaggle loads <code>agent.yaml</code>, gives the agent a bug report and a sandboxed repository, and keeps the patch the agent submits. We cannot add Python callbacks or custom tools. The levers we do have are prompts, sampling and thinking settings, how sub-agents are wired, and "skills": small stdlib scripts the agent can run inside the sandbox. This figure compares what ships today with what is being tested.</p>
+  <figure>
+    <div class="scroll">
+    <svg class="d mid" viewBox="0 0 1000 470" role="img" aria-label="C23 is one agent loop with a read-only analyzer helper and an edit-engine skill. C25 runs three stages in order: the analyzer locates the bug, a planner thinks once without tools, then the unchanged C23 coder implements and submits.">
+      <defs>
+        <marker id="bh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="bha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="panel" x="10" y="10" width="475" height="450" rx="10"/>
+      <text class="t" x="30" y="38">C23 · shipping today (c23_t12)</text>
+      <text class="s" x="30" y="56">one agent loop, helpers on call</text>
+      <rect class="box" x="40" y="80" width="250" height="44" rx="6"/>
+      <text class="t" x="165" y="99" text-anchor="middle">Task</text>
+      <text class="s" x="165" y="115" text-anchor="middle">issue text + repo sandbox</text>
+      <line class="edge" x1="165" y1="124" x2="165" y2="148" marker-end="url(#bh)"/>
+      <rect class="box acc" x="40" y="150" width="250" height="100" rx="6"/>
+      <text class="t" x="165" y="176" text-anchor="middle">swe_coder (root agent)</text>
+      <text class="s" x="165" y="198" text-anchor="middle">run_command · read_file</text>
+      <text class="s" x="165" y="215" text-anchor="middle">write_file · get_status</text>
+      <text class="s" x="165" y="232" text-anchor="middle">submit_patch</text>
+      <rect class="box" x="330" y="150" width="140" height="50" rx="6"/>
+      <text class="t" x="400" y="172" text-anchor="middle">code_analyzer</text>
+      <text class="s" x="400" y="189" text-anchor="middle">read-only helper</text>
+      <rect class="box" x="330" y="212" width="140" height="50" rx="6"/>
+      <text class="t" x="400" y="234" text-anchor="middle">edit-engine skill</text>
+      <text class="s" x="400" y="251" text-anchor="middle">SEARCH/REPLACE</text>
+      <line class="edge" x1="290" y1="175" x2="328" y2="175" marker-start="url(#bh)" marker-end="url(#bh)"/>
+      <text class="el" x="310" y="168" text-anchor="middle">asks</text>
+      <line class="edge" x1="290" y1="237" x2="328" y2="237" marker-end="url(#bh)"/>
+      <text class="el" x="310" y="230" text-anchor="middle">edits</text>
+      <line class="edge" x1="165" y1="250" x2="165" y2="288" marker-end="url(#bh)"/>
+      <rect class="box" x="40" y="290" width="250" height="44" rx="6"/>
+      <text class="t" x="165" y="309" text-anchor="middle">Patch</text>
+      <text class="s" x="165" y="325" text-anchor="middle">git diff → hidden tests</text>
+      <text class="s" x="30" y="384">cap: 12 min and 100 tool calls per task</text>
+      <text class="s" x="30" y="402">proxy accuracy 0.385 · ≈88 LLM calls/task</text>
+      <text class="s" x="30" y="420">3.8 L4-min/task → 120 tasks ≈ 7.7 h (×1.45 ≈ 11 h)</text>
+
+      <rect class="panel" x="515" y="10" width="475" height="450" rx="10"/>
+      <text class="t" x="535" y="38">C25 · under test (c25_c23_locate_plan)</text>
+      <text class="s" x="535" y="56">SequentialAgent: three stages, run once each</text>
+      <rect class="box" x="560" y="80" width="260" height="44" rx="6"/>
+      <text class="t" x="690" y="99" text-anchor="middle">Task</text>
+      <text class="s" x="690" y="115" text-anchor="middle">issue text + repo sandbox</text>
+      <line class="edge" x1="690" y1="124" x2="690" y2="148" marker-end="url(#bh)"/>
+      <rect class="box" x="560" y="150" width="260" height="50" rx="6"/>
+      <text class="t" x="690" y="172" text-anchor="middle">1 · code_analyzer</text>
+      <text class="s" x="690" y="189" text-anchor="middle">locate the bug · read-only tools</text>
+      <line class="edge acc" x1="690" y1="200" x2="690" y2="224" marker-end="url(#bha)"/>
+      <rect class="box acc" x="560" y="226" width="260" height="50" rx="6"/>
+      <text class="t" x="690" y="248" text-anchor="middle">2 · fix_planner</text>
+      <text class="s" x="690" y="265" text-anchor="middle">one thinking call, no tools</text>
+      <text class="acc-t" x="836" y="246">the only new stage</text>
+      <text class="s" x="836" y="264">C24 let it use tools</text>
+      <text class="s" x="836" y="280">→ +0.10 but 2.4× slower</text>
+      <line class="edge acc" x1="690" y1="276" x2="690" y2="300" marker-end="url(#bha)"/>
+      <rect class="box" x="560" y="302" width="260" height="50" rx="6"/>
+      <text class="t" x="690" y="324" text-anchor="middle">3 · swe_coder</text>
+      <text class="s" x="690" y="341" text-anchor="middle">identical to C23</text>
+      <line class="edge" x1="690" y1="352" x2="690" y2="376" marker-end="url(#bh)"/>
+      <rect class="box" x="560" y="378" width="260" height="44" rx="6"/>
+      <text class="t" x="690" y="397" text-anchor="middle">Patch</text>
+      <text class="s" x="690" y="413" text-anchor="middle">git diff → hidden tests</text>
+      <text class="s" x="535" y="446">question: keep most of C24's gain at C23's speed?</text>
+    </svg>
+    </div>
+    <figcaption>C23 is a single loop: the coder calls the analyzer when it wants to, and edits files through the edit-engine skill. C25 puts one planning call (with thinking) before the same coder. The figure shows the cost of that one extra stage.</figcaption>
+  </figure>
+  <p class="col">The edit-engine skill exists because of a bug we found in the model's chat template. It sorts tool arguments alphabetically, so in <code>edit_file</code> the model writes <code>new_string</code> before <code>old_string</code>. When it closes the long string badly, the following arguments get swallowed. In C9e that made 78–84% of edit calls fail. C23 drops <code>edit_file</code> and sends edits through <code>run_command</code>, which takes a single argument, into <code>/tmp/ae.py</code>. Malformed edits went to zero and time per task fell 22%.</p>
+</section>
+
+<section>
+  <h2>3 · How a change becomes a release</h2>
+  <p class="col">Every idea goes through the same two gates. The accuracy gate uses our offline <i>proxy benchmark</i>: 152 mined tasks from 16 repos not in the public set. It is split into 8 shards and run with at least 2 seeds, because run-to-run noise is about ±0.03. The runtime gate exists because a submission that runs past 12 hours on Kaggle scores nothing; C4 and C9e both timed out.</p>
+  <figure>
+    <div class="scroll">
+    <svg class="d big" viewBox="0 0 1080 290" role="img" aria-label="Pipeline from one change through build, smoke and proxy evaluation to two gates, accuracy then runtime; passing both leads to a daily release, failing either sends the idea back.">
+      <defs>
+        <marker id="ch" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="box" x="20" y="70" width="130" height="60" rx="6"/>
+      <text class="t" x="85" y="95" text-anchor="middle">One change</text>
+      <text class="s" x="85" y="114" text-anchor="middle">vs current base</text>
+      <rect class="box" x="180" y="70" width="130" height="60" rx="6"/>
+      <text class="t" x="245" y="95" text-anchor="middle">Build</text>
+      <text class="s" x="245" y="114" text-anchor="middle">validator passes</text>
+      <rect class="box" x="340" y="70" width="130" height="60" rx="6"/>
+      <text class="t" x="405" y="95" text-anchor="middle">Smoke run</text>
+      <text class="s" x="405" y="114" text-anchor="middle">3 tasks</text>
+      <rect class="box" x="500" y="70" width="130" height="60" rx="6"/>
+      <text class="t" x="565" y="95" text-anchor="middle">Proxy eval</text>
+      <text class="s" x="565" y="114" text-anchor="middle">152 tasks × 2 seeds</text>
+      <polygon class="gate" points="705,58 747,100 705,142 663,100"/>
+      <text class="t" x="705" y="105" text-anchor="middle">Better?</text>
+      <text class="el" x="705" y="46" text-anchor="middle">paired Δ, z-score</text>
+      <polygon class="gate" points="845,58 887,100 845,142 803,100"/>
+      <text class="t" x="845" y="105" text-anchor="middle">Fits?</text>
+      <text class="el" x="845" y="46" text-anchor="middle">120 × L4 min × 1.45 &lt; 11.5 h</text>
+      <rect class="box acc" x="920" y="70" width="140" height="60" rx="6"/>
+      <text class="t" x="990" y="95" text-anchor="middle">Daily release</text>
+      <text class="s" x="990" y="114" text-anchor="middle">C23 shipped 10-12</text>
+      <line class="edge" x1="150" y1="100" x2="178" y2="100" marker-end="url(#ch)"/>
+      <line class="edge" x1="310" y1="100" x2="338" y2="100" marker-end="url(#ch)"/>
+      <line class="edge" x1="470" y1="100" x2="498" y2="100" marker-end="url(#ch)"/>
+      <line class="edge" x1="630" y1="100" x2="661" y2="100" marker-end="url(#ch)"/>
+      <line class="edge" x1="747" y1="100" x2="801" y2="100" marker-end="url(#ch)"/>
+      <text class="el" x="774" y="93" text-anchor="middle">yes</text>
+      <line class="edge" x1="887" y1="100" x2="918" y2="100" marker-end="url(#ch)"/>
+      <text class="el" x="902" y="93" text-anchor="middle">yes</text>
+      <line class="edge" x1="705" y1="142" x2="705" y2="198" marker-end="url(#ch)"/>
+      <text class="el" x="712" y="175">no</text>
+      <line class="edge" x1="845" y1="142" x2="845" y2="198" marker-end="url(#ch)"/>
+      <text class="el" x="852" y="175">no</text>
+      <rect class="box bad" x="615" y="200" width="160" height="60" rx="6"/>
+      <text class="t" x="695" y="225" text-anchor="middle">Rejected</text>
+      <text class="s" x="695" y="244" text-anchor="middle">C20, C21, C22</text>
+      <rect class="box warn" x="795" y="200" width="160" height="60" rx="6"/>
+      <text class="t" x="875" y="225" text-anchor="middle">Too slow</text>
+      <text class="s" x="875" y="244" text-anchor="middle">C24: +0.099, 18.8 h</text>
+      <path class="edge dash" d="M615,230 L85,230 L85,132" marker-end="url(#ch)"/>
+      <text class="el" x="350" y="223" text-anchor="middle">next idea, one change at a time</text>
+    </svg>
+    </div>
+    <figcaption>Two gates and an order between them. A candidate has to be at least as accurate as the base on paired proxy tasks, and also fit Kaggle's 12-hour limit with margin for hidden tasks being up to 1.45× slower. C24 was the best idea so far, but it failed the second gate.</figcaption>
+  </figure>
+  <p class="note col"><b>Why not just tune on the public tasks?</b> The early C-series did exactly that and it didn't carry over. The hidden set covers about 13 repos, roughly 9 of them private. That is why the proxy is built from unseen repos and every comparison is paired.</p>
+</section>
+
+<section>
+  <h2>4 · Where things stand</h2>
+  <p class="col">Since 2026-10-11 the program has been <b>one problem at a time, then combine</b>. Autopilot cycles only harvest results for the current step and keep the GPUs busy. They don't invent new candidates on their own.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Step</th><th>Problem</th><th>Status</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td>Speed: C9e timed out on Kaggle</td><td><span class="pill done">done · C23</span></td><td>Same accuracy (0.385 vs 0.391, n=304 pairs); 3.83 vs 4.92 L4-min/task</td></tr>
+        <tr><td class="num">2</td><td>Edit reliability: 84% of edit calls were malformed</td><td><span class="pill done">folded into C23</span></td><td>0 malformed edit calls with the edit-engine skill</td></tr>
+        <tr><td class="num">3</td><td>Fix quality: 54% of failures are a wrong fix in the right function</td><td><span class="pill wip">in progress · C25</span></td><td>C24 +0.099 (z 3.7) but too slow. C25 shards all done; next step is <code>sbatch ops/slurm/ap_px_report.sbatch</code></td></tr>
+        <tr><td class="num">4</td><td>Combine steps 1–3 into one submission under 11 h</td><td><span class="pill todo">not started</span></td><td>–</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Public LB history</th><th>Zip</th><th>Score</th></tr></thead>
+      <tbody>
+        <tr><td class="num">2026-10-04</td><td>C6a_t5</td><td class="num">0.06</td></tr>
+        <tr><td class="num">2026-10-06</td><td>C8 anchor-plus <span class="pill done">champion</span></td><td class="num">0.13</td></tr>
+        <tr><td class="num">2026-10-09</td><td>C9ae edit-fix + analyzer cap</td><td class="num">0.10</td></tr>
+        <tr><td class="num">2026-10-10</td><td>C9ae with 5-min cap</td><td class="num">0.08</td></tr>
+        <tr><td class="num">earlier</td><td>C4 (8-min cap)</td><td><span class="pill bad">timeout</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>5 · Steering it</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Controls</h3>
+      <p>Run these from <code>login2</code>, which is where the daemon lives. This session is on <code>login1</code>, which has no autopilot cron.</p>
+      <ul>
+        <li><code>ops/autopilot/ctl.sh status</code>: daemon, recent cycles, SLURM jobs</li>
+        <li><code>ctl.sh pause</code> / <code>resume</code>: do this before working by hand</li>
+        <li><code>ctl.sh lb &lt;zip&gt; &lt;score&gt;</code>: record a leaderboard result</li>
+        <li><code>ctl.sh tail</code>: watch the current cycle's tool calls</li>
+        <li><code>touch ops/slurm/FILLER_STOP</code>: stop new GPU jobs</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Files to read first</h3>
+      <ul>
+        <li><code>ops/autopilot/STATE.md</code>: current status and next step</li>
+        <li><code>ops/autopilot/CHARTER.md</code>: mission and hard rules</li>
+        <li><code>reports/council/DECISIONS.md</code>: why things were chosen</li>
+        <li><code>submissions/daily/LATEST/RELEASE.md</code>: what to upload today</li>
+        <li><code>reports/scoreboard.md</code>: all candidates side by side</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Supporting pipelines</h3>
+      <ul>
+        <li><code>src/mining</code> → <code>data/derived/proxy</code>: builds the 152-task proxy benchmark</li>
+        <li><code>src/sft</code>: LoRA fine-tuning and distillation (parked, no gain over C9e so far)</li>
+        <li><code>src/analysis</code>: failure forensics, L4 time model, edit replay</li>
+        <li><code>scripts/kaggle_eval</code>: private Kaggle 4×L4 timing kernels</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Hard rules the autopilot follows</h3>
+      <ul>
+        <li>Never submits to Kaggle itself. You upload.</li>
+        <li>Holds at most 16 GPUs and only cancels jobs named <code>ap-*</code>.</li>
+        <li>Never edits a submission folder that already has an LB score.</li>
+        <li>Commits at the end of every cycle; no destructive git.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</div>
+</body></html>
