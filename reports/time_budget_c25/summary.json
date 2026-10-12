@@ -1,0 +1,718 @@
+{
+ "outcat_c9ae-t30s": {
+  "ct_per_call": {
+   "root": {
+    "n": 2301,
+    "mean": 75.92307692307692,
+    "p50": 13,
+    "p90": 248,
+    "p99": 547
+   },
+   "analyzer": {
+    "n": 1553,
+    "mean": 41.53444945267225,
+    "p50": 32,
+    "p90": 45,
+    "p99": 308
+   },
+   "compact": {
+    "n": 30,
+    "mean": 207.8,
+    "p50": 204,
+    "p90": 288,
+    "p99": 310
+   }
+  },
+  "categories": {
+   "root code_analyzer request": {
+    "calls_per_task": 1.6666666666666667,
+    "tok_per_task": 147.8,
+    "decode_s_per_task": 3.9027940144328612
+   },
+   "analyzer short tool call (read/grep/cmd)": {
+    "calls_per_task": 49.9,
+    "tok_per_task": 1652.6333333333334,
+    "decode_s_per_task": 48.83134666295952
+   },
+   "analyzer text-only (final answer / summary)": {
+    "calls_per_task": 1.6666666666666667,
+    "tok_per_task": 456.8421641791045,
+    "decode_s_per_task": 12.681311530788951
+   },
+   "root short tool call (read/grep/cmd)": {
+    "calls_per_task": 14.933333333333334,
+    "tok_per_task": 520.2,
+    "decode_s_per_task": 13.874845316733003
+   },
+   "root run_command script/heredoc": {
+    "calls_per_task": 8.933333333333334,
+    "tok_per_task": 2831.366666666667,
+    "decode_s_per_task": 78.46674544214656
+   },
+   "root edit_file/write_file": {
+    "calls_per_task": 10.033333333333333,
+    "tok_per_task": 1289.1333333333334,
+    "decode_s_per_task": 35.49106083681161
+   },
+   "root short tool call (other)": {
+    "calls_per_task": 40.46666666666667,
+    "tok_per_task": 374.1333333333333,
+    "decode_s_per_task": 12.285024722393882
+   },
+   "root text-only (final answer / summary)": {
+    "calls_per_task": 0.6666666666666666,
+    "tok_per_task": 660.6666666666666,
+    "decode_s_per_task": 18.726056787910014
+   },
+   "compaction summary": {
+    "calls_per_task": 1.0,
+    "tok_per_task": 207.8,
+    "decode_s_per_task": 5.636360543105904
+   },
+   "analyzer run_command script/heredoc": {
+    "calls_per_task": 0.16666666666666666,
+    "tok_per_task": 30.166666666666668,
+    "decode_s_per_task": 0.8229472993068702
+   },
+   "(narration text next to a tool call)": {
+    "calls_per_task": 0.03333333333333333,
+    "tok_per_task": 62.45192740362982,
+    "decode_s_per_task": 1.7961019123614606
+   },
+   "(reasoning, all calls)": {
+    "calls_per_task": 0.03333333333333333,
+    "tok_per_task": 9.657835820895523,
+    "decode_s_per_task": 0.28879730691510636
+   },
+   "analyzer short tool call (other)": {
+    "calls_per_task": 0.03333333333333333,
+    "tok_per_task": 0.8,
+    "decode_s_per_task": 0.0181873406879363
+   }
+  }
+ },
+ "cap_c9ae-t30s": {
+  "model": "a=0.156s/call, prefill=2285 tok/s, decode=36.4 tok/s @4k ctx, 33.5 tok/s @16k, R2=0.997 (n=3882)",
+  "coef": [
+   0.1555470865878219,
+   0.00043769642732351946,
+   0.02668659418852487,
+   1.98476515045115e-07
+  ],
+  "chars_per_token": 3.7313578042842135,
+  "tasks": 30,
+  "kernel_wall_s": 9347,
+  "sum_span_s": 8848.485561132431,
+  "setup_verify_mean_s": 9.937713039332422,
+  "tool_gap_mean_s": 17.328268281618755,
+  "calls": 3884,
+  "kinds": {
+   "root": 2301,
+   "analyzer": 1553,
+   "compact": 30
+  }
+ },
+ "outcat_c11t-t30s": {
+  "ct_per_call": {
+   "root": {
+    "n": 1572,
+    "mean": 207.12468193384223,
+    "p50": 58,
+    "p90": 485,
+    "p99": 2780
+   },
+   "analyzer": {
+    "n": 732,
+    "mean": 50.44672131147541,
+    "p50": 34,
+    "p90": 47,
+    "p99": 327
+   },
+   "compact": {
+    "n": 51,
+    "mean": 842.0980392156863,
+    "p50": 831,
+    "p90": 1070,
+    "p99": 1178
+   }
+  },
+  "categories": {
+   "root short tool call (read/grep/cmd)": {
+    "calls_per_task": 25.233333333333334,
+    "tok_per_task": 721.5038305184755,
+    "decode_s_per_task": 20.378230605345422
+   },
+   "(reasoning, all calls)": {
+    "calls_per_task": 53.7,
+    "tok_per_task": 8721.44939721555,
+    "decode_s_per_task": 248.51495471650347
+   },
+   "root code_analyzer request": {
+    "calls_per_task": 0.8666666666666667,
+    "tok_per_task": 52.09675543698661,
+    "decode_s_per_task": 1.3168690143637827
+   },
+   "analyzer short tool call (read/grep/cmd)": {
+    "calls_per_task": 22.433333333333334,
+    "tok_per_task": 744.1666666666666,
+    "decode_s_per_task": 21.67444090823171
+   },
+   "analyzer text-only (final answer / summary)": {
+    "calls_per_task": 0.8666666666666667,
+    "tok_per_task": 238.36666666666667,
+    "decode_s_per_task": 6.805499751803974
+   },
+   "root run_command script/heredoc": {
+    "calls_per_task": 4.1,
+    "tok_per_task": 1299.1782231275936,
+    "decode_s_per_task": 36.590832474197065
+   },
+   "root edit_file/write_file": {
+    "calls_per_task": 3.2333333333333334,
+    "tok_per_task": 659.1875027991654,
+    "decode_s_per_task": 18.694375162899476
+   },
+   "compaction summary": {
+    "calls_per_task": 1.7,
+    "tok_per_task": 653.8896288433701,
+    "decode_s_per_task": 18.13873820542718
+   },
+   "root short tool call (other)": {
+    "calls_per_task": 18.033333333333335,
+    "tok_per_task": 111.4485915441871,
+    "decode_s_per_task": 3.5290363993482834
+   },
+   "root text-only (final answer / summary)": {
+    "calls_per_task": 0.9333333333333333,
+    "tok_per_task": 66.14607051466318,
+    "decode_s_per_task": 1.8896718566965807
+   },
+   "analyzer short tool call (other)": {
+    "calls_per_task": 0.03333333333333333,
+    "tok_per_task": 0.9,
+    "decode_s_per_task": 0.026665022980154086
+   },
+   "analyzer run_command script/heredoc": {
+    "calls_per_task": 1.0666666666666667,
+    "tok_per_task": 247.46666666666667,
+    "decode_s_per_task": 7.65652917355093
+   }
+  }
+ },
+ "cap_c11t-t30s": {
+  "model": "a=0.019s/call, prefill=1801 tok/s, decode=36.4 tok/s @4k ctx, 33.6 tok/s @16k, R2=0.999 (n=2353)",
+  "coef": [
+   0.019403574370250736,
+   0.0005553831656247074,
+   0.026681418597325538,
+   1.9391178040313508e-07
+  ],
+  "chars_per_token": 3.674927503833402,
+  "tasks": 30,
+  "kernel_wall_s": 14301,
+  "sum_span_s": 13805.656388998032,
+  "setup_verify_mean_s": 20.521448817746393,
+  "tool_gap_mean_s": 26.399674399693808,
+  "calls": 2355,
+  "kinds": {
+   "root": 1572,
+   "analyzer": 732,
+   "compact": 51
+  }
+ },
+ "outcat_c11n-t30s": {
+  "ct_per_call": {
+   "root": {
+    "n": 1891,
+    "mean": 215.04283447911158,
+    "p50": 78,
+    "p90": 531,
+    "p99": 1791
+   },
+   "compact": {
+    "n": 85,
+    "mean": 833.2588235294118,
+    "p50": 834,
+    "p90": 1091,
+    "p99": 1155
+   }
+  },
+  "categories": {
+   "root short tool call (read/grep/cmd)": {
+    "calls_per_task": 41.3,
+    "tok_per_task": 1088.169204252304,
+    "decode_s_per_task": 30.450075885300745
+   },
+   "(reasoning, all calls)": {
+    "calls_per_task": 65.23333333333333,
+    "tok_per_task": 10943.851848057144,
+    "decode_s_per_task": 305.8050320793281
+   },
+   "root run_command script/heredoc": {
+    "calls_per_task": 7.5,
+    "tok_per_task": 1888.4453979078166,
+    "decode_s_per_task": 52.76367348461831
+   },
+   "compaction summary": {
+    "calls_per_task": 2.8333333333333335,
+    "tok_per_task": 1066.5484254131575,
+    "decode_s_per_task": 28.845798413278093
+   },
+   "root edit_file/write_file": {
+    "calls_per_task": 4.566666666666666,
+    "tok_per_task": 856.3726447269522,
+    "decode_s_per_task": 24.036945344300914
+   },
+   "root short tool call (other)": {
+    "calls_per_task": 8.533333333333333,
+    "tok_per_task": 35.98327976433129,
+    "decode_s_per_task": 1.1036768705425326
+   },
+   "root text-only (final answer / summary)": {
+    "calls_per_task": 1.1333333333333333,
+    "tok_per_task": 36.395866544959745,
+    "decode_s_per_task": 1.01319170512069
+   },
+   "(narration text next to a tool call)": {
+    "calls_per_task": 0.03333333333333333,
+    "tok_per_task": 1.7953161874126295,
+    "decode_s_per_task": 0.05148948849086311
+   }
+  }
+ },
+ "cap_c11n-t30s": {
+  "model": "a=0.004s/call, prefill=1731 tok/s, decode=37.1 tok/s @4k ctx, 34.1 tok/s @16k, R2=0.999 (n=1976)",
+  "coef": [
+   0.004295630854565113,
+   0.0005775839540921133,
+   0.0261088975578448,
+   2.0241400707702965e-07
+  ],
+  "chars_per_token": 3.5078822885027137,
+  "tasks": 30,
+  "kernel_wall_s": 16122,
+  "sum_span_s": 15645.088673830032,
+  "setup_verify_mean_s": 10.830795822472409,
+  "tool_gap_mean_s": 32.08633100191752,
+  "calls": 1976,
+  "kinds": {
+   "root": 1891,
+   "compact": 85
+  }
+ },
+ "outcat_c15t512-t30s": {
+  "ct_per_call": {
+   "root": {
+    "n": 1943,
+    "mean": 197.54091610910962,
+    "p50": 64,
+    "p90": 523,
+    "p99": 907
+   },
+   "analyzer": {
+    "n": 743,
+    "mean": 45.71467025572005,
+    "p50": 32,
+    "p90": 40,
+    "p99": 316
+   },
+   "compact": {
+    "n": 55,
+    "mean": 766.1090909090909,
+    "p50": 773,
+    "p90": 907,
+    "p99": 1012
+   }
+  },
+  "categories": {
+   "root short tool call (read/grep/cmd)": {
+    "calls_per_task": 26.133333333333333,
+    "tok_per_task": 1048.4242632785786,
+    "decode_s_per_task": 29.616189717054972
+   },
+   "(reasoning, all calls)": {
+    "calls_per_task": 66.1,
+    "tok_per_task": 10067.127773676735,
+    "decode_s_per_task": 282.76651057993536
+   },
+   "root code_analyzer request": {
+    "calls_per_task": 0.9333333333333333,
+    "tok_per_task": 66.35179164037571,
+    "decode_s_per_task": 1.697998845021225
+   },
+   "analyzer short tool call (read/grep/cmd)": {
+    "calls_per_task": 23.833333333333332,
+    "tok_per_task": 813.8333333333334,
+    "decode_s_per_task": 23.503601992150482
+   },
+   "analyzer text-only (final answer / summary)": {
+    "calls_per_task": 0.9333333333333333,
+    "tok_per_task": 318.3666666666667,
+    "decode_s_per_task": 9.150738473657604
+   },
+   "root run_command script/heredoc": {
+    "calls_per_task": 5.533333333333333,
+    "tok_per_task": 1711.9380156823647,
+    "decode_s_per_task": 47.95349225304009
+   },
+   "root edit_file/write_file": {
+    "calls_per_task": 2.6333333333333333,
+    "tok_per_task": 471.0586753747496,
+    "decode_s_per_task": 13.318235879995775
+   },
+   "compaction summary": {
+    "calls_per_task": 1.8333333333333333,
+    "tok_per_task": 663.181936953801,
+    "decode_s_per_task": 18.319905159986618
+   },
+   "root short tool call (other)": {
+    "calls_per_task": 28.6,
+    "tok_per_task": 78.5114609990639,
+    "decode_s_per_task": 2.3846310482160473
+   },
+   "root text-only (final answer / summary)": {
+    "calls_per_task": 0.9333333333333333,
+    "tok_per_task": 92.00608239434493,
+    "decode_s_per_task": 2.5565493025600645
+   },
+   "(narration text next to a tool call)": {
+    "calls_per_task": 0.23333333333333334,
+    "tok_per_task": 455.22859058359677,
+    "decode_s_per_task": 12.833109302945747
+   }
+  }
+ },
+ "cap_c15t512-t30s": {
+  "model": "a=0.000s/call, prefill=1649 tok/s, decode=36.8 tok/s @4k ctx, 33.7 tok/s @16k, R2=0.999 (n=2741)",
+  "coef": [
+   0.00038185208541278374,
+   0.0006065039935316751,
+   0.02629491250713343,
+   2.128236621240509e-07
+  ],
+  "chars_per_token": 4.724375527686827,
+  "tasks": 30,
+  "kernel_wall_s": 17144,
+  "sum_span_s": 16140.514172792435,
+  "setup_verify_mean_s": 30.65625863239683,
+  "tool_gap_mean_s": 45.421913822491966,
+  "calls": 2741,
+  "kinds": {
+   "root": 1943,
+   "analyzer": 743,
+   "compact": 55
+  }
+ },
+ "trace_sets": [
+  "c11n_L4",
+  "c11t_L4",
+  "c15n512_px",
+  "c15t512_L4",
+  "c23_px",
+  "c24_px",
+  "c25_px",
+  "c8_px",
+  "c9e_A40serial",
+  "c9e_px"
+ ],
+ "missing_traces": {
+  "c15n512_px": 7,
+  "c8_px": 1
+ },
+ "interventions": [
+  {
+   "set": "c9e_px",
+   "n": 760,
+   "solved": 292,
+   "base_s": 295.1024008627886,
+   "items": {
+    "I1 stop on BudgetExceeded (root+analyzer reply/submit at once)": 10.21338633492175,
+    "I2 loop breaker (3rd identical call w/o state change)": 24.021354657065686,
+    "I2b end with a text-only reply right after submit_patch (no re-submits)": 5.4673113873965855,
+    "I3 avoid rejected calls (edit fallback; assume 50% of their time saved)": 39.1953919278457,
+    "I4 analyzer hard cap 20 calls, single invocation": 21.135143329527764,
+    "I5 submit right after the first passing verification of the final patch": 13.06328566219821,
+    "I6 cap observations at 2000 chars": 3.2042503334225847,
+    "I7 forbid narration text next to tool calls": 0.08732063401245557
+   },
+   "after_I1_I7_s": 178.71495659639788,
+   "cap4": {
+    "mean_s": 134.300477248688,
+    "lost": 64,
+    "lost_rate": 0.08421052631578947
+   },
+   "cap5": {
+    "mean_s": 145.73102806278305,
+    "lost": 47,
+    "lost_rate": 0.06184210526315789
+   },
+   "cap6": {
+    "mean_s": 153.81217772821253,
+    "lost": 25,
+    "lost_rate": 0.03289473684210526
+   },
+   "cap8": {
+    "mean_s": 163.4312506458502,
+    "lost": 19,
+    "lost_rate": 0.025
+   },
+   "cap10": {
+    "mean_s": 168.97460792675028,
+    "lost": 13,
+    "lost_rate": 0.017105263157894738
+   }
+  },
+  {
+   "set": "c15n512_px",
+   "n": 449,
+   "solved": 226,
+   "base_s": 503.2246082516592,
+   "items": {
+    "I1 stop on BudgetExceeded (root+analyzer reply/submit at once)": 4.569874963940914,
+    "I2 loop breaker (3rd identical call w/o state change)": 8.23473890074654,
+    "I2b end with a text-only reply right after submit_patch (no re-submits)": 47.83406825702901,
+    "I3 avoid rejected calls (edit fallback; assume 50% of their time saved)": 6.519114894928041,
+    "I4 analyzer hard cap 20 calls, single invocation": 0.0,
+    "I5 submit right after the first passing verification of the final patch": 51.767285015834,
+    "I6 cap observations at 2000 chars": 3.8039399548440027,
+    "I7 forbid narration text next to tool calls": 2.092542749370477
+   },
+   "after_I1_I7_s": 378.4030435149662,
+   "cap4": {
+    "mean_s": 204.5285780003176,
+    "lost": 69,
+    "lost_rate": 0.15367483296213807
+   },
+   "cap5": {
+    "mean_s": 236.859086927669,
+    "lost": 48,
+    "lost_rate": 0.10690423162583519
+   },
+   "cap6": {
+    "mean_s": 263.83163549884824,
+    "lost": 31,
+    "lost_rate": 0.06904231625835189
+   },
+   "cap8": {
+    "mean_s": 305.1561393731029,
+    "lost": 13,
+    "lost_rate": 0.028953229398663696
+   },
+   "cap10": {
+    "mean_s": 333.0286369974132,
+    "lost": 11,
+    "lost_rate": 0.024498886414253896
+   }
+  },
+  {
+   "set": "c9e_A40serial",
+   "n": 30,
+   "solved": 13,
+   "base_s": 252.84096941151324,
+   "items": {
+    "I1 stop on BudgetExceeded (root+analyzer reply/submit at once)": 30.518220482224574,
+    "I2 loop breaker (3rd identical call w/o state change)": 29.263235942967732,
+    "I2b end with a text-only reply right after submit_patch (no re-submits)": 8.814072671568434,
+    "I3 avoid rejected calls (edit fallback; assume 50% of their time saved)": 15.190674342321167,
+    "I4 analyzer hard cap 20 calls, single invocation": 16.260296139449068,
+    "I5 submit right after the first passing verification of the final patch": 7.878400240409743,
+    "I6 cap observations at 2000 chars": 3.037925479389578,
+    "I7 forbid narration text next to tool calls": 0.0
+   },
+   "after_I1_I7_s": 141.87814411318297,
+   "cap4": {
+    "mean_s": 122.87911772934802,
+    "lost": 0,
+    "lost_rate": 0.0
+   },
+   "cap5": {
+    "mean_s": 126.87911772934802,
+    "lost": 0,
+    "lost_rate": 0.0
+   },
+   "cap6": {
+    "mean_s": 130.87911772934802,
+    "lost": 0,
+    "lost_rate": 0.0
+   },
+   "cap8": {
+    "mean_s": 135.5620751040408,
+    "lost": 0,
+    "lost_rate": 0.0
+   },
+   "cap10": {
+    "mean_s": 139.5620751040408,
+    "lost": 0,
+    "lost_rate": 0.0
+   }
+  },
+  {
+   "set": "c11n_L4",
+   "n": 30,
+   "solved": 13,
+   "base_s": 523.9993452273726,
+   "items": {
+    "I1 stop on BudgetExceeded (root+analyzer reply/submit at once)": 2.864535395003894,
+    "I2 loop breaker (3rd identical call w/o state change)": 0.5685027093357988,
+    "I2b end with a text-only reply right after submit_patch (no re-submits)": 5.391941776258725,
+    "I3 avoid rejected calls (edit fallback; assume 50% of their time saved)": 5.661899831699438,
+    "I4 analyzer hard cap 20 calls, single invocation": 0.0,
+    "I5 submit right after the first passing verification of the final patch": 41.13256043486418,
+    "I6 cap observations at 2000 chars": 6.970521995980752,
+    "I7 forbid narration text next to tool calls": 3.845538819501626
+   },
+   "after_I1_I7_s": 457.56384426472823,
+   "cap4": {
+    "mean_s": 215.91250437532864,
+    "lost": 7,
+    "lost_rate": 0.23333333333333334
+   },
+   "cap5": {
+    "mean_s": 253.91250437532864,
+    "lost": 5,
+    "lost_rate": 0.16666666666666666
+   },
+   "cap6": {
+    "mean_s": 289.1722155484604,
+    "lost": 5,
+    "lost_rate": 0.16666666666666666
+   },
+   "cap8": {
+    "mean_s": 337.61286870427665,
+    "lost": 4,
+    "lost_rate": 0.13333333333333333
+   },
+   "cap10": {
+    "mean_s": 377.11196718870735,
+    "lost": 2,
+    "lost_rate": 0.06666666666666667
+   }
+  },
+  {
+   "set": "c15t512_L4",
+   "n": 30,
+   "solved": 13,
+   "base_s": 542.3196518550192,
+   "items": {
+    "I1 stop on BudgetExceeded (root+analyzer reply/submit at once)": 1.9971346042940785,
+    "I2 loop breaker (3rd identical call w/o state change)": 10.736192650838271,
+    "I2b end with a text-only reply right after submit_patch (no re-submits)": 112.63130909214236,
+    "I3 avoid rejected calls (edit fallback; assume 50% of their time saved)": 1.3851030264287902,
+    "I4 analyzer hard cap 20 calls, single invocation": 4.304200820634152,
+    "I5 submit right after the first passing verification of the final patch": 56.45570884490833,
+    "I6 cap observations at 2000 chars": 4.351308859265841,
+    "I7 forbid narration text next to tool calls": 15.20068489846945
+   },
+   "after_I1_I7_s": 335.25800905803794,
+   "cap4": {
+    "mean_s": 203.81285616918427,
+    "lost": 5,
+    "lost_rate": 0.16666666666666666
+   },
+   "cap5": {
+    "mean_s": 229.13961737155526,
+    "lost": 4,
+    "lost_rate": 0.13333333333333333
+   },
+   "cap6": {
+    "mean_s": 248.18209247808613,
+    "lost": 4,
+    "lost_rate": 0.13333333333333333
+   },
+   "cap8": {
+    "mean_s": 280.1181799445462,
+    "lost": 2,
+    "lost_rate": 0.06666666666666667
+   },
+   "cap10": {
+    "mean_s": 302.3105199112781,
+    "lost": 1,
+    "lost_rate": 0.03333333333333333
+   }
+  },
+  {
+   "set": "c11t_L4",
+   "n": 30,
+   "solved": 12,
+   "base_s": 463.48321998713595,
+   "items": {
+    "I1 stop on BudgetExceeded (root+analyzer reply/submit at once)": 2.7321808831151833,
+    "I2 loop breaker (3rd identical call w/o state change)": 10.05502083048594,
+    "I2b end with a text-only reply right after submit_patch (no re-submits)": 35.903930328923224,
+    "I3 avoid rejected calls (edit fallback; assume 50% of their time saved)": 4.940746309181229,
+    "I4 analyzer hard cap 20 calls, single invocation": 13.9757064522159,
+    "I5 submit right after the first passing verification of the final patch": 42.61958640208435,
+    "I6 cap observations at 2000 chars": 4.998424575033992,
+    "I7 forbid narration text next to tool calls": 0.0
+   },
+   "after_I1_I7_s": 348.2576242060961,
+   "cap4": {
+    "mean_s": 197.40046815960474,
+    "lost": 4,
+    "lost_rate": 0.13333333333333333
+   },
+   "cap5": {
+    "mean_s": 227.43814804119143,
+    "lost": 3,
+    "lost_rate": 0.1
+   },
+   "cap6": {
+    "mean_s": 255.1750600433646,
+    "lost": 2,
+    "lost_rate": 0.06666666666666667
+   },
+   "cap8": {
+    "mean_s": 297.72870818564087,
+    "lost": 0,
+    "lost_rate": 0.0
+   },
+   "cap10": {
+    "mean_s": 323.1604912343669,
+    "lost": 0,
+    "lost_rate": 0.0
+   }
+  },
+  {
+   "set": "c8_px",
+   "n": 607,
+   "solved": 197,
+   "base_s": 303.28182137801934,
+   "items": {
+    "I1 stop on BudgetExceeded (root+analyzer reply/submit at once)": 9.329542289249469,
+    "I2 loop breaker (3rd identical call w/o state change)": 30.835514394287976,
+    "I2b end with a text-only reply right after submit_patch (no re-submits)": 7.5587733464026625,
+    "I3 avoid rejected calls (edit fallback; assume 50% of their time saved)": 42.670955625114104,
+    "I4 analyzer hard cap 20 calls, single invocation": 18.208237679249777,
+    "I5 submit right after the first passing verification of the final patch": 12.407604235273258,
+    "I6 cap observations at 2000 chars": 3.5833168914737548,
+    "I7 forbid narration text next to tool calls": 0.03017915618037229
+   },
+   "after_I1_I7_s": 178.65769776078798,
+   "cap4": {
+    "mean_s": 129.78018143041757,
+    "lost": 40,
+    "lost_rate": 0.06589785831960461
+   },
+   "cap5": {
+    "mean_s": 141.0579860253746,
+    "lost": 32,
+    "lost_rate": 0.05271828665568369
+   },
+   "cap6": {
+    "mean_s": 148.71063404537887,
+    "lost": 11,
+    "lost_rate": 0.018121911037891267
+   },
+   "cap8": {
+    "mean_s": 157.92517244021928,
+    "lost": 6,
+    "lost_rate": 0.009884678747940691
+   },
+   "cap10": {
+    "mean_s": 164.11322897632454,
+    "lost": 3,
+    "lost_rate": 0.004942339373970346
+   }
+  }
+ ]
+}
