@@ -1,4 +1,15 @@
-SUBMIT: submission_2026-10-11_c9e_t15.zip   (lead session 01:45; replaces the autopilot's c9e_t5 draft)
+SUBMIT: submission_2026-10-11_c9e_t8.zip   (lead, 10-11 17:00; SUPERSEDES c9e_t15 and c9e_t5)
+
+# Why 8 min (D33)
+- Uncapped C9e got Notebook Timeout on Kaggle; uncapped C9ae ran ~15 h; uncapped C8 finished (0.13). C8/C9e have identical runtime
+  on proxy (12.0 vs 12.5 min/task) -> the family sits at the 12 h edge; finishing was luck.
+- Our L4 30-task timing (5.19 min/task incl. setup) projects 10.6 h, but the real runs show hidden tasks ~1.3-1.45x slower.
+- Projected 120-task totals (hidden slowdown 1.3-1.45x): cap 15 -> 12.8-13.7 h (TIMEOUT), cap 10 -> 11.2-11.9 h (too close),
+  cap 8 -> 10.3-10.9 h (safe), cap 5 -> ~8 h (LB 0.08 before).
+- Cost: solves finishing after the cap ~15% of C9e's solves (proxy upper bound; capped tasks still grade their last patch).
+  Expected LB ~ C8 level (0.12-0.14), but it should COMPLETE.
+
+(superseded) c9e_t15   (lead session 01:45; replaces the autopilot's c9e_t5 draft)
 
 # Release 2026-10-11: C9e + eval_config max_time_minutes 15
 - Same agent as C9e (submitted 10-10, LB pending). Only addition: per-task cap 15 min as a runaway guard (D31).

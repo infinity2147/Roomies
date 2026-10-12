@@ -15,7 +15,7 @@ records the public-LB score in ops/autopilot/lb_scores.tsv.
   transfer: the hidden set is ~13 repos, ~9 of them private/Google-style. Avoid overfitting the 4 public repos.
 - Offline metric: proxy benchmark data/derived/proxy/ (152 tasks, 16 unseen repos). It must first be
   calibrated (rank anchor > C6a_t5, C8 ≥ anchor) before it may select releases (DECISIONS D11).
-- Runtime safety (D31 supersedes D28, lead session 2026-10-11): releases carry eval_config.yaml with max_time_minutes = 15
+- Runtime safety (D33 supersedes D31: cap is 8, NOT 15 — uncapped C9e hit Notebook Timeout; hidden tasks ~1.3-1.45x slower than our L4 t30 timing; cap 15 projects 12.8-13.7 h). Old D31 text: releases carry eval_config.yaml with max_time_minutes = 15
   (NOT 5). Evidence: L4 serial C9ae uncapped = 4.92 min/task mean, p90 12.1, max 17.3 (120 tasks -> 10.3 h); a 5-min cap cuts
   12/30 L4 tasks and cost ~0.09 on proxy and 0.13 -> 0.08 on LB (c9ae_t5). 15 min touches ~1/30 tasks but bounds runaway tasks.
   Proxy min/task (concurrent workers, ~2.5x slower than L4) must NOT be used to choose caps. Never ship a cap below 12 min
